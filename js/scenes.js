@@ -15,7 +15,7 @@
     { id: "years", label: "Years" },
     { id: "menu", label: "Menu" },
     { id: "projects", label: "Projects" },
-    { id: "constellation", label: "Constellation" },
+    { id: "constellation", label: "World" },
     { id: "people", label: "People" },
     { id: "now", label: "Now" },
   ];
@@ -63,7 +63,8 @@
         const first = M.years[0].year, last = M.years[M.years.length - 1].year;
         const years = h("div", { class: "years", html: `<b>${first}</b> — <b>${last}</b> &nbsp;·&nbsp; ${esc(cfg.tagline)}` });
         const url = h("div", "url", "GITHUB.COM/CLOUD-BARISTA");
-        const B = h("div", "ph ph-b", ...[since, h("div", "float", h("div", "halo"), cup), title, meta, years, url].filter(Boolean));
+        const press = h("div", "press", "▶ PRESS START");
+        const B = h("div", "ph ph-b", ...[since, h("div", "float", h("div", "halo"), cup), title, meta, years, press, url].filter(Boolean));
         B.style.opacity = 0;
         root.append(A, B);
 
@@ -92,7 +93,7 @@
         ctx.anim(since, [{ opacity: 0, transform: "translateY(20px)" }, { opacity: 1, transform: "none" }], { duration: 900 });
         const brewed = brewCup(ctx, cup, { delay: 500 });
         ctx.stagger(title.querySelectorAll(".w"), { delay: 2400, each: 160, duration: 1200, from: { opacity: 0, transform: "perspective(1200px) rotateX(70deg) translateY(70px)", filter: "blur(12px)" }, to: { opacity: 1, transform: "none", filter: "blur(0)" } });
-        ctx.stagger([meta, years, url].filter(Boolean), { delay: 3400, each: 220, duration: 1000 });
+        ctx.stagger([meta, years, press, url].filter(Boolean), { delay: 3400, each: 220, duration: 1000 });
         ctx.anim(title, [{ transform: "scale(1)" }, { transform: "scale(1.03)" }], { duration: 9000, delay: 3600, easing: "ease-in-out" });
         await ctx.wait(Math.max(brewed, 3400) + 7600);
       },
@@ -304,7 +305,8 @@
         const confChips = Y.conferences.map((c) => h("span", "conf-chip", h("b", null, `#${c.n}`), c.label));
         if (isLast) confChips.push(h("span", "conf-chip now", h("b", null, "NOW"), [cfg.edition, cfg.eventTitle].filter(Boolean).join(" ")));
         const confs = h("div", "confs", confChips);
-        const left = h("div", "left", yr, cum, era, line, rels, confs);
+        const stamp = h("div", "stamp", "CLEAR!");
+        const left = h("div", "left", h("div", "yrbox", yr, stamp), cum, era, line, rels, confs);
 
         const many = Y.people.length > 20;
         const maxRepos = many ? 4 : 8;
@@ -346,6 +348,9 @@
           ctx.anim(heads[heads.length - 1], [{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: pStart });
           ctx.stagger(personEls, { delay: pStart + 150, each: 45, duration: 650, from: { opacity: 0, transform: "scale(.4)" }, easing: "cubic-bezier(.34,1.56,.64,1)" });
         }
+        // stage clear: a stamp slams onto the year
+        if (!isLast) ctx.anim(stamp, [{ opacity: 0, transform: "rotate(-12deg) scale(3)" }, { opacity: 1, transform: "rotate(-12deg) scale(1)" }], { duration: 350, delay: 8200, easing: "cubic-bezier(.2,.9,.3,1.4)" });
+        else stamp.remove();
         await ctx.wait(11000);
       },
     };
@@ -449,14 +454,14 @@
   }
 
   // ======================================================= project family
-  function familyScene(F) {
+  function familyScene(F, idx) {
     return {
       id: `family-${F.id}`, section: "projects", cls: "s-family", accent: F.color,
       async run(ctx) {
         const people = new Set();
         F.repos.forEach((r) => r.people.forEach((p) => people.add(p.login)));
         const head = h("div", "head",
-          h("div", "l", h("div", "kicker", `${F.kicker}`), h("div", "h2", F.title), h("div", "lead", F.line)),
+          h("div", "l", h("div", "kicker", `Zone ${idx + 1} · ${F.kicker}`), h("div", "h2", F.title), h("div", "lead", F.line)),
           h("div", "r", h("b", null, F.repos.length), `레포지토리 · 기여자 ${people.size}명`));
         const n = F.repos.length;
         const cols = n <= 3 ? n : n === 4 ? 2 : n <= 6 ? 3 : n <= 8 ? 4 : n <= 12 ? 4 : 5;
@@ -842,8 +847,18 @@
           h("div", "lead muted", "가장 많이 기여했거나 가장 오래 함께한 분들, 그리고 처음부터 이 길을 연 분들"));
         const grid = h("div", "cards");
         grid.style.gridTemplateColumns = `repeat(${list.length > 8 ? 6 : 4}, 1fr)`;
+        const level = (p) => 1 + Math.floor(Math.log2(p.commits + 1) * 2);
+        const xpInLevel = (p) => { const l = Math.log2(p.commits + 1) * 2; return l - Math.floor(l); };
+        const CLASS = { core: "바리스타", pioneers: "개척자", migrator: "마이그레이터", ecosystem: "탐험가", ai: "AI 연구원", community: "커뮤니티 호스트", poc: "실험가" };
+        const classOf = (p) => {
+          const top = p.repos.map((n) => M.repoBy.get(n)).filter(Boolean).sort((a, b) => ((b.people.find((q) => q.login === p.login) || {}).repoCommits || 0) - ((a.people.find((q) => q.login === p.login) || {}).repoCommits || 0))[0];
+          return top && top.family ? CLASS[top.family.id] || "바리스타" : "바리스타";
+        };
         const cards = list.map((p) => h("div", "card3d", h("div", "face",
+          h("div", "lv", `Lv.${level(p)}`),
+          h("div", "cls", classOf(p)),
           avatar(p, 108),
+          h("div", "xp", h("i", { style: { width: Math.round(xpInLevel(p) * 100) + "%" } })),
           h("div", "nm", p.koName || p.displayName),
           p.koName && p.name ? h("div", "en", p.name) : null,
           h("div", "lg", `@${p.login}`),
@@ -966,14 +981,16 @@
         const l2 = h("div", "big grad", "이제, 함께 마실 시간입니다");
         const count = hasCountdown ? h("div", "count", "--:--") : null;
         const sub = h("div", "sub", hasCountdown ? "오프닝까지" : "잠시 후 행사가 시작됩니다");
-        const title = h("div", "ttl", [cfg.edition, cfg.eventTitle].filter(Boolean).join(" "));
+        const title = h("div", "ttl", h("span", "next", "NEXT STAGE ▶ "), [cfg.edition, cfg.eventTitle].filter(Boolean).join(" "));
         const thanks = h("div", { class: "thanks", html: `<b>${M.stats.people}</b>명의 기여자, <b>${fmt(M.stats.commits)}</b>개의 커밋, <b>${M.stats.releases}</b>번의 릴리스 — 고맙습니다` });
         const faces = h("div", "faces", [...M.people].sort((a, b) => b.commits - a.commits).slice(0, 28).map((p) => avatar(p, 56)));
-        ctx.root.append(...[h("div", "float", h("div", "halo"), cup), l1, l2, sub, count, title, thanks, faces].filter(Boolean));
+        const tbc = h("div", "tbc", "TO BE CONTINUED…");
+        ctx.root.append(...[h("div", "float", h("div", "halo"), cup), l1, l2, sub, count, title, thanks, faces, tbc].filter(Boolean));
         brewCup(ctx, cup, { delay: 200, draw: 900, pour: 1300 });
         ctx.stagger([l1, l2], { delay: 1500, each: 900, duration: 1100, from: { opacity: 0, transform: "translateY(26px)", filter: "blur(8px)" }, to: { opacity: 1, transform: "none", filter: "blur(0)" } });
         ctx.stagger([sub, count, title, thanks].filter(Boolean), { delay: 3600, each: 200, duration: 900 });
         ctx.stagger(faces.children, { delay: 4300, each: 35, from: { opacity: 0, transform: "translateY(16px)" } });
+        ctx.anim(tbc, [{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: 5400 });
         await ctx.tween(14000, () => {
           if (!count) return;
           const ms = start - new Date();
@@ -990,7 +1007,7 @@
   function build(M, cfg) {
     const out = [];
     const alias = { intro: "prologue", numbers: "cup", activity: "timeline", punch: "shift" };
-    const want = (cfg.scenes || ["prologue", "cup", "timeline", "years", "menu", "shift", "families", "spotlights", "constellation", "crew", "wall", "outro"]).map((s) => alias[s] || s);
+    const want = (cfg.scenes || ["prologue", "cup", "timeline", "years", "menu", "shift", "families", "spotlights", "world", "crew", "wall", "outro"]).map((s) => alias[s] || s);
     for (const s of want) {
       if (s === "prologue") out.push(prologue(M, cfg));
       else if (s === "cup") out.push(cupNumbers(M));
@@ -998,9 +1015,10 @@
       else if (s === "years") M.years.forEach((y, i) => out.push(yearScene(y, M, cfg, i === M.years.length - 1)));
       else if (s === "menu" && M.releases.length) out.push(menu(M));
       else if (s === "shift" && M.shift) out.push(shift(M));
-      else if (s === "families") M.families.forEach((f) => out.push(familyScene(f)));
+      else if (s === "families") M.families.forEach((f, i) => out.push(familyScene(f, i)));
       else if (s === "spotlights") M.spotlights.forEach((r) => out.push(spotlight(r)));
       else if (s === "constellation") out.push(constellation(M));
+      else if (s === "world" && window.ShowWorld) out.push(window.ShowWorld.scene(M));
       else if (s === "crew" && M.crew.length) out.push(crew(M));
       else if (s === "wall") out.push(wall(M));
       else if (s === "outro") out.push(outro(M, cfg));
@@ -1010,6 +1028,7 @@
       playlist: out,
       sections: SECTIONS.filter((s) => used.has(s.id)),
       preload: [[null, "assets/org.png"], ...M.people.filter((p) => p.avatar).map((p) => [p.login, p.avatar])],
+      hudInfo: { lv: M.stats.yearsActive, xp: M.stats.commits },
     };
   }
 

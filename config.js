@@ -22,9 +22,10 @@ window.CB_CONFIG = {
   //   shift         where the work went: commit share by project family, per year
   //   families      projects by family
   //   spotlights    top contributors of a few repos
-  //   constellation the community graph growing through time
+  //   world         Cloud-Barista World: a pixel town growing through time (repos = buildings, people = residents)
+  //   constellation the community graph growing through time (alternative to "world")
   //   crew          head baristas: honored, most active and longest-serving contributors
   //   wall          every contributor
   //   outro         "the cup is ready" + countdown
-  scenes: ["prologue", "cup", "timeline", "years", "menu", "shift", "families", "spotlights", "constellation", "crew", "wall", "outro"],
+  scenes: ["prologue", "cup", "timeline", "years", "menu", "shift", "families", "spotlights", "world", "crew", "wall", "outro"],
 };
