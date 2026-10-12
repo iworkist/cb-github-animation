@@ -1,0 +1,58 @@
+# Deploys the show to GitHub Pages.
+# - push to main: deploy as-is
+# - daily schedule / manual run: refresh GitHub data first, commit it if it changed, then deploy
+name: Refresh data & deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # twice a day: if GitHub is still computing stats (the collector then fails and the site
+    # keeps its previous data), the second run gets another chance the same day
+    - cron: "0 18 * * *" # 03:00 KST
+    - cron: "0 6 * * *"  # 15:00 KST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refresh GitHub data
+        if: github.event_name != 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/collect.py
+
+      - name: Commit refreshed data
+        if: github.event_name != 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data assets
+          if git diff --cached --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "chore: refresh GitHub data"
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4

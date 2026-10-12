@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cloud-Barista Journey</title>
+  <link rel="icon" href="assets/org.png">
+  <link rel="stylesheet" href="css/show.css">
+</head>
+<body>
+  <div id="bg"><div class="blob b1"></div><div class="blob b2"></div><canvas></canvas><div class="grain"></div></div>
+  <div id="stage"><div id="hud"></div></div>
+  <div id="loading">LOADING</div>
+
+  <script src="config.js"></script>
+  <script src="data/data.js"></script>
+  <script src="data/curated.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/model.js"></script>
+  <script src="js/scenes.js"></script>
+  <script>
+    (function () {
+      if (!window.CB_GITHUB) {
+        document.getElementById("loading").textContent = "data/data.js 가 없습니다 — python3 scripts/collect.py 를 먼저 실행하세요";
+        return;
+      }
+      const model = ShowModel.build(window.CB_GITHUB, window.CB_CURATED);
+      const show = ShowScenes.build(model, window.CB_CONFIG);
+      Show.run({ cfg: window.CB_CONFIG, ...show });
+    })();
+  </script>
+</body>
+</html>
