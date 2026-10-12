@@ -5,6 +5,7 @@
     return m ? `v${m[1]}.${m[2]}` : tag;
   }
   const ym = (d) => d.slice(0, 7).replace("-", ".");
+  const ymd = (d) => d.slice(0, 10).replace(/-/g, ".");
 
   function build(G, C) {
     const hidden = new Set(C.hiddenRepos || []);
@@ -17,7 +18,10 @@
       .filter((r) => !hidden.has(r.name))
       .map((r) => {
         const cur = C.repos[r.name] || {};
-        const contributors = r.contributors.map((c) => ({ ...people.get(c.login), repoCommits: c.commits })).filter((p) => p.login);
+        const contributors = r.contributors
+          .map((c) => ({ ...people.get(c.login), repoCommits: c.commits, repoFirst: c.first, repoLast: c.last }))
+          .filter((p) => p.login);
+        const fc = r.first_commit && !r.first_commit.imported ? r.first_commit : null;
         return {
           ...r,
           title: cur.title || r.name,
@@ -26,6 +30,7 @@
           year: Number(r.created_at.slice(0, 4)),
           commits: r.contributors.reduce((s, c) => s + c.commits, 0),
           people: contributors,
+          firstCommit: fc,
         };
       });
     const repoBy = new Map(repos.map((r) => [r.name, r]));
@@ -41,6 +46,7 @@
     const allPeople = [...people.values()].sort((a, b) => a.first.localeCompare(b.first) || b.commits - a.commits);
 
     const years = [];
+    let cumPeople = 0, cumRepos = 0;
     for (let y = orgYear; y <= nowYear; y++) {
       const yrRel = releases.filter((r) => r.year === y);
       const yrRepos = repos
@@ -48,6 +54,8 @@
         .sort((a, b) => b.commits + b.stars * 20 - (a.commits + a.stars * 20));
       const yrPeople = allPeople.filter((p) => Number(p.first.slice(0, 4)) === y).sort((a, b) => b.commits - a.commits);
       const lastRel = yrRel[yrRel.length - 1];
+      cumPeople += yrPeople.length;
+      cumRepos += yrRepos.length;
       years.push({
         year: y,
         story: (C.years || {})[y] || { title: String(y), line: "" },
@@ -55,6 +63,9 @@
         conferences: (C.conferences || []).filter((c) => c.year === y),
         repos: yrRepos,
         people: yrPeople,
+        cumPeople,
+        cumRepos,
+        commits: Object.entries(G.activity || {}).reduce((s, [m, n]) => (m.startsWith(String(y)) ? s + n : s), 0),
         accent: lastRel ? lastRel.accent : "#e9b872",
       });
     }
@@ -83,12 +94,16 @@
       families,
       spotlights,
       months,
+      punch: G.punch || null,
+      firstCommit: G.first_commit || null,
       people: allPeople,
       peopleBy: people,
       stats: {
         yearsActive,
         orgSince: ym(G.org.created_at.slice(0, 10)),
+        orgCreated: G.org.created_at.slice(0, 10),
         repos: G.repos.length,
+        activeRepos: repos.filter((r) => r.people.length).length,
         people: people.size,
         commits: totalCommits,
         releases: releases.length,
@@ -99,5 +114,5 @@
     };
   }
 
-  window.ShowModel = { build, ym };
+  window.ShowModel = { build, ym, ymd };
 })();

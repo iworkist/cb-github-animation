@@ -7,6 +7,10 @@ Writes:
   assets/avatars/*      contributor avatars (so the show runs offline)
   assets/org.png        organization avatar
 
+Everything time-based (monthly activity, first/last contribution per person, first commit per
+repo, hour-of-day distribution) is derived from each repo's default-branch commit list, so the
+collector does not depend on GitHub's lazily computed statistics endpoints.
+
 Usage:
   python3 scripts/collect.py            # uses `gh auth token` or $GITHUB_TOKEN
   python3 scripts/collect.py --no-avatars
@@ -19,12 +23,13 @@ import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 ORG = "cloud-barista"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(ROOT, "data")
 AVATAR_DIR = os.path.join(ROOT, "assets", "avatars")
+KST = timezone(timedelta(hours=9))
 
 # Forks of unrelated upstream projects: their contributor lists are not Cloud-Barista people.
 EXCLUDE_CONTRIBUTORS_OF = {"cb-tumblebug-dashboard", "cloud-barista.github.com"}
@@ -45,28 +50,30 @@ def token():
 TOKEN = token()
 
 
-def api(path, retry_202=False):
+def api(path):
     url = path if path.startswith("http") else f"https://api.github.com/{path.lstrip('/')}"
     headers = {"Accept": "application/vnd.github+json", "User-Agent": "cb-opening-collector"}
     if TOKEN:
         headers["Authorization"] = f"Bearer {TOKEN}"
-    for attempt in range(12):
+    for attempt in range(8):
         req = urllib.request.Request(url, headers=headers)
         try:
             with urllib.request.urlopen(req, timeout=60) as r:
-                if r.status == 202 and retry_202:
-                    time.sleep(min(2 + attempt * 2, 15))
-                    continue
                 if r.status == 204:
                     return None, {}
                 body = r.read()
                 return (json.loads(body) if body else None), dict(r.headers)
         except urllib.error.HTTPError as e:
-            if e.code in (403, 429) and attempt < 11:
-                time.sleep(10)
+            if e.code in (403, 429, 500, 502, 503) and attempt < 7:
+                time.sleep(10 * (attempt + 1))
                 continue
             if e.code in (404, 409, 451):
                 return None, {}
+            raise
+        except (urllib.error.URLError, TimeoutError):
+            if attempt < 7:
+                time.sleep(5 * (attempt + 1))
+                continue
             raise
     return None, {}
 
@@ -92,10 +99,6 @@ def is_bot(login, typ):
             or login in {"actions-user", "github-actions"} or login in EXCLUDE_LOGINS)
 
 
-def iso_week(ts):
-    return datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d")
-
-
 def collect_repo(repo):
     name = repo["name"]
     info = {
@@ -111,66 +114,50 @@ def collect_repo(repo):
         "topics": repo.get("topics") or [],
         "html_url": repo["html_url"],
         "contributors": [],
+        "first_commit": None,
     }
     if name in EXCLUDE_CONTRIBUTORS_OF:
         return info
 
-    contribs = paged(f"repos/{ORG}/{name}/contributors")
     by_login = {}
-    for c in contribs:
+    for c in paged(f"repos/{ORG}/{name}/contributors"):
         if is_bot(c["login"], c.get("type")):
             continue
-        by_login[c["login"]] = {
-            "login": c["login"],
-            "commits": c["contributions"],
-            "first": None,
-            "last": None,
-        }
+        by_login[c["login"]] = {"login": c["login"], "commits": c["contributions"], "first": None, "last": None}
 
-    # stats/contributors gives weekly activity -> first/last contribution week per person
-    stats, _ = api(f"repos/{ORG}/{name}/stats/contributors", retry_202=True)
-    if stats is None and by_login:
-        # GitHub is still (re)computing stats, which can last a while right after a push:
-        # derive the same numbers from the commit list instead.
-        print(f"      ! {name}: GitHub stats not ready, counting from the commit list")
-        info["contributors"] = sorted(by_login.values(), key=lambda c: -c["commits"])
-        info["monthly"] = activity_from_commits(name, by_login)
-        return info
     monthly = {}
-    for s in stats or []:
-        author = s.get("author") or {}
-        login = author.get("login")
-        if not login or login not in by_login:
-            continue
-        weeks = [w for w in s.get("weeks", []) if w.get("c", 0) > 0]
-        for w in weeks:
-            month = iso_week(w["w"])[:7]
-            monthly[month] = monthly.get(month, 0) + w["c"]
-        if weeks:
-            by_login[login]["first"] = iso_week(weeks[0]["w"])
-            by_login[login]["last"] = iso_week(weeks[-1]["w"])
-
-    info["contributors"] = sorted(by_login.values(), key=lambda c: -c["commits"])
-    info["monthly"] = monthly
-    return info
-
-
-def activity_from_commits(name, by_login):
-    """Monthly commits and first/last contribution per person from the default-branch commit list.
-    Merge commits are skipped to match what stats/contributors counts."""
-    monthly = {}
+    punch = [[0] * 24 for _ in range(7)]  # [weekday Mon..Sun][hour, KST]
+    oldest = None
     for c in paged(f"repos/{ORG}/{name}/commits"):
+        date = c["commit"]["author"]["date"]  # UTC, e.g. 2019-05-13T02:51:02Z
+        if oldest is None or date < oldest["commit"]["author"]["date"]:
+            oldest = c
         if len(c.get("parents") or []) > 1:
-            continue
+            continue  # merge commits are not "work"; matches what GitHub's own graphs count
         login = (c.get("author") or {}).get("login")
         if login not in by_login:
             continue
-        day = c["commit"]["author"]["date"][:10]
+        day = date[:10]
         monthly[day[:7]] = monthly.get(day[:7], 0) + 1
         p = by_login[login]
         p["first"] = min(p["first"], day) if p["first"] else day
         p["last"] = max(p["last"], day) if p["last"] else day
-    return monthly
+        local = datetime.fromisoformat(date.replace("Z", "+00:00")).astimezone(KST)
+        punch[local.weekday()][local.hour] += 1
+
+    if oldest:
+        a = oldest.get("author") or {}
+        info["first_commit"] = {
+            "sha": oldest["sha"][:7],
+            "date": oldest["commit"]["author"]["date"],
+            "login": a.get("login"),
+            "name": oldest["commit"]["author"]["name"],
+            "message": oldest["commit"]["message"].strip().split("\n")[0][:120],
+        }
+    info["contributors"] = sorted(by_login.values(), key=lambda c: -c["commits"])
+    info["monthly"] = monthly
+    info["punch"] = punch
+    return info
 
 
 def download_avatar(login, url):
@@ -210,14 +197,17 @@ def main():
     repos.sort(key=lambda r: r["created_at"])
     print(f"      {len(repos)} repos")
 
-    print("[2/5] contributors per repo (stats may take a few retries)")
+    print("[2/5] contributors + commit history per repo")
     with ThreadPoolExecutor(max_workers=6) as ex:
         repo_infos = list(ex.map(collect_repo, repos))
-    # Drop people whose every commit predates the org: history imported from upstream templates/SDKs.
     org_since = org["created_at"][:10]
     for r in repo_infos:
+        # Drop people whose every commit predates the org: history imported from upstream templates/SDKs.
         r["contributors"] = [c for c in r["contributors"] if not c["last"] or c["last"] >= org_since]
-        print(f"      {r['name']:<28} {len(r['contributors']):>3} contributors")
+        fc = r["first_commit"]
+        if fc:
+            fc["imported"] = fc["date"][:10] < org_since or r["fork"]
+        print(f"      {r['name']:<28} {len(r['contributors']):>3} contributors  {sum(r.get('monthly', {}).values()):>5} commits")
 
     print("[3/5] releases")
     releases = [
@@ -238,7 +228,7 @@ def main():
                 if c[k]:
                     p[k] = pick(p[k], c[k]) if p[k] else c[k]
             if not p["first"]:
-                # no weekly stats (huge repos / empty stats): fall back to repo creation year
+                # only merge commits on record: fall back to the repo's creation date
                 p.setdefault("first_fallback", r["created_at"][:10])
 
     def fetch_user(login):
@@ -266,18 +256,28 @@ def main():
         if org_avatar:
             os.replace(os.path.join(ROOT, org_avatar), os.path.join(ROOT, "assets", "org" + os.path.splitext(org_avatar)[1]))
 
-    # Org-wide human commits per month (from weekly stats); before org creation = imported history.
+    # Org-wide human commits per month and per weekday/hour; before org creation = imported history.
     activity = {}
+    punch = [[0] * 24 for _ in range(7)]
     for r in repo_infos:
-        if r["name"] in EXCLUDE_CONTRIBUTORS_OF:
-            continue
         for month, n in r.pop("monthly", {}).items():
             if month >= org_since[:7]:
                 activity[month] = activity.get(month, 0) + n
+        for d, row in enumerate(r.pop("punch", [])):
+            for h, n in enumerate(row):
+                punch[d][h] += n
+
+    first_commit = None
+    for r in repo_infos:
+        fc = r["first_commit"]
+        if fc and not fc["imported"] and (first_commit is None or fc["date"] < first_commit["date"]):
+            first_commit = {**fc, "repo": r["name"]}
 
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "activity": dict(sorted(activity.items())),
+        "punch": punch,
+        "first_commit": first_commit,
         "org": {
             "login": ORG,
             "name": org.get("name"),

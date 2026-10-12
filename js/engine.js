@@ -1,20 +1,23 @@
-// Show engine: stage scaling, a pausable show clock, scene contexts, playlist runner, HUD, background.
+// Show engine: stage scaling, a pausable show clock, scene contexts, playlist runner with a
+// liquid wipe between scenes, HUD, ambient background.
 (function () {
   const STAGE_W = 1920;
   const STAGE_H = 1080;
+  const WAVE_H = 140; // height of the wipe's wavy edges
 
   class Aborted extends Error {
     constructor() { super("aborted"); this.name = "Aborted"; }
   }
 
   // ---------- show clock (pausable, speed-scaled) ----------
-  const clock = { t: 0, last: performance.now(), paused: false, speed: 1, timers: new Set(), tweens: new Set() };
+  const clock = { t: 0, last: performance.now(), paused: false, speed: 1, timers: new Set(), tweens: new Set(), frames: new Set() };
 
   function frame(now) {
     const dt = Math.min(now - clock.last, 100);
     clock.last = now;
     if (!clock.paused) {
-      clock.t += dt * clock.speed;
+      const step = dt * clock.speed;
+      clock.t += step;
       for (const tm of [...clock.timers]) {
         if (clock.t >= tm.at) { clock.timers.delete(tm); tm.resolve(); }
       }
@@ -23,6 +26,7 @@
         tw.fn(tw.ease(p), p);
         if (p >= 1) { clock.tweens.delete(tw); tw.resolve(); }
       }
+      for (const fr of [...clock.frames]) fr(step);
     }
     requestAnimationFrame(frame);
   }
@@ -33,6 +37,7 @@
     out: (t) => 1 - Math.pow(1 - t, 3),
     outExpo: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
     inOut: (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+    in: (t) => t * t * t,
   };
   const EASE_OUT = "cubic-bezier(0.16, 1, 0.3, 1)";
 
@@ -61,6 +66,12 @@
           pending.add(tw);
         });
       },
+      // Per-frame callback (argument: show-time ms since the last frame); stops with the scene.
+      everyFrame(fn) {
+        clock.frames.add(fn);
+        pending.add({ frame: fn, reject() {} });
+        return () => clock.frames.delete(fn);
+      },
       // Web Animation scaled to show speed; starts after `delay` ms of show time.
       anim(el, keyframes, opts = {}) {
         if (!el) return null;
@@ -88,9 +99,17 @@
       countUp(el, to, ms = 1600, fmt = (v) => Math.round(v).toLocaleString("en-US")) {
         return ctx.tween(ms, (p) => { el.textContent = fmt(to * p); }, ease.outExpo);
       },
+      // Types text into an element character by character.
+      type(el, text, cps = 28) {
+        return ctx.tween((text.length / cps) * 1000, (p) => { el.textContent = text.slice(0, Math.round(p * text.length)); }, ease.linear);
+      },
       abort() {
         ctx.aborted = true;
-        for (const p of pending) { clock.timers.delete(p); clock.tweens.delete(p); p.reject(new Aborted()); }
+        for (const p of pending) {
+          clock.timers.delete(p); clock.tweens.delete(p);
+          if (p.frame) clock.frames.delete(p.frame);
+          p.reject(new Aborted());
+        }
         pending.clear();
       },
     };
@@ -135,6 +154,9 @@
     return el;
   }
 
+  // Preloaded avatar images by login, for canvas scenes.
+  const images = new Map();
+
   // Coffee mug (kind=coffee) or tea cup (kind=tea), liquid colored, with animated steam.
   function cupSVG(liquid, kind = "coffee", { steam = true, stroke = "#f6ede3" } = {}) {
     const s = steam
@@ -153,14 +175,17 @@
     return `<svg class="cup" viewBox="0 0 64 64" aria-hidden="true">${s}${body}</svg>`;
   }
 
-  // Large hero illustration: a cup whose steam becomes a cloud.
+  // Large hero illustration: a cup whose steam becomes a cloud. The liquid is a separate layer
+  // (.pour) so scenes can fill it: translateY(100px) = empty, translateY(0) = full.
   let uidN = 0;
-  function heroCupSVG() {
+  function heroCupSVG({ level = 1 } = {}) {
     const id = "hc" + (++uidN);
+    const body = "M72 166h158v58c0 24-19 42-42 42h-74c-23 0-42-18-42-42z";
     return `<svg class="cup hero" viewBox="0 0 300 300" aria-hidden="true">
       <defs>
         <linearGradient id="${id}l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98a52"/><stop offset="1" stop-color="#5a321c"/></linearGradient>
         <linearGradient id="${id}c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bfe3ff"/><stop offset="1" stop-color="#7cc4ff"/></linearGradient>
+        <clipPath id="${id}k"><path d="${body}"/></clipPath>
       </defs>
       <path class="cloud" d="M96 112c-18 0-30-12-30-27 0-14 11-26 26-27 5-19 22-32 42-32 18 0 33 10 40 26 3-1 7-2 11-2 19 0 34 15 34 33 0 16-13 29-30 29z"
         fill="none" stroke="url(#${id}c)" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
@@ -168,9 +193,26 @@
         <path d="M120 150c-8-10 8-14 0-26"/><path d="M150 150c-8-10 8-14 0-26"/><path d="M180 150c-8-10 8-14 0-26"/>
       </g>
       <path class="handle" d="M228 182h10a22 22 0 0 1 0 44h-12" fill="none" stroke="#f6ede3" stroke-width="8" stroke-linecap="round"/>
-      <path class="body" d="M72 166h158v58c0 24-19 42-42 42h-74c-23 0-42-18-42-42z" fill="url(#${id}l)" stroke="#f6ede3" stroke-width="8" stroke-linejoin="round"/>
-      <path class="crema" d="M80 178h142" stroke="#e9b872" stroke-width="6" stroke-linecap="round"/>
+      <g clip-path="url(#${id}k)">
+        <g class="pour" style="transform: translateY(${Math.round((1 - level) * 100)}px)">
+          <rect x="60" y="166" width="180" height="120" fill="url(#${id}l)"/>
+          <rect class="crema" x="60" y="166" width="180" height="7" fill="#e9b872"/>
+        </g>
+      </g>
+      <path class="body" d="${body}" fill="none" stroke="#f6ede3" stroke-width="8" stroke-linejoin="round"/>
       <path class="saucer" d="M48 284h206" stroke="#f6ede3" stroke-width="8" stroke-linecap="round"/>
+    </svg>`;
+  }
+
+  // A coffee bean.
+  function beanSVG() {
+    const id = "bean" + (++uidN);
+    return `<svg class="bean" viewBox="0 0 64 64" aria-hidden="true">
+      <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9a6a3f"/><stop offset="1" stop-color="#3a1d0e"/></linearGradient></defs>
+      <g transform="rotate(-30 32 32)">
+        <ellipse cx="32" cy="32" rx="16" ry="24" fill="url(#${id})" stroke="#e9b872" stroke-width="2"/>
+        <path d="M32 10c-8 10 8 16 0 26s8 16 0 18" fill="none" stroke="#1a0f08" stroke-width="3.5" stroke-linecap="round"/>
+      </g>
     </svg>`;
   }
 
@@ -181,9 +223,10 @@
   }
 
   // ---------- stage scaling ----------
+  let stageScale = 1;
   function fitStage(stage) {
-    const s = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H);
-    stage.style.transform = `translate(${-STAGE_W * s / 2}px, ${-STAGE_H * s / 2}px) scale(${s})`;
+    stageScale = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H);
+    stage.style.transform = `translate(${-STAGE_W * stageScale / 2}px, ${-STAGE_H * stageScale / 2}px) scale(${stageScale})`;
   }
 
   // ---------- background: slow rising "steam" particles ----------
@@ -234,15 +277,43 @@
     requestAnimationFrame(draw);
   }
 
+  // ---------- liquid wipe between scenes ----------
+  // A tall overlay (wave, body, inverted wave) that rises through the stage: the first half
+  // covers the old scene, the second half reveals the new one.
+  function makeWipe(stage) {
+    const wave = (flip) => `<svg class="wave${flip ? " flip" : ""}" viewBox="0 0 1920 ${WAVE_H}" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 ${WAVE_H}V70C160 20 320 20 480 70S800 120 960 70 1280 20 1440 70 1760 120 1920 70V${WAVE_H}z"/>
+      <path class="foam" d="M0 70C160 20 320 20 480 70S800 120 960 70 1280 20 1440 70 1760 120 1920 70" fill="none"/>
+    </svg>`;
+    const el = frag(`<div id="wipe">${wave(false)}<div class="body"></div>${wave(true)}</div>`);
+    el.style.transform = `translateY(${STAGE_H}px)`;
+    stage.append(el);
+    const run = (from, to, ms, easing) => new Promise((res) => {
+      const a = el.animate([{ transform: `translateY(${from}px)` }, { transform: `translateY(${to}px)` }], { duration: ms / clock.speed, easing, fill: "forwards" });
+      a.onfinish = () => { el.style.transform = `translateY(${to}px)`; a.cancel(); res(); };
+    });
+    return {
+      cover: () => run(STAGE_H, -WAVE_H, 620, "cubic-bezier(.55,.05,.8,.3)"),
+      uncover: () => run(-WAVE_H, -(STAGE_H + 2 * WAVE_H), 700, "cubic-bezier(.2,.7,.2,1)"),
+    };
+  }
+
   // ---------- HUD ----------
   function makeHud(cfg, sections) {
     const hud = document.getElementById("hud");
     const secEls = sections.map((s) => h("span", { "data-id": s.id }, s.label));
     const clockEl = h("div", "clock");
+    const cup = frag(`<svg class="hudcup" viewBox="0 0 64 64" aria-hidden="true">
+      <defs><clipPath id="hudcup-k"><path d="M14 22h31v19c0 7-5 12-12 12h-7c-7 0-12-5-12-12z"/></clipPath></defs>
+      <path d="M45 28h3a7 7 0 0 1 0 14h-3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <g clip-path="url(#hudcup-k)"><rect class="lq" x="10" y="22" width="40" height="40" style="transform:translateY(40px)"/></g>
+      <path d="M14 22h31v19c0 7-5 12-12 12h-7c-7 0-12-5-12-12z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M10 58h44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>`);
     hud.append(
       h("div", "brand", h("img", { src: "assets/org.png", alt: "" }), h("span", null, cfg.eventTitle), cfg.edition ? h("span", "sub", cfg.edition) : null),
       h("div", "sections", secEls),
       h("span", "paused", "PAUSED"),
+      cup,
       clockEl,
     );
     if (!cfg.showHud) hud.classList.add("hidden");
@@ -271,13 +342,20 @@
         secEls.forEach((e) => e.classList.toggle("on", e.dataset.id === id));
         if (accent) hud.style.setProperty("--accent", accent);
       },
+      // the little cup fills as the show progresses
+      setProgress(p) { cup.querySelector(".lq").style.transform = `translateY(${Math.round((1 - p) * 40)}px)`; },
       toggle() { hud.classList.toggle("hidden"); },
       setPaused(p) { hud.classList.toggle("is-paused", p); },
     };
   }
 
-  function preloadImages(urls, timeoutMs = 6000) {
-    const loads = urls.map((u) => new Promise((res) => { const i = new Image(); i.onload = i.onerror = res; i.src = u; }));
+  function preloadImages(entries, timeoutMs = 8000) {
+    const loads = entries.map(([key, url]) => new Promise((res) => {
+      const i = new Image();
+      i.onload = () => { if (key) images.set(key, i); res(); };
+      i.onerror = res;
+      i.src = url;
+    }));
     return Promise.race([Promise.all(loads), new Promise((r) => setTimeout(r, timeoutMs))]);
   }
 
@@ -299,6 +377,7 @@
     setTimeout(() => loading.remove(), 700);
 
     const hud = makeHud(cfg, sections);
+    const wipe = makeWipe(stage);
     let index = 0;
     const startId = params.get("scene");
     if (startId) index = Math.max(0, playlist.findIndex((p) => p.id === startId || p.id.startsWith(startId)));
@@ -339,6 +418,7 @@
     });
     document.body.classList.add("idle");
 
+    let first = true;
     for (;;) {
       const item = playlist[index];
       const root = h("section", `scene ${item.cls || ""}`);
@@ -349,20 +429,22 @@
       stage.insertBefore(root, document.getElementById("hud"));
       const ctx = makeCtx(root);
       current = { ctx, index };
+      hud.setSection(item.section, item.accent || "var(--crema)");
+      hud.setProgress((index + 1) / playlist.length);
       // ?freeze=ms pauses the show at that moment of the scene (for screenshots / rehearsal)
       if (freezeAt != null) ctx.wait(freezeAt).then(() => { setPaused(true); hud.setPaused(false); }, () => {});
-      hud.setSection(item.section, item.accent || "var(--crema)");
+      if (!first) wipe.uncover();
+      first = false;
       let failed = false;
       try {
         await item.run(ctx);
       } catch (err) {
         if (!(err instanceof Aborted)) { console.error(`[show] scene ${item.id} failed`, err); failed = true; }
       }
-      ctx.aborted = true;
-      // crossfade out while the next scene builds in
-      const out = root.animate([{ opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)" }], { duration: 700, easing: "ease-in", fill: "forwards" });
-      out.finished.then(() => root.remove(), () => root.remove());
+      ctx.abort();
       if (failed) await new Promise((r) => setTimeout(r, 800));
+      await wipe.cover();
+      root.remove();
 
       if (jumpTo != null) { index = jumpTo; jumpTo = null; }
       else {
@@ -370,7 +452,8 @@
         if (once && index === 0) break;
       }
     }
+    wipe.uncover();
   }
 
-  window.Show = { run, h, avatar, cupSVG, heroCupSVG, frag, ease, Aborted, clock };
+  window.Show = { run, h, avatar, images, cupSVG, heroCupSVG, beanSVG, frag, ease, Aborted, clock, stageScale: () => stageScale };
 })();

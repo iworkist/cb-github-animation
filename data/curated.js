@@ -92,7 +92,7 @@ window.CB_CURATED = {
   ],
 
   // Deep-dive scenes with a top-contributor chart.
-  spotlights: ["cb-tumblebug", "cb-spider", "cm-beetle"],
+  spotlights: ["cb-spider", "cb-tumblebug", "cm-beetle"],
 
   // Never shown (forks of unrelated projects / org plumbing).
   hiddenRepos: [".github", "cb-tumblebug-dashboard", "cloud-barista.github.com"],

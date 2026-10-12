@@ -1,97 +1,289 @@
 {
- "generated_at": "2026-10-12T13:12:47+00:00",
+ "generated_at": "2026-10-12T13:22:49+00:00",
  "activity": {
-  "2019-03": 5,
-  "2019-04": 1,
+  "2019-04": 6,
   "2019-05": 12,
-  "2019-06": 40,
+  "2019-06": 39,
   "2019-07": 13,
-  "2019-08": 86,
-  "2019-09": 122,
-  "2019-10": 211,
-  "2019-11": 200,
-  "2019-12": 55,
-  "2020-01": 169,
+  "2019-08": 87,
+  "2019-09": 116,
+  "2019-10": 212,
+  "2019-11": 205,
+  "2019-12": 50,
+  "2020-01": 174,
   "2020-02": 39,
-  "2020-03": 54,
-  "2020-04": 77,
-  "2020-05": 457,
-  "2020-06": 184,
-  "2020-07": 85,
-  "2020-08": 89,
-  "2020-09": 53,
-  "2020-10": 124,
-  "2020-11": 264,
-  "2020-12": 110,
-  "2021-01": 82,
-  "2021-02": 116,
-  "2021-03": 132,
-  "2021-04": 225,
-  "2021-05": 373,
-  "2021-06": 442,
-  "2021-07": 77,
-  "2021-08": 218,
+  "2020-03": 51,
+  "2020-04": 80,
+  "2020-05": 299,
+  "2020-06": 321,
+  "2020-07": 108,
+  "2020-08": 81,
+  "2020-09": 61,
+  "2020-10": 121,
+  "2020-11": 209,
+  "2020-12": 165,
+  "2021-01": 64,
+  "2021-02": 99,
+  "2021-03": 142,
+  "2021-04": 238,
+  "2021-05": 311,
+  "2021-06": 499,
+  "2021-07": 81,
+  "2021-08": 199,
   "2021-09": 235,
-  "2021-10": 353,
-  "2021-11": 301,
-  "2021-12": 81,
-  "2022-01": 77,
-  "2022-02": 58,
-  "2022-03": 92,
-  "2022-04": 123,
-  "2022-05": 218,
-  "2022-06": 135,
+  "2021-10": 274,
+  "2021-11": 371,
+  "2021-12": 96,
+  "2022-01": 75,
+  "2022-02": 51,
+  "2022-03": 96,
+  "2022-04": 124,
+  "2022-05": 198,
+  "2022-06": 140,
   "2022-07": 100,
-  "2022-08": 140,
-  "2022-09": 169,
-  "2022-10": 358,
-  "2022-11": 201,
-  "2022-12": 98,
+  "2022-08": 129,
+  "2022-09": 190,
+  "2022-10": 262,
+  "2022-11": 268,
+  "2022-12": 116,
   "2023-01": 10,
   "2023-02": 13,
   "2023-03": 11,
-  "2023-04": 8,
-  "2023-05": 3,
-  "2023-07": 27,
-  "2023-08": 28,
+  "2023-04": 6,
+  "2023-05": 5,
+  "2023-07": 10,
+  "2023-08": 45,
   "2023-09": 114,
-  "2023-10": 162,
-  "2023-11": 263,
-  "2023-12": 283,
-  "2024-01": 151,
-  "2024-02": 204,
-  "2024-03": 225,
-  "2024-04": 197,
-  "2024-05": 306,
-  "2024-06": 322,
-  "2024-07": 246,
-  "2024-08": 380,
-  "2024-09": 509,
-  "2024-10": 381,
-  "2024-11": 279,
-  "2024-12": 128,
-  "2025-01": 66,
+  "2023-10": 134,
+  "2023-11": 282,
+  "2023-12": 230,
+  "2024-01": 203,
+  "2024-02": 214,
+  "2024-03": 150,
+  "2024-04": 232,
+  "2024-05": 346,
+  "2024-06": 228,
+  "2024-07": 329,
+  "2024-08": 391,
+  "2024-09": 433,
+  "2024-10": 433,
+  "2024-11": 302,
+  "2024-12": 121,
+  "2025-01": 73,
   "2025-02": 163,
-  "2025-03": 97,
+  "2025-03": 91,
   "2025-04": 47,
-  "2025-05": 59,
-  "2025-06": 154,
+  "2025-05": 63,
+  "2025-06": 134,
   "2025-07": 154,
-  "2025-08": 412,
-  "2025-09": 312,
-  "2025-10": 241,
-  "2025-11": 214,
-  "2025-12": 117,
-  "2026-01": 119,
-  "2026-02": 102,
-  "2026-03": 240,
-  "2026-04": 202,
-  "2026-05": 185,
-  "2026-06": 249,
-  "2026-07": 338,
-  "2026-08": 397,
-  "2026-09": 193,
-  "2026-10": 57
+  "2025-08": 373,
+  "2025-09": 340,
+  "2025-10": 254,
+  "2025-11": 183,
+  "2025-12": 155,
+  "2026-01": 122,
+  "2026-02": 106,
+  "2026-03": 202,
+  "2026-04": 225,
+  "2026-05": 129,
+  "2026-06": 272,
+  "2026-07": 364,
+  "2026-08": 366,
+  "2026-09": 176,
+  "2026-10": 109
+ },
+ "punch": [
+  [
+   53,
+   48,
+   22,
+   35,
+   8,
+   15,
+   3,
+   8,
+   24,
+   78,
+   156,
+   188,
+   70,
+   145,
+   237,
+   254,
+   277,
+   291,
+   228,
+   162,
+   167,
+   125,
+   141,
+   83
+  ],
+  [
+   43,
+   40,
+   37,
+   25,
+   20,
+   5,
+   2,
+   5,
+   23,
+   85,
+   177,
+   219,
+   85,
+   173,
+   247,
+   261,
+   269,
+   316,
+   197,
+   158,
+   177,
+   151,
+   166,
+   88
+  ],
+  [
+   73,
+   47,
+   37,
+   32,
+   35,
+   28,
+   14,
+   3,
+   32,
+   79,
+   148,
+   177,
+   77,
+   133,
+   208,
+   256,
+   245,
+   270,
+   216,
+   186,
+   137,
+   155,
+   142,
+   45
+  ],
+  [
+   52,
+   64,
+   50,
+   37,
+   38,
+   4,
+   4,
+   16,
+   15,
+   106,
+   177,
+   188,
+   107,
+   142,
+   261,
+   251,
+   292,
+   297,
+   242,
+   176,
+   145,
+   125,
+   132,
+   87
+  ],
+  [
+   53,
+   41,
+   31,
+   29,
+   13,
+   6,
+   9,
+   6,
+   26,
+   87,
+   145,
+   206,
+   80,
+   149,
+   232,
+   257,
+   234,
+   305,
+   209,
+   144,
+   114,
+   88,
+   95,
+   81
+  ],
+  [
+   53,
+   35,
+   12,
+   20,
+   23,
+   12,
+   21,
+   8,
+   11,
+   19,
+   18,
+   14,
+   13,
+   13,
+   11,
+   16,
+   19,
+   20,
+   37,
+   35,
+   26,
+   18,
+   16,
+   16
+  ],
+  [
+   26,
+   17,
+   12,
+   13,
+   13,
+   3,
+   9,
+   2,
+   8,
+   10,
+   9,
+   18,
+   14,
+   26,
+   24,
+   31,
+   33,
+   46,
+   14,
+   30,
+   36,
+   13,
+   25,
+   31
+  ]
+ ],
+ "first_commit": {
+  "sha": "c54795d",
+  "date": "2019-05-13T02:51:02Z",
+  "login": "powerkimhub",
+  "name": "ByoungSeob Kim",
+  "message": "Initial commit",
+  "imported": false,
+  "repo": "poc-farmoni"
  },
  "org": {
   "login": "cloud-barista",
@@ -180,7 +372,8 @@
    "language": "HTML",
    "topics": [],
    "html_url": "https://github.com/cloud-barista/cloud-barista.github.com",
-   "contributors": []
+   "contributors": [],
+   "first_commit": null
   },
   {
    "name": "poc-farmoni",
@@ -207,22 +400,30 @@
     {
      "login": "powerkimhub",
      "commits": 26,
-     "first": "2019-05-12",
-     "last": "2019-06-30"
+     "first": "2019-05-13",
+     "last": "2019-07-01"
     },
     {
      "login": "seokho-son",
      "commits": 14,
-     "first": "2019-05-19",
-     "last": "2019-11-10"
+     "first": "2019-05-24",
+     "last": "2019-11-13"
     },
     {
      "login": "jihoon-seo",
      "commits": 6,
-     "first": "2019-05-19",
-     "last": "2019-06-23"
+     "first": "2019-05-22",
+     "last": "2019-06-27"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "c54795d",
+    "date": "2019-05-13T02:51:02Z",
+    "login": "powerkimhub",
+    "name": "ByoungSeob Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "docs",
@@ -240,64 +441,72 @@
     {
      "login": "innodreamer",
      "commits": 203,
-     "first": "2019-10-06",
-     "last": "2025-08-03"
+     "first": "2019-10-08",
+     "last": "2025-08-04"
     },
     {
      "login": "powerkimhub",
      "commits": 60,
-     "first": "2019-06-02",
-     "last": "2023-12-17"
+     "first": "2019-06-03",
+     "last": "2023-12-18"
     },
     {
      "login": "yunkon-kim",
      "commits": 20,
-     "first": "2021-06-27",
-     "last": "2023-12-31"
+     "first": "2021-06-28",
+     "last": "2024-01-05"
     },
     {
      "login": "seokho-son",
      "commits": 19,
-     "first": "2019-11-03",
-     "last": "2024-07-07"
+     "first": "2019-11-08",
+     "last": "2024-07-09"
     },
     {
      "login": "dongjae",
      "commits": 18,
-     "first": "2019-11-24",
-     "last": "2019-12-22"
+     "first": "2019-11-28",
+     "last": "2019-12-27"
     },
     {
      "login": "jihoon-seo",
      "commits": 15,
-     "first": "2019-10-06",
-     "last": "2022-11-20"
+     "first": "2019-10-11",
+     "last": "2022-11-25"
     },
     {
      "login": "sykim-etri",
      "commits": 11,
-     "first": "2020-08-16",
-     "last": "2023-03-12"
+     "first": "2020-08-21",
+     "last": "2023-03-17"
     },
     {
      "login": "jmleefree",
      "commits": 2,
-     "first": "2020-10-11",
-     "last": "2020-10-25"
+     "first": "2020-10-14",
+     "last": "2020-10-27"
     },
     {
      "login": "hermitkim1",
      "commits": 1,
-     "first": "2020-10-18",
-     "last": "2020-10-18"
+     "first": "2020-10-20",
+     "last": "2020-10-20"
     },
     {
      "login": "dev-secloudit",
      "commits": 1,
-     "first": "2019-10-06",
-     "last": "2019-10-06"
+     "first": "2019-10-10",
+     "last": "2019-10-10"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "cf1cb7f",
+    "date": "2019-06-03T07:49:32Z",
+    "login": "powerkimhub",
+    "name": "ByoungSeob Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "poc-cb-spider",
@@ -322,28 +531,36 @@
     {
      "login": "jaesung-yoo",
      "commits": 56,
-     "first": "2019-07-07",
-     "last": "2019-10-06"
+     "first": "2019-07-12",
+     "last": "2019-10-08"
     },
     {
      "login": "powerkimhub",
      "commits": 45,
-     "first": "2019-06-02",
-     "last": "2019-11-24"
+     "first": "2019-06-03",
+     "last": "2019-11-25"
     },
     {
      "login": "movey1",
      "commits": 26,
-     "first": "2019-08-04",
-     "last": "2019-09-08"
+     "first": "2019-08-08",
+     "last": "2019-09-11"
     },
     {
      "login": "cns-innogrid",
      "commits": 11,
-     "first": "2019-07-28",
-     "last": "2019-08-18"
+     "first": "2019-07-29",
+     "last": "2019-08-23"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "bf3f9f6",
+    "date": "2019-06-03T12:10:43Z",
+    "login": "powerkimhub",
+    "name": "ByoungSeob Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "poc-mcism",
@@ -361,14 +578,14 @@
     {
      "login": "seokho-son",
      "commits": 42,
-     "first": "2019-09-01",
-     "last": "2019-10-27"
+     "first": "2019-09-03",
+     "last": "2019-10-29"
     },
     {
      "login": "jihoon-seo",
      "commits": 4,
-     "first": "2019-06-16",
-     "last": "2019-09-15"
+     "first": "2019-06-18",
+     "last": "2019-09-20"
     },
     {
      "login": "powerkimhub",
@@ -376,7 +593,15 @@
      "first": null,
      "last": null
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "da969b8",
+    "date": "2019-06-18T01:56:39Z",
+    "login": "jihoon-seo",
+    "name": "Jihoon Seo",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-log",
@@ -403,44 +628,44 @@
     {
      "login": "powerkimhub",
      "commits": 74,
-     "first": "2019-08-11",
-     "last": "2026-03-15"
+     "first": "2019-08-14",
+     "last": "2026-03-20"
     },
     {
      "login": "jihoon-seo",
      "commits": 11,
-     "first": "2020-05-31",
-     "last": "2022-08-28"
+     "first": "2020-06-04",
+     "last": "2022-08-31"
     },
     {
      "login": "yunkon-kim",
      "commits": 6,
-     "first": "2020-12-20",
-     "last": "2022-08-21"
+     "first": "2020-12-24",
+     "last": "2022-08-22"
     },
     {
      "login": "ccambo",
      "commits": 4,
-     "first": "2020-09-27",
-     "last": "2020-10-04"
+     "first": "2020-09-29",
+     "last": "2020-10-06"
     },
     {
      "login": "seokho-son",
      "commits": 4,
-     "first": "2021-01-17",
-     "last": "2021-03-14"
+     "first": "2021-02-14",
+     "last": "2021-03-17"
     },
     {
      "login": "hermitkim1",
      "commits": 2,
-     "first": "2020-12-20",
-     "last": "2021-01-17"
+     "first": "2020-12-23",
+     "last": "2021-01-22"
     },
     {
      "login": "yoonjiOh",
      "commits": 2,
-     "first": "2020-10-18",
-     "last": "2020-10-25"
+     "first": "2020-10-22",
+     "last": "2020-10-26"
     },
     {
      "login": "chloe-codes1",
@@ -451,10 +676,18 @@
     {
      "login": "engineer-pjin",
      "commits": 1,
-     "first": "2020-09-06",
-     "last": "2020-09-06"
+     "first": "2020-09-11",
+     "last": "2020-09-11"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "d57c377",
+    "date": "2019-08-14T11:32:39Z",
+    "login": "powerkimhub",
+    "name": "ByoungSeob Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-store",
@@ -481,34 +714,42 @@
     {
      "login": "powerkimhub",
      "commits": 105,
-     "first": "2019-08-18",
-     "last": "2024-12-15"
+     "first": "2019-08-22",
+     "last": "2024-12-19"
     },
     {
      "login": "jihoon-seo",
      "commits": 19,
-     "first": "2019-09-15",
-     "last": "2022-08-28"
+     "first": "2019-09-17",
+     "last": "2022-08-31"
     },
     {
      "login": "ccambo",
      "commits": 7,
-     "first": "2020-09-27",
-     "last": "2020-10-11"
+     "first": "2020-09-29",
+     "last": "2020-10-14"
     },
     {
      "login": "seokho-son",
      "commits": 5,
-     "first": "2019-12-29",
-     "last": "2021-03-14"
+     "first": "2020-01-03",
+     "last": "2021-03-17"
     },
     {
      "login": "Jin-Whee-Park",
      "commits": 1,
-     "first": "2020-03-22",
-     "last": "2020-03-22"
+     "first": "2020-03-24",
+     "last": "2020-03-24"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "a69fd98",
+    "date": "2019-08-22T12:57:43Z",
+    "login": "powerkimhub",
+    "name": "ByoungSeob Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-tumblebug",
@@ -543,212 +784,212 @@
     {
      "login": "seokho-son",
      "commits": 2805,
-     "first": "2019-09-01",
-     "last": "2026-10-04"
+     "first": "2019-09-03",
+     "last": "2026-10-08"
     },
     {
      "login": "jihoon-seo",
      "commits": 575,
-     "first": "2019-06-16",
-     "last": "2022-12-04"
+     "first": "2019-06-18",
+     "last": "2022-11-10"
     },
     {
      "login": "yunkon-kim",
      "commits": 291,
-     "first": "2021-01-03",
-     "last": "2026-10-11"
+     "first": "2021-01-06",
+     "last": "2026-10-12"
     },
     {
      "login": "sykim-etri",
      "commits": 74,
-     "first": "2024-01-14",
-     "last": "2025-05-11"
+     "first": "2024-01-17",
+     "last": "2025-05-14"
     },
     {
      "login": "leehyeoklee",
      "commits": 52,
-     "first": "2026-01-04",
-     "last": "2026-06-14"
+     "first": "2026-01-05",
+     "last": "2026-06-20"
     },
     {
      "login": "hanizang77",
      "commits": 42,
-     "first": "2025-01-19",
-     "last": "2026-10-04"
+     "first": "2025-01-23",
+     "last": "2026-10-06"
     },
     {
      "login": "jmleefree",
      "commits": 25,
-     "first": "2020-07-26",
-     "last": "2021-08-08"
+     "first": "2020-07-31",
+     "last": "2021-08-11"
     },
     {
      "login": "ChobobDev",
      "commits": 11,
-     "first": "2021-09-12",
-     "last": "2021-10-10"
+     "first": "2021-09-17",
+     "last": "2021-10-11"
     },
     {
      "login": "hermitkim1",
      "commits": 8,
-     "first": "2021-01-24",
-     "last": "2021-11-21"
+     "first": "2021-01-28",
+     "last": "2021-11-25"
     },
     {
      "login": "computerphilosopher",
      "commits": 7,
-     "first": "2021-08-22",
-     "last": "2021-11-28"
+     "first": "2021-08-21",
+     "last": "2021-12-03"
     },
     {
      "login": "atg0831",
      "commits": 6,
-     "first": "2021-08-29",
-     "last": "2021-11-28"
+     "first": "2021-08-30",
+     "last": "2021-12-02"
     },
     {
      "login": "jangh-lee",
      "commits": 4,
-     "first": "2021-08-15",
-     "last": "2021-09-26"
+     "first": "2021-08-19",
+     "last": "2021-09-28"
     },
     {
      "login": "innodreamer",
      "commits": 4,
-     "first": "2024-06-02",
-     "last": "2024-06-02"
+     "first": "2024-06-03",
+     "last": "2024-06-07"
     },
     {
      "login": "sypark9646",
      "commits": 4,
      "first": "2021-09-26",
-     "last": "2021-10-17"
+     "last": "2021-10-18"
     },
     {
      "login": "limsg1234",
      "commits": 3,
-     "first": "2021-08-08",
+     "first": "2021-08-11",
      "last": "2021-10-31"
     },
     {
      "login": "Rohit-R2000",
      "commits": 3,
-     "first": "2022-10-16",
-     "last": "2022-10-23"
+     "first": "2022-10-19",
+     "last": "2022-10-26"
     },
     {
      "login": "HassanAlsamahi",
      "commits": 3,
-     "first": "2021-09-05",
-     "last": "2021-09-05"
+     "first": "2021-09-06",
+     "last": "2021-09-11"
     },
     {
      "login": "cat-taesik",
      "commits": 3,
-     "first": "2020-09-06",
-     "last": "2020-09-06"
+     "first": "2020-09-11",
+     "last": "2020-09-11"
     },
     {
      "login": "powerkimhub",
      "commits": 3,
-     "first": "2019-11-03",
-     "last": "2019-11-03"
+     "first": "2019-11-07",
+     "last": "2019-11-07"
     },
     {
      "login": "leedohun",
      "commits": 3,
-     "first": "2021-08-15",
-     "last": "2021-10-10"
+     "first": "2021-08-20",
+     "last": "2021-10-14"
     },
     {
      "login": "abdrd",
      "commits": 2,
-     "first": "2021-09-19",
-     "last": "2021-09-26"
+     "first": "2021-09-25",
+     "last": "2021-09-28"
     },
     {
      "login": "Jayita10",
      "commits": 2,
-     "first": "2021-09-26",
-     "last": "2021-09-26"
+     "first": "2021-09-27",
+     "last": "2021-09-28"
     },
     {
      "login": "Modney",
      "commits": 2,
-     "first": "2021-08-29",
+     "first": "2021-08-30",
      "last": "2021-09-26"
     },
     {
      "login": "PARKINHYO",
      "commits": 2,
      "first": "2021-09-12",
-     "last": "2021-09-19"
+     "last": "2021-09-23"
     },
     {
      "login": "ShehzadAhm",
      "commits": 1,
-     "first": "2024-09-29",
-     "last": "2024-09-29"
+     "first": "2024-10-02",
+     "last": "2024-10-02"
     },
     {
      "login": "Stuie",
      "commits": 1,
-     "first": "2021-10-17",
-     "last": "2021-10-17"
+     "first": "2021-10-24",
+     "last": "2021-10-24"
     },
     {
      "login": "tharun634",
      "commits": 1,
-     "first": "2024-09-29",
-     "last": "2024-09-29"
+     "first": "2024-10-02",
+     "last": "2024-10-02"
     },
     {
      "login": "polkabunny",
      "commits": 1,
-     "first": "2021-10-24",
-     "last": "2021-10-24"
+     "first": "2021-10-28",
+     "last": "2021-10-28"
     },
     {
      "login": "arshad-k7",
      "commits": 1,
-     "first": "2022-10-16",
-     "last": "2022-10-16"
+     "first": "2022-10-21",
+     "last": "2022-10-21"
     },
     {
      "login": "bconfiden2",
      "commits": 1,
-     "first": "2022-09-04",
-     "last": "2022-09-04"
+     "first": "2022-09-08",
+     "last": "2022-09-08"
     },
     {
      "login": "Georgefifth",
      "commits": 1,
-     "first": "2026-08-23",
-     "last": "2026-08-23"
+     "first": "2026-08-24",
+     "last": "2026-08-24"
     },
     {
      "login": "yh-noh",
      "commits": 1,
-     "first": "2026-09-13",
-     "last": "2026-09-13"
+     "first": "2026-09-14",
+     "last": "2026-09-14"
     },
     {
      "login": "MukulKolpe",
      "commits": 1,
-     "first": "2021-09-26",
-     "last": "2021-09-26"
+     "first": "2021-09-28",
+     "last": "2021-09-28"
     },
     {
      "login": "MohitKambli",
      "commits": 1,
-     "first": "2024-10-20",
-     "last": "2024-10-20"
+     "first": "2024-10-23",
+     "last": "2024-10-23"
     },
     {
      "login": "foreverLearner40",
      "commits": 1,
-     "first": "2021-10-24",
-     "last": "2021-10-24"
+     "first": "2021-10-28",
+     "last": "2021-10-28"
     },
     {
      "login": "jongwooo",
@@ -759,20 +1000,20 @@
     {
      "login": "eltociear",
      "commits": 1,
-     "first": "2024-10-20",
-     "last": "2024-10-20"
+     "first": "2024-10-23",
+     "last": "2024-10-23"
     },
     {
      "login": "gbnam",
      "commits": 1,
-     "first": "2021-09-19",
-     "last": "2021-09-19"
+     "first": "2021-09-25",
+     "last": "2021-09-25"
     },
     {
      "login": "gvsl60",
      "commits": 1,
-     "first": "2024-09-22",
-     "last": "2024-09-22"
+     "first": "2024-09-27",
+     "last": "2024-09-27"
     },
     {
      "login": "EmmanuelMarianMat",
@@ -783,16 +1024,24 @@
     {
      "login": "carlosfrodrigues",
      "commits": 1,
-     "first": "2021-10-10",
-     "last": "2021-10-10"
+     "first": "2021-10-12",
+     "last": "2021-10-12"
     },
     {
      "login": "BamButz",
      "commits": 1,
-     "first": "2021-10-24",
-     "last": "2021-10-24"
+     "first": "2021-10-29",
+     "last": "2021-10-29"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "da969b8",
+    "date": "2019-06-18T01:56:39Z",
+    "login": "jihoon-seo",
+    "name": "Jihoon Seo",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-dragonfly",
@@ -810,62 +1059,62 @@
     {
      "login": "dev-secloudit",
      "commits": 58,
-     "first": "2019-12-01",
-     "last": "2022-07-03"
+     "first": "2019-12-04",
+     "last": "2022-07-07"
     },
     {
      "login": "inno-cloudbarista",
      "commits": 41,
-     "first": "2020-10-04",
-     "last": "2023-12-10"
+     "first": "2020-10-05",
+     "last": "2023-12-13"
     },
     {
      "login": "pjini",
      "commits": 33,
-     "first": "2020-05-31",
-     "last": "2023-12-10"
+     "first": "2020-06-01",
+     "last": "2023-12-13"
     },
     {
      "login": "devpjh121",
      "commits": 28,
-     "first": "2020-03-15",
-     "last": "2022-05-22"
+     "first": "2020-03-20",
+     "last": "2022-05-24"
     },
     {
      "login": "movey1",
      "commits": 20,
-     "first": "2019-11-10",
-     "last": "2019-11-10"
+     "first": "2019-11-14",
+     "last": "2019-11-14"
     },
     {
      "login": "jihoon-seo",
      "commits": 19,
-     "first": "2019-09-22",
-     "last": "2021-12-12"
+     "first": "2019-09-23",
+     "last": "2021-12-16"
     },
     {
      "login": "seokho-son",
      "commits": 8,
-     "first": "2020-05-31",
-     "last": "2021-05-16"
+     "first": "2020-06-02",
+     "last": "2021-05-20"
     },
     {
      "login": "sunyeongchoi",
      "commits": 6,
-     "first": "2022-10-23",
-     "last": "2022-11-20"
+     "first": "2022-10-25",
+     "last": "2022-11-24"
     },
     {
      "login": "Jin-Whee-Park",
      "commits": 4,
-     "first": "2020-08-30",
-     "last": "2021-07-04"
+     "first": "2020-09-03",
+     "last": "2020-09-18"
     },
     {
      "login": "powerkimhub",
      "commits": 3,
-     "first": "2025-09-07",
-     "last": "2025-09-14"
+     "first": "2025-09-09",
+     "last": "2025-09-13"
     },
     {
      "login": "jongwooo",
@@ -876,16 +1125,24 @@
     {
      "login": "jmleefree",
      "commits": 1,
-     "first": "2020-08-23",
-     "last": "2020-08-23"
+     "first": "2020-08-25",
+     "last": "2020-08-25"
     },
     {
      "login": "pjhmong",
      "commits": 1,
-     "first": "2021-05-23",
-     "last": "2021-05-23"
+     "first": "2021-05-26",
+     "last": "2021-05-26"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "e891dda",
+    "date": "2019-09-23T07:35:14Z",
+    "login": "jihoon-seo",
+    "name": "Jihoon Seo",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-webtool",
@@ -903,86 +1160,86 @@
     {
      "login": "dogfootman",
      "commits": 420,
-     "first": "2021-04-18",
-     "last": "2023-04-23"
+     "first": "2021-04-22",
+     "last": "2023-04-24"
     },
     {
      "login": "jazmandorf",
      "commits": 325,
-     "first": "2019-11-03",
-     "last": "2022-10-30"
+     "first": "2019-11-06",
+     "last": "2022-11-04"
     },
     {
      "login": "yh-noh",
      "commits": 306,
-     "first": "2021-03-07",
-     "last": "2021-09-12"
+     "first": "2021-03-10",
+     "last": "2021-09-16"
     },
     {
      "login": "choryang",
      "commits": 191,
-     "first": "2021-09-19",
-     "last": "2023-04-16"
+     "first": "2021-09-24",
+     "last": "2023-04-17"
     },
     {
      "login": "MZC-CSC",
      "commits": 152,
-     "first": "2021-04-25",
-     "last": "2022-12-04"
+     "first": "2021-04-27",
+     "last": "2022-12-05"
     },
     {
      "login": "mzc-ljhoon",
      "commits": 86,
-     "first": "2020-11-01",
-     "last": "2022-10-30"
+     "first": "2020-11-04",
+     "last": "2022-11-01"
     },
     {
      "login": "idogfootman",
      "commits": 75,
-     "first": "2021-03-07",
+     "first": "2021-03-10",
      "last": "2022-11-06"
     },
     {
      "login": "jaesung-yoo",
      "commits": 43,
-     "first": "2020-05-17",
-     "last": "2020-11-29"
+     "first": "2020-05-18",
+     "last": "2020-12-01"
     },
     {
      "login": "zephyJ",
      "commits": 34,
-     "first": "2020-05-24",
-     "last": "2021-06-27"
+     "first": "2020-05-25",
+     "last": "2021-06-29"
     },
     {
      "login": "seokho-son",
      "commits": 16,
      "first": "2021-02-14",
-     "last": "2023-03-05"
+     "last": "2023-03-07"
     },
     {
      "login": "jihoon-seo",
      "commits": 11,
-     "first": "2019-09-22",
-     "last": "2021-12-12"
+     "first": "2019-09-23",
+     "last": "2021-12-16"
     },
     {
      "login": "innodreamer",
      "commits": 3,
-     "first": "2022-05-29",
-     "last": "2022-06-05"
+     "first": "2022-06-02",
+     "last": "2022-06-07"
     },
     {
      "login": "dev4unet",
      "commits": 2,
-     "first": "2020-09-13",
-     "last": "2020-09-13"
+     "first": "2020-09-14",
+     "last": "2020-09-14"
     },
     {
      "login": "powerkimhub",
      "commits": 1,
-     "first": "2025-09-14",
-     "last": "2025-09-14"
+     "first": "2025-09-13",
+     "last": "2025-09-13"
     },
     {
      "login": "jongwooo",
@@ -993,10 +1250,18 @@
     {
      "login": "zephy-mzc",
      "commits": 1,
-     "first": "2020-11-08",
-     "last": "2020-11-08"
+     "first": "2020-11-11",
+     "last": "2020-11-11"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "265be8c",
+    "date": "2019-09-23T07:38:15Z",
+    "login": "jihoon-seo",
+    "name": "Jihoon Seo",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-spider",
@@ -1032,176 +1297,176 @@
     {
      "login": "powerkimhub",
      "commits": 2707,
-     "first": "2019-09-22",
-     "last": "2026-10-04"
+     "first": "2019-09-24",
+     "last": "2026-10-08"
     },
     {
      "login": "innodreamer",
      "commits": 428,
-     "first": "2019-10-27",
-     "last": "2026-07-12"
+     "first": "2019-11-01",
+     "last": "2026-07-14"
     },
     {
      "login": "ish-hcc",
      "commits": 264,
-     "first": "2023-09-17",
-     "last": "2026-09-27"
+     "first": "2023-09-19",
+     "last": "2026-09-30"
     },
     {
      "login": "dogfootman",
      "commits": 236,
-     "first": "2022-03-13",
-     "last": "2025-08-10"
+     "first": "2022-03-17",
+     "last": "2025-08-14"
     },
     {
      "login": "MZC-CSC",
      "commits": 226,
-     "first": "2022-03-13",
-     "last": "2024-11-24"
+     "first": "2022-03-17",
+     "last": "2024-11-29"
     },
     {
      "login": "dev4unet",
      "commits": 225,
-     "first": "2021-02-07",
-     "last": "2025-11-16"
+     "first": "2021-02-10",
+     "last": "2025-11-21"
     },
     {
      "login": "jaesung-yoo",
      "commits": 154,
-     "first": "2019-09-22",
-     "last": "2020-10-25"
+     "first": "2019-09-24",
+     "last": "2020-10-26"
     },
     {
      "login": "choryang",
      "commits": 132,
-     "first": "2022-02-27",
-     "last": "2022-12-18"
+     "first": "2022-03-04",
+     "last": "2022-12-22"
     },
     {
      "login": "tjeom-inno",
      "commits": 121,
-     "first": "2021-06-06",
-     "last": "2022-12-11"
+     "first": "2021-06-11",
+     "last": "2022-12-16"
     },
     {
      "login": "jazmandorf",
      "commits": 103,
-     "first": "2019-10-13",
-     "last": "2020-04-26"
+     "first": "2019-10-18",
+     "last": "2020-04-28"
     },
     {
      "login": "iworkist",
      "commits": 93,
-     "first": "2022-09-04",
-     "last": "2022-11-13"
+     "first": "2022-09-06",
+     "last": "2022-11-18"
     },
     {
      "login": "raccoon-mh",
      "commits": 78,
-     "first": "2023-09-17",
-     "last": "2024-08-18"
+     "first": "2023-09-18",
+     "last": "2024-08-23"
     },
     {
      "login": "SungWoongz",
      "commits": 76,
-     "first": "2024-01-14",
-     "last": "2025-02-09"
+     "first": "2024-01-16",
+     "last": "2025-02-14"
     },
     {
      "login": "jihoon-seo",
      "commits": 58,
-     "first": "2019-10-06",
-     "last": "2021-12-12"
+     "first": "2019-10-11",
+     "last": "2021-12-16"
     },
     {
      "login": "hanizang77",
      "commits": 53,
-     "first": "2025-03-02",
-     "last": "2026-10-04"
+     "first": "2025-03-06",
+     "last": "2026-10-07"
     },
     {
      "login": "suahlingo",
      "commits": 53,
-     "first": "2024-09-29",
-     "last": "2026-05-10"
+     "first": "2024-09-30",
+     "last": "2026-05-11"
     },
     {
      "login": "seokho-son",
      "commits": 40,
      "first": "2021-02-14",
-     "last": "2026-10-04"
+     "last": "2026-10-08"
     },
     {
      "login": "hippo-an",
      "commits": 40,
-     "first": "2023-12-10",
-     "last": "2024-11-24"
+     "first": "2023-12-13",
+     "last": "2024-11-29"
     },
     {
      "login": "Jeon-Jinhyeok",
      "commits": 39,
-     "first": "2025-01-19",
-     "last": "2025-02-23"
+     "first": "2025-01-21",
+     "last": "2025-02-27"
     },
     {
      "login": "sykim-etri",
      "commits": 37,
-     "first": "2022-09-25",
-     "last": "2025-05-11"
+     "first": "2022-09-27",
+     "last": "2025-05-13"
     },
     {
      "login": "jmleefree",
      "commits": 28,
-     "first": "2020-08-02",
-     "last": "2021-11-14"
+     "first": "2020-08-07",
+     "last": "2021-11-16"
     },
     {
      "login": "movey1",
      "commits": 23,
-     "first": "2019-10-13",
-     "last": "2020-01-26"
+     "first": "2019-10-15",
+     "last": "2020-01-29"
     },
     {
      "login": "CliffSynn",
      "commits": 22,
-     "first": "2023-12-31",
-     "last": "2024-06-30"
+     "first": "2024-01-02",
+     "last": "2024-07-02"
     },
     {
      "login": "tryoo0607",
      "commits": 21,
-     "first": "2026-04-12",
-     "last": "2026-04-26"
+     "first": "2026-04-14",
+     "last": "2026-04-28"
     },
     {
      "login": "thdclals18",
      "commits": 16,
-     "first": "2024-01-28",
-     "last": "2024-02-25"
+     "first": "2024-01-29",
+     "last": "2024-02-27"
     },
     {
      "login": "yunkon-kim",
      "commits": 13,
-     "first": "2022-09-04",
-     "last": "2026-02-08"
+     "first": "2022-09-06",
+     "last": "2026-02-10"
     },
     {
      "login": "pjini",
      "commits": 13,
-     "first": "2020-05-17",
-     "last": "2021-06-06"
+     "first": "2020-05-18",
+     "last": "2021-06-11"
     },
     {
      "login": "yby654",
      "commits": 11,
-     "first": "2024-07-07",
-     "last": "2024-07-28"
+     "first": "2024-07-10",
+     "last": "2024-07-29"
     },
     {
      "login": "inno-cloudbarista",
      "commits": 10,
-     "first": "2020-11-29",
-     "last": "2021-08-15"
+     "first": "2020-12-03",
+     "last": "2021-08-20"
     },
     {
      "login": "dev-secloudit",
@@ -1212,32 +1477,32 @@
     {
      "login": "devpjh121",
      "commits": 7,
-     "first": "2020-04-19",
-     "last": "2021-08-08"
+     "first": "2020-04-23",
+     "last": "2021-08-09"
     },
     {
      "login": "yh-noh",
      "commits": 4,
-     "first": "2026-08-09",
-     "last": "2026-09-13"
+     "first": "2026-08-13",
+     "last": "2026-09-17"
     },
     {
      "login": "handj622",
      "commits": 2,
-     "first": "2024-07-21",
-     "last": "2024-07-21"
+     "first": "2024-07-25",
+     "last": "2024-07-25"
     },
     {
      "login": "atg0831",
      "commits": 2,
-     "first": "2021-10-03",
-     "last": "2021-10-03"
+     "first": "2021-10-07",
+     "last": "2021-10-09"
     },
     {
      "login": "deepdiveinwinter",
      "commits": 2,
-     "first": "2021-07-18",
-     "last": "2021-07-18"
+     "first": "2021-07-20",
+     "last": "2021-07-20"
     },
     {
      "login": "computerphilosopher",
@@ -1248,8 +1513,8 @@
     {
      "login": "cns-innogrid",
      "commits": 2,
-     "first": "2019-10-06",
-     "last": "2019-10-06"
+     "first": "2019-10-07",
+     "last": "2019-10-07"
     },
     {
      "login": "chloe-codes1",
@@ -1266,28 +1531,36 @@
     {
      "login": "limsg1234",
      "commits": 1,
-     "first": "2021-09-26",
-     "last": "2021-09-26"
+     "first": "2021-09-29",
+     "last": "2021-09-29"
     },
     {
      "login": "idogfootman",
      "commits": 1,
-     "first": "2022-12-11",
-     "last": "2022-12-11"
+     "first": "2022-12-15",
+     "last": "2022-12-15"
     },
     {
      "login": "Jin-Whee-Park",
      "commits": 1,
-     "first": "2020-08-02",
-     "last": "2020-08-02"
+     "first": "2020-08-04",
+     "last": "2020-08-04"
     },
     {
      "login": "yoonjiOh",
      "commits": 1,
-     "first": "2020-09-06",
-     "last": "2020-09-06"
+     "first": "2020-09-10",
+     "last": "2020-09-10"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "389db98",
+    "date": "2019-09-24T02:50:07Z",
+    "login": "powerkimhub",
+    "name": "ByoungSeob Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "poc-specialized_services",
@@ -1305,10 +1578,18 @@
     {
      "login": "innodreamer",
      "commits": 9,
-     "first": "2019-10-06",
-     "last": "2019-11-17"
+     "first": "2019-10-10",
+     "last": "2019-11-20"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "2fef0c9",
+    "date": "2019-10-10T08:29:34Z",
+    "login": "innodreamer",
+    "name": "B.T. Oh",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cloud-barista",
@@ -1338,34 +1619,42 @@
     {
      "login": "seokho-son",
      "commits": 113,
-     "first": "2019-12-01",
-     "last": "2026-08-16"
+     "first": "2019-12-04",
+     "last": "2026-08-19"
     },
     {
      "login": "jihoon-seo",
      "commits": 14,
-     "first": "2021-02-14",
-     "last": "2022-11-20"
+     "first": "2021-02-16",
+     "last": "2022-11-25"
     },
     {
      "login": "powerkimhub",
      "commits": 2,
-     "first": "2019-12-29",
-     "last": "2019-12-29"
+     "first": "2020-01-03",
+     "last": "2020-01-03"
     },
     {
      "login": "yunkon-kim",
      "commits": 1,
-     "first": "2021-06-27",
-     "last": "2021-06-27"
+     "first": "2021-06-29",
+     "last": "2021-06-29"
     },
     {
      "login": "iworkist",
      "commits": 1,
-     "first": "2020-08-16",
-     "last": "2020-08-16"
+     "first": "2020-08-20",
+     "last": "2020-08-20"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "3760e38",
+    "date": "2019-12-04T11:47:33Z",
+    "login": "seokho-son",
+    "name": "Seokho Son",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "archive",
@@ -1383,16 +1672,24 @@
     {
      "login": "seokho-son",
      "commits": 5,
-     "first": "2019-12-01",
-     "last": "2019-12-22"
+     "first": "2019-12-05",
+     "last": "2019-12-23"
     },
     {
      "login": "powerkimhub",
      "commits": 1,
-     "first": "2020-05-24",
-     "last": "2020-05-24"
+     "first": "2020-05-29",
+     "last": "2020-05-29"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "b7e1e9f",
+    "date": "2019-12-05T06:01:24Z",
+    "login": "seokho-son",
+    "name": "Seokho Son",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cloud-barista.github.io",
@@ -1415,58 +1712,66 @@
     {
      "login": "innodreamer",
      "commits": 630,
-     "first": "2020-01-12",
-     "last": "2025-08-03"
+     "first": "2020-01-14",
+     "last": "2025-08-04"
     },
     {
      "login": "dongjae",
      "commits": 24,
-     "first": "2020-01-12",
-     "last": "2020-02-09"
+     "first": "2020-01-15",
+     "last": "2020-02-12"
     },
     {
      "login": "st4ple",
      "commits": 12,
-     "first": "2019-03-31",
-     "last": "2019-05-05"
+     "first": "2019-04-05",
+     "last": "2019-05-07"
     },
     {
      "login": "jihoon-seo",
      "commits": 12,
-     "first": "2020-01-26",
-     "last": "2022-11-20"
+     "first": "2020-01-28",
+     "last": "2022-11-25"
     },
     {
      "login": "kyongminkwon",
      "commits": 11,
-     "first": "2020-02-09",
-     "last": "2020-02-09"
+     "first": "2020-02-12",
+     "last": "2020-02-14"
     },
     {
      "login": "sykim-etri",
      "commits": 6,
-     "first": "2021-09-12",
-     "last": "2023-03-12"
+     "first": "2021-09-17",
+     "last": "2023-03-17"
     },
     {
      "login": "seokho-son",
      "commits": 5,
-     "first": "2020-01-26",
-     "last": "2020-01-26"
+     "first": "2020-01-28",
+     "last": "2020-01-28"
     },
     {
      "login": "Youngwoo-Jung",
      "commits": 2,
-     "first": "2020-01-26",
-     "last": "2020-01-26"
+     "first": "2020-01-28",
+     "last": "2020-01-28"
     },
     {
      "login": "powerkimhub",
      "commits": 2,
-     "first": "2020-01-26",
-     "last": "2020-01-26"
+     "first": "2020-01-28",
+     "last": "2020-01-28"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "40542b7",
+    "date": "2014-08-15T13:40:11Z",
+    "login": null,
+    "name": "Oliver Stapleton",
+    "message": "Init commit + some jekyll integration",
+    "imported": true
+   }
   },
   {
    "name": "cb-ladybug",
@@ -1497,44 +1802,44 @@
     {
      "login": "vlatte",
      "commits": 46,
-     "first": "2020-10-18",
-     "last": "2021-12-12"
+     "first": "2020-10-29",
+     "last": "2021-12-13"
     },
     {
      "login": "sykim-etri",
      "commits": 26,
-     "first": "2020-11-08",
-     "last": "2023-09-03"
+     "first": "2020-11-11",
+     "last": "2023-09-08"
     },
     {
      "login": "joowons",
      "commits": 25,
-     "first": "2021-11-21",
-     "last": "2022-12-11"
+     "first": "2021-11-22",
+     "last": "2022-12-14"
     },
     {
      "login": "itnpeople",
      "commits": 21,
-     "first": "2020-10-04",
-     "last": "2022-12-11"
+     "first": "2020-10-21",
+     "last": "2022-12-14"
     },
     {
      "login": "jihoon-seo",
      "commits": 16,
-     "first": "2020-03-29",
-     "last": "2021-12-12"
+     "first": "2020-03-30",
+     "last": "2021-12-16"
     },
     {
      "login": "seokho-son",
      "commits": 5,
-     "first": "2020-10-18",
-     "last": "2021-05-09"
+     "first": "2021-02-10",
+     "last": "2021-05-11"
     },
     {
      "login": "powerkimhub",
      "commits": 1,
-     "first": "2025-09-14",
-     "last": "2025-09-14"
+     "first": "2025-09-13",
+     "last": "2025-09-13"
     },
     {
      "login": "jongwooo",
@@ -1545,10 +1850,18 @@
     {
      "login": "jmleefree",
      "commits": 1,
-     "first": "2021-07-04",
-     "last": "2021-07-04"
+     "first": "2021-07-09",
+     "last": "2021-07-09"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "217a086",
+    "date": "2020-03-30T08:39:39Z",
+    "login": "jihoon-seo",
+    "name": "Jihoon Seo",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-operator",
@@ -1566,26 +1879,26 @@
     {
      "login": "jihoon-seo",
      "commits": 166,
-     "first": "2020-04-19",
-     "last": "2022-12-25"
+     "first": "2020-04-23",
+     "last": "2022-11-25"
     },
     {
      "login": "seokho-son",
      "commits": 100,
-     "first": "2020-04-19",
-     "last": "2023-12-10"
+     "first": "2020-04-23",
+     "last": "2023-12-15"
     },
     {
      "login": "inno-cloudbarista",
      "commits": 3,
-     "first": "2020-11-08",
-     "last": "2022-11-20"
+     "first": "2020-11-10",
+     "last": "2022-11-24"
     },
     {
      "login": "itnpeople",
      "commits": 2,
-     "first": "2020-12-06",
-     "last": "2020-12-06"
+     "first": "2020-12-09",
+     "last": "2020-12-09"
     },
     {
      "login": "powerkimhub",
@@ -1596,34 +1909,42 @@
     {
      "login": "computerphilosopher",
      "commits": 1,
-     "first": "2021-09-26",
-     "last": "2021-09-26"
+     "first": "2021-09-27",
+     "last": "2021-09-27"
     },
     {
      "login": "sykim-etri",
      "commits": 1,
-     "first": "2022-12-25",
-     "last": "2022-12-25"
+     "first": "2022-12-29",
+     "last": "2022-12-29"
     },
     {
      "login": "dev-secloudit",
      "commits": 1,
-     "first": "2022-04-03",
-     "last": "2022-04-03"
+     "first": "2022-04-07",
+     "last": "2022-04-07"
     },
     {
      "login": "devpjh121",
      "commits": 1,
-     "first": "2021-11-21",
-     "last": "2022-04-03"
+     "first": "2021-11-23",
+     "last": "2021-11-23"
     },
     {
      "login": "Jin-Whee-Park",
      "commits": 1,
-     "first": "2023-12-10",
-     "last": "2023-12-10"
+     "first": "2023-12-14",
+     "last": "2023-12-14"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "18282d8",
+    "date": "2020-04-23T05:37:54Z",
+    "login": "jihoon-seo",
+    "name": "Jihoon Seo",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-milkyway",
@@ -1646,8 +1967,8 @@
     {
      "login": "seokho-son",
      "commits": 37,
-     "first": "2020-05-03",
-     "last": "2022-11-06"
+     "first": "2020-05-04",
+     "last": "2022-11-10"
     },
     {
      "login": "jihoon-seo",
@@ -1655,7 +1976,15 @@
      "first": null,
      "last": null
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "53e9a5a",
+    "date": "2020-05-04T01:46:01Z",
+    "login": "seokho-son",
+    "name": "Seokho Son",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-mapui",
@@ -1675,28 +2004,36 @@
     {
      "login": "seokho-son",
      "commits": 523,
-     "first": "2019-11-17",
-     "last": "2026-10-04"
+     "first": "2019-11-18",
+     "last": "2026-10-08"
     },
     {
      "login": "jihoon-seo",
      "commits": 28,
-     "first": "2021-08-22",
-     "last": "2022-10-16"
+     "first": "2021-08-25",
+     "last": "2022-10-17"
     },
     {
      "login": "yunkon-kim",
      "commits": 4,
-     "first": "2025-05-11",
-     "last": "2026-06-21"
+     "first": "2025-05-13",
+     "last": "2026-06-23"
     },
     {
      "login": "leehyeoklee",
      "commits": 2,
-     "first": "2026-01-18",
-     "last": "2026-02-22"
+     "first": "2026-01-20",
+     "last": "2026-02-23"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "56777fe",
+    "date": "2019-11-18T13:28:05Z",
+    "login": "seokho-son",
+    "name": "Seokho Son",
+    "message": "Initial commit",
+    "imported": true
+   }
   },
   {
    "name": "cb-larva",
@@ -1720,40 +2057,48 @@
     {
      "login": "yunkon-kim",
      "commits": 338,
-     "first": "2020-10-04",
-     "last": "2022-11-20"
+     "first": "2020-10-06",
+     "last": "2022-11-25"
     },
     {
      "login": "hermitkim1",
      "commits": 145,
-     "first": "2020-09-13",
-     "last": "2021-11-21"
+     "first": "2020-09-16",
+     "last": "2021-11-25"
     },
     {
      "login": "seokho-son",
      "commits": 10,
-     "first": "2020-11-15",
-     "last": "2021-08-08"
+     "first": "2020-11-16",
+     "last": "2021-08-12"
     },
     {
      "login": "atg0831",
      "commits": 1,
-     "first": "2021-12-12",
-     "last": "2021-12-12"
+     "first": "2021-12-17",
+     "last": "2021-12-17"
     },
     {
      "login": "ChobobDev",
      "commits": 1,
-     "first": "2021-10-03",
-     "last": "2021-10-03"
+     "first": "2021-10-07",
+     "last": "2021-10-07"
     },
     {
      "login": "shivamgupta-sg",
      "commits": 1,
-     "first": "2021-09-19",
-     "last": "2021-09-19"
+     "first": "2021-09-21",
+     "last": "2021-09-21"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "8867c10",
+    "date": "2020-09-16T00:57:49Z",
+    "login": "hermitkim1",
+    "name": "Yunkon (Alvin) Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-tumblebug-api-web",
@@ -1774,16 +2119,24 @@
     {
      "login": "seokho-son",
      "commits": 34,
-     "first": "2020-10-11",
-     "last": "2021-06-20"
+     "first": "2020-10-15",
+     "last": "2021-06-22"
     },
     {
      "login": "jihoon-seo",
      "commits": 1,
-     "first": "2021-06-13",
-     "last": "2021-06-13"
+     "first": "2021-06-18",
+     "last": "2021-06-18"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "8f0f699",
+    "date": "2020-10-15T09:02:42Z",
+    "login": "seokho-son",
+    "name": "Seokho Son",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-ladybug-api-web",
@@ -1801,16 +2154,24 @@
     {
      "login": "sykim-etri",
      "commits": 7,
-     "first": "2020-11-29",
-     "last": "2022-12-25"
+     "first": "2020-12-02",
+     "last": "2022-12-27"
     },
     {
      "login": "jihoon-seo",
      "commits": 1,
-     "first": "2021-09-12",
-     "last": "2021-09-12"
+     "first": "2021-09-15",
+     "last": "2021-09-15"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "a0a492f",
+    "date": "2020-12-02T10:20:59Z",
+    "login": "sykim-etri",
+    "name": "Sooyoung Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-coffeehouse",
@@ -1836,68 +2197,68 @@
     {
      "login": "yunkon-kim",
      "commits": 97,
-     "first": "2021-01-31",
-     "last": "2025-08-03"
+     "first": "2021-02-03",
+     "last": "2025-08-08"
     },
     {
      "login": "hermitkim1",
      "commits": 79,
-     "first": "2020-08-16",
-     "last": "2021-09-12"
+     "first": "2020-08-21",
+     "last": "2021-09-15"
     },
     {
      "login": "leedohun",
      "commits": 14,
      "first": "2021-08-15",
-     "last": "2021-08-22"
+     "last": "2021-08-26"
     },
     {
      "login": "seokho-son",
      "commits": 3,
-     "first": "2022-09-18",
-     "last": "2022-09-18"
+     "first": "2022-09-22",
+     "last": "2022-09-22"
     },
     {
      "login": "eeeclipse",
      "commits": 3,
-     "first": "2021-08-15",
-     "last": "2021-08-15"
+     "first": "2021-08-18",
+     "last": "2021-08-18"
     },
     {
      "login": "atg0831",
      "commits": 3,
-     "first": "2021-08-22",
-     "last": "2021-12-26"
+     "first": "2021-08-24",
+     "last": "2021-12-27"
     },
     {
      "login": "PARKINHYO",
      "commits": 3,
-     "first": "2021-08-15",
+     "first": "2021-08-21",
      "last": "2021-09-19"
     },
     {
      "login": "jangh-lee",
      "commits": 2,
-     "first": "2021-08-15",
+     "first": "2021-08-18",
      "last": "2021-08-22"
     },
     {
      "login": "kyungkoh",
      "commits": 1,
-     "first": "2021-08-22",
-     "last": "2021-08-22"
+     "first": "2021-08-25",
+     "last": "2021-08-25"
     },
     {
      "login": "Mr-Destructive",
      "commits": 1,
-     "first": "2021-09-05",
-     "last": "2021-09-05"
+     "first": "2021-09-07",
+     "last": "2021-09-07"
     },
     {
      "login": "Modney",
      "commits": 1,
-     "first": "2021-09-05",
-     "last": "2021-09-05"
+     "first": "2021-09-08",
+     "last": "2021-09-08"
     },
     {
      "login": "limsg1234",
@@ -1905,7 +2266,15 @@
      "first": "2021-08-22",
      "last": "2021-08-22"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "b8a326e",
+    "date": "2020-08-21T03:47:59Z",
+    "login": "hermitkim1",
+    "name": "Yunkon (Alvin) Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-fw-template",
@@ -1923,14 +2292,14 @@
     {
      "login": "jihoon-seo",
      "commits": 7,
-     "first": "2021-02-07",
-     "last": "2021-05-30"
+     "first": "2021-02-10",
+     "last": "2021-06-01"
     },
     {
      "login": "seokho-son",
      "commits": 4,
      "first": "2021-02-14",
-     "last": "2021-03-14"
+     "last": "2021-03-17"
     },
     {
      "login": "powerkimhub",
@@ -1938,7 +2307,15 @@
      "first": null,
      "last": null
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "cb71946",
+    "date": "2021-02-10T10:47:49Z",
+    "login": "jihoon-seo",
+    "name": "Jihoon Seo",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-client",
@@ -1962,16 +2339,24 @@
     {
      "login": "powerkimhub",
      "commits": 57,
-     "first": "2021-02-28",
-     "last": "2024-12-15"
+     "first": "2021-03-05",
+     "last": "2024-12-19"
     },
     {
      "login": "seokho-son",
      "commits": 2,
-     "first": "2021-03-14",
-     "last": "2021-03-14"
+     "first": "2021-03-17",
+     "last": "2021-03-17"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "bd57c90",
+    "date": "2021-03-05T13:21:04Z",
+    "login": "powerkimhub",
+    "name": "ByoungSeob Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cb-tumblebug-dashboard",
@@ -1985,7 +2370,8 @@
    "language": "JavaScript",
    "topics": [],
    "html_url": "https://github.com/cloud-barista/cb-tumblebug-dashboard",
-   "contributors": []
+   "contributors": [],
+   "first_commit": null
   },
   {
    "name": "poc-cicd-spider",
@@ -2003,14 +2389,14 @@
     {
      "login": "jmleefree",
      "commits": 84,
-     "first": "2021-05-30",
-     "last": "2021-10-03"
+     "first": "2021-06-03",
+     "last": "2021-10-06"
     },
     {
      "login": "yunkon-kim",
      "commits": 6,
-     "first": "2021-07-25",
-     "last": "2021-09-05"
+     "first": "2021-07-28",
+     "last": "2021-09-07"
     },
     {
      "login": "hermitkim1",
@@ -2018,7 +2404,15 @@
      "first": null,
      "last": null
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "bc813de",
+    "date": "2021-06-03T02:12:24Z",
+    "login": "jmleefree",
+    "name": "Ubuntu",
+    "message": "first commit",
+    "imported": false
+   }
   },
   {
    "name": "poc-cicd-dashboard",
@@ -2036,16 +2430,24 @@
     {
      "login": "jmleefree",
      "commits": 11,
-     "first": "2021-05-30",
-     "last": "2021-08-08"
+     "first": "2021-06-03",
+     "last": "2021-08-13"
     },
     {
      "login": "powerkimhub",
      "commits": 1,
-     "first": "2025-09-14",
-     "last": "2025-09-14"
+     "first": "2025-09-13",
+     "last": "2025-09-13"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "975f594",
+    "date": "2021-06-03T02:07:47Z",
+    "login": "jmleefree",
+    "name": "Ubuntu",
+    "message": "first commit",
+    "imported": false
+   }
   },
   {
    "name": "poc-cicd-tumblebug",
@@ -2063,8 +2465,8 @@
     {
      "login": "jmleefree",
      "commits": 18,
-     "first": "2021-08-08",
-     "last": "2021-10-03"
+     "first": "2021-08-09",
+     "last": "2021-10-06"
     },
     {
      "login": "seokho-son",
@@ -2075,10 +2477,18 @@
     {
      "login": "jihoon-seo",
      "commits": 1,
-     "first": "2021-08-08",
-     "last": "2021-08-08"
+     "first": "2021-08-09",
+     "last": "2021-08-09"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "c0b2284",
+    "date": "2021-08-09T01:18:39Z",
+    "login": "jmleefree",
+    "name": "jmleefree",
+    "message": "Create README.md",
+    "imported": false
+   }
   },
   {
    "name": "poc-cicd-ladybug",
@@ -2096,10 +2506,18 @@
     {
      "login": "jmleefree",
      "commits": 14,
-     "first": "2021-08-08",
-     "last": "2021-10-03"
+     "first": "2021-08-09",
+     "last": "2021-10-06"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "0b272b1",
+    "date": "2021-08-09T01:19:02Z",
+    "login": "jmleefree",
+    "name": "jmleefree",
+    "message": "Create README.md",
+    "imported": false
+   }
   },
   {
    "name": "poc-cb-ladybug",
@@ -2117,10 +2535,18 @@
     {
      "login": "sykim-etri",
      "commits": 58,
-     "first": "2021-08-29",
-     "last": "2022-12-11"
+     "first": "2021-08-30",
+     "last": "2022-12-15"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "64eae9f",
+    "date": "2021-08-30T07:58:21Z",
+    "login": "sykim-etri",
+    "name": "Sooyoung Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "ktcloud-sdk-go",
@@ -2138,10 +2564,18 @@
     {
      "login": "innodreamer",
      "commits": 61,
-     "first": "2021-10-03",
-     "last": "2025-11-02"
+     "first": "2021-10-08",
+     "last": "2025-11-03"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "d5c22c4",
+    "date": "2021-10-08T06:20:10Z",
+    "login": "innodreamer",
+    "name": "Sean Oh",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "nhncloud-sdk-go",
@@ -2159,22 +2593,30 @@
     {
      "login": "innodreamer",
      "commits": 83,
-     "first": "2022-01-23",
-     "last": "2025-08-17"
+     "first": "2022-01-26",
+     "last": "2025-08-20"
     },
     {
      "login": "sykim-etri",
      "commits": 7,
-     "first": "2024-03-31",
-     "last": "2024-09-29"
+     "first": "2024-04-01",
+     "last": "2024-10-02"
     },
     {
      "login": "ish-hcc",
      "commits": 3,
-     "first": "2025-10-26",
-     "last": "2026-05-17"
+     "first": "2025-11-01",
+     "last": "2026-05-19"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "53bd6d6",
+    "date": "2022-01-26T06:24:43Z",
+    "login": "innodreamer",
+    "name": "Sean Oh",
+    "message": "Create README.md",
+    "imported": false
+   }
   },
   {
    "name": "poc-cicd-mcks-dashboard",
@@ -2192,16 +2634,24 @@
     {
      "login": "jmleefree",
      "commits": 11,
-     "first": "2021-05-30",
-     "last": "2021-08-08"
+     "first": "2021-06-03",
+     "last": "2021-08-13"
     },
     {
      "login": "powerkimhub",
      "commits": 1,
-     "first": "2025-09-14",
-     "last": "2025-09-14"
+     "first": "2025-09-13",
+     "last": "2025-09-13"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "975f594",
+    "date": "2021-06-03T02:07:47Z",
+    "login": "jmleefree",
+    "name": "Ubuntu",
+    "message": "first commit",
+    "imported": false
+   }
   },
   {
    "name": "ktcloudvpc-sdk-go",
@@ -2219,16 +2669,24 @@
     {
      "login": "innodreamer",
      "commits": 173,
-     "first": "2022-07-31",
-     "last": "2026-07-12"
+     "first": "2022-08-04",
+     "last": "2026-07-13"
     },
     {
      "login": "ish-hcc",
      "commits": 1,
-     "first": "2024-08-25",
-     "last": "2024-08-25"
+     "first": "2024-08-26",
+     "last": "2024-08-26"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "14ac1b6",
+    "date": "2022-08-04T05:03:36Z",
+    "login": "innodreamer",
+    "name": "Sean Oh",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-beetle",
@@ -2252,40 +2710,48 @@
     {
      "login": "yunkon-kim",
      "commits": 563,
-     "first": "2023-07-30",
-     "last": "2026-10-04"
+     "first": "2023-08-03",
+     "last": "2026-10-08"
     },
     {
      "login": "seokho-son",
      "commits": 29,
-     "first": "2023-10-08",
-     "last": "2024-09-01"
+     "first": "2023-10-12",
+     "last": "2024-09-06"
     },
     {
      "login": "hanizang77",
      "commits": 26,
-     "first": "2025-05-11",
-     "last": "2026-10-04"
+     "first": "2025-05-13",
+     "last": "2026-10-07"
     },
     {
      "login": "ish-hcc",
      "commits": 4,
-     "first": "2024-05-19",
-     "last": "2024-08-18"
+     "first": "2024-05-24",
+     "last": "2024-08-21"
     },
     {
      "login": "sykim-etri",
      "commits": 1,
-     "first": "2023-11-12",
-     "last": "2023-11-12"
+     "first": "2023-11-16",
+     "last": "2023-11-16"
     },
     {
      "login": "dev4unet",
      "commits": 1,
-     "first": "2024-09-01",
-     "last": "2024-09-01"
+     "first": "2024-09-05",
+     "last": "2024-09-05"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "a8a5309",
+    "date": "2023-08-03T05:59:06Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-grasshopper",
@@ -2303,46 +2769,54 @@
     {
      "login": "ish-hcc",
      "commits": 356,
-     "first": "2023-12-10",
-     "last": "2026-10-11"
+     "first": "2023-12-12",
+     "last": "2026-10-12"
     },
     {
      "login": "niconicodex",
      "commits": 8,
-     "first": "2023-12-17",
-     "last": "2023-12-17"
+     "first": "2023-12-18",
+     "last": "2023-12-18"
     },
     {
      "login": "yunkon-kim",
      "commits": 5,
-     "first": "2023-07-30",
-     "last": "2024-06-30"
+     "first": "2023-08-04",
+     "last": "2024-07-03"
     },
     {
      "login": "suahlingo",
      "commits": 5,
-     "first": "2025-08-31",
-     "last": "2025-09-07"
+     "first": "2025-09-05",
+     "last": "2025-09-08"
     },
     {
      "login": "taking",
      "commits": 4,
-     "first": "2026-03-29",
-     "last": "2026-08-09"
+     "first": "2026-04-01",
+     "last": "2026-08-10"
     },
     {
      "login": "consine2c",
      "commits": 2,
-     "first": "2026-09-27",
-     "last": "2026-09-27"
+     "first": "2026-10-01",
+     "last": "2026-10-02"
     },
     {
      "login": "sykim-etri",
      "commits": 1,
-     "first": "2024-06-30",
-     "last": "2024-06-30"
+     "first": "2024-07-03",
+     "last": "2024-07-03"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "83744d9",
+    "date": "2023-08-04T00:40:52Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-damselfly",
@@ -2360,22 +2834,30 @@
     {
      "login": "innodreamer",
      "commits": 189,
-     "first": "2023-11-19",
-     "last": "2026-10-04"
+     "first": "2023-11-23",
+     "last": "2026-10-07"
     },
     {
      "login": "yunkon-kim",
      "commits": 11,
-     "first": "2023-07-30",
-     "last": "2024-10-27"
+     "first": "2023-08-04",
+     "last": "2024-10-30"
     },
     {
      "login": "ish-hcc",
      "commits": 1,
-     "first": "2026-06-28",
-     "last": "2026-06-28"
+     "first": "2026-06-29",
+     "last": "2026-06-29"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "b1c9acd",
+    "date": "2023-08-04T00:42:29Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-ant",
@@ -2393,28 +2875,36 @@
     {
      "login": "hippo-an",
      "commits": 193,
-     "first": "2024-02-04",
-     "last": "2024-12-15"
+     "first": "2024-02-05",
+     "last": "2024-12-16"
     },
     {
      "login": "dev4unet",
      "commits": 80,
-     "first": "2025-09-07",
-     "last": "2026-07-26"
+     "first": "2025-09-10",
+     "last": "2026-07-31"
     },
     {
      "login": "MZC-CSC",
      "commits": 61,
-     "first": "2023-08-06",
-     "last": "2023-12-10"
+     "first": "2023-08-07",
+     "last": "2023-12-14"
     },
     {
      "login": "yunkon-kim",
      "commits": 4,
-     "first": "2023-07-30",
-     "last": "2024-06-30"
+     "first": "2023-08-04",
+     "last": "2024-07-04"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "24dfbcc",
+    "date": "2023-08-04T00:46:11Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-mayfly",
@@ -2432,46 +2922,54 @@
     {
      "login": "dev4unet",
      "commits": 321,
-     "first": "2023-11-05",
-     "last": "2026-08-16"
+     "first": "2023-11-09",
+     "last": "2026-08-19"
     },
     {
      "login": "MZC-CSC",
      "commits": 162,
-     "first": "2025-08-17",
-     "last": "2025-10-12"
+     "first": "2025-08-18",
+     "last": "2025-10-16"
     },
     {
      "login": "ish-hcc",
      "commits": 37,
-     "first": "2025-08-24",
-     "last": "2026-08-16"
+     "first": "2025-08-29",
+     "last": "2026-08-20"
     },
     {
      "login": "hippo-an",
      "commits": 26,
-     "first": "2024-03-03",
-     "last": "2024-11-24"
+     "first": "2024-03-07",
+     "last": "2024-11-25"
     },
     {
      "login": "yunkon-kim",
      "commits": 16,
-     "first": "2023-07-30",
-     "last": "2026-08-09"
+     "first": "2023-08-04",
+     "last": "2026-08-12"
     },
     {
      "login": "thdclals18",
      "commits": 3,
-     "first": "2024-03-31",
-     "last": "2024-05-05"
+     "first": "2024-04-04",
+     "last": "2024-05-08"
     },
     {
      "login": "innodreamer",
      "commits": 1,
-     "first": "2026-08-09",
-     "last": "2026-08-09"
+     "first": "2026-08-12",
+     "last": "2026-08-12"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "0721ecd",
+    "date": "2023-08-04T00:47:19Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-honeybee",
@@ -2489,82 +2987,90 @@
     {
      "login": "ish-hcc",
      "commits": 687,
-     "first": "2023-11-19",
-     "last": "2026-10-11"
+     "first": "2023-11-20",
+     "last": "2026-10-12"
     },
     {
      "login": "taking",
      "commits": 32,
-     "first": "2024-06-02",
-     "last": "2025-07-20"
+     "first": "2024-06-07",
+     "last": "2025-07-25"
     },
     {
      "login": "niconicodex",
      "commits": 14,
-     "first": "2023-11-12",
-     "last": "2023-12-17"
+     "first": "2023-11-16",
+     "last": "2023-12-18"
     },
     {
      "login": "tryoo0607",
      "commits": 11,
-     "first": "2025-11-30",
-     "last": "2026-08-23"
+     "first": "2025-12-01",
+     "last": "2026-08-27"
     },
     {
      "login": "yunkon-kim",
      "commits": 7,
-     "first": "2023-07-30",
-     "last": "2024-06-30"
+     "first": "2023-08-04",
+     "last": "2024-07-03"
     },
     {
      "login": "jollaman999",
      "commits": 6,
-     "first": "2023-11-26",
-     "last": "2024-01-14"
+     "first": "2023-11-28",
+     "last": "2024-01-20"
     },
     {
      "login": "suahlingo",
      "commits": 3,
-     "first": "2026-09-06",
-     "last": "2026-09-13"
+     "first": "2026-09-09",
+     "last": "2026-09-14"
     },
     {
      "login": "wagoodman",
      "commits": 1,
-     "first": "2025-05-18",
-     "last": "2025-05-18"
+     "first": "2025-05-19",
+     "last": "2025-05-19"
     },
     {
      "login": "jinroh",
      "commits": 1,
-     "first": "2024-11-24",
-     "last": "2024-11-24"
+     "first": "2024-11-25",
+     "last": "2024-11-25"
     },
     {
      "login": "testwill",
      "commits": 1,
-     "first": "2024-04-14",
-     "last": "2024-04-14"
+     "first": "2024-04-20",
+     "last": "2024-04-20"
     },
     {
      "login": "jmleefree",
      "commits": 1,
-     "first": "2026-09-27",
-     "last": "2026-09-27"
+     "first": "2026-10-01",
+     "last": "2026-10-01"
     },
     {
      "login": "zahra-abedi",
      "commits": 1,
-     "first": "2025-04-27",
-     "last": "2025-04-27"
+     "first": "2025-05-01",
+     "last": "2025-05-01"
     },
     {
      "login": "consine2c",
      "commits": 1,
-     "first": "2026-09-27",
-     "last": "2026-09-27"
+     "first": "2026-10-01",
+     "last": "2026-10-01"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "ed908ec",
+    "date": "2023-08-04T00:49:26Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-cicada",
@@ -2582,34 +3088,42 @@
     {
      "login": "ish-hcc",
      "commits": 332,
-     "first": "2023-12-03",
-     "last": "2026-10-11"
+     "first": "2023-12-07",
+     "last": "2026-10-12"
     },
     {
      "login": "yby654",
      "commits": 99,
-     "first": "2024-05-19",
-     "last": "2026-08-02"
+     "first": "2024-05-23",
+     "last": "2026-08-07"
     },
     {
      "login": "yunkon-kim",
      "commits": 5,
-     "first": "2023-07-30",
-     "last": "2024-06-30"
+     "first": "2023-08-04",
+     "last": "2024-07-03"
     },
     {
      "login": "jollaman999",
      "commits": 5,
-     "first": "2024-03-03",
-     "last": "2024-05-19"
+     "first": "2024-03-05",
+     "last": "2024-05-23"
     },
     {
      "login": "niconicodex",
      "commits": 2,
-     "first": "2023-12-17",
-     "last": "2023-12-17"
+     "first": "2023-12-18",
+     "last": "2023-12-18"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "dd481a8",
+    "date": "2023-08-04T00:50:46Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-butterfly",
@@ -2627,68 +3141,68 @@
     {
      "login": "MZC-CSC",
      "commits": 140,
-     "first": "2023-07-30",
-     "last": "2025-12-07"
+     "first": "2023-08-04",
+     "last": "2025-12-11"
     },
     {
      "login": "kkdy21",
      "commits": 138,
      "first": "2024-09-15",
-     "last": "2024-12-01"
+     "last": "2024-12-04"
     },
     {
      "login": "dogfootman",
      "commits": 78,
-     "first": "2023-11-05",
-     "last": "2025-12-07"
+     "first": "2023-11-10",
+     "last": "2025-12-12"
     },
     {
      "login": "seungyeoneeee",
      "commits": 70,
-     "first": "2024-09-15",
-     "last": "2024-10-27"
+     "first": "2024-09-19",
+     "last": "2024-10-28"
     },
     {
      "login": "dev4unet",
      "commits": 63,
-     "first": "2025-04-06",
-     "last": "2026-08-16"
+     "first": "2025-04-07",
+     "last": "2026-08-21"
     },
     {
      "login": "hippo-an",
      "commits": 57,
-     "first": "2024-06-09",
-     "last": "2024-12-01"
+     "first": "2024-06-11",
+     "last": "2024-12-05"
     },
     {
      "login": "yuda110",
      "commits": 25,
-     "first": "2025-09-07",
-     "last": "2025-12-28"
+     "first": "2025-09-09",
+     "last": "2026-01-02"
     },
     {
      "login": "SungWoongz",
      "commits": 19,
-     "first": "2024-12-08",
-     "last": "2025-02-02"
+     "first": "2024-12-10",
+     "last": "2025-02-05"
     },
     {
      "login": "raccoon-mh",
      "commits": 8,
-     "first": "2023-11-26",
-     "last": "2024-06-09"
+     "first": "2023-11-30",
+     "last": "2024-06-12"
     },
     {
      "login": "yunkon-kim",
      "commits": 4,
-     "first": "2023-07-30",
-     "last": "2024-06-30"
+     "first": "2023-08-04",
+     "last": "2024-07-03"
     },
     {
      "login": "ish-hcc",
      "commits": 2,
-     "first": "2026-06-28",
-     "last": "2026-06-28"
+     "first": "2026-07-02",
+     "last": "2026-07-02"
     },
     {
      "login": "jaesung-yoo",
@@ -2696,7 +3210,15 @@
      "first": "2026-08-02",
      "last": "2026-08-02"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "a1f3550",
+    "date": "2023-08-04T00:53:02Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-centipede",
@@ -2714,8 +3236,8 @@
     {
      "login": "jmleefree",
      "commits": 26,
-     "first": "2026-09-13",
-     "last": "2026-10-04"
+     "first": "2026-09-16",
+     "last": "2026-10-06"
     },
     {
      "login": "powerkimhub",
@@ -2726,10 +3248,18 @@
     {
      "login": "yunkon-kim",
      "commits": 2,
-     "first": "2023-07-30",
-     "last": "2026-08-09"
+     "first": "2023-08-04",
+     "last": "2026-08-13"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "9adb8a3",
+    "date": "2023-08-04T00:55:53Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-data-mold",
@@ -2747,22 +3277,30 @@
     {
      "login": "jjang-go",
      "commits": 81,
-     "first": "2023-10-29",
-     "last": "2023-12-17"
+     "first": "2023-10-30",
+     "last": "2023-12-21"
     },
     {
      "login": "yunkon-kim",
      "commits": 38,
-     "first": "2023-09-17",
-     "last": "2023-12-17"
+     "first": "2023-09-20",
+     "last": "2023-12-21"
     },
     {
      "login": "zcon-cychoi",
      "commits": 8,
      "first": "2023-10-22",
-     "last": "2023-12-03"
+     "last": "2023-12-06"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "f166f5f",
+    "date": "2023-09-20T01:19:10Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "mc-terrarium",
@@ -2785,8 +3323,8 @@
     {
      "login": "yunkon-kim",
      "commits": 392,
-     "first": "2023-10-22",
-     "last": "2026-07-26"
+     "first": "2023-10-27",
+     "last": "2026-07-29"
     },
     {
      "login": "seokho-son",
@@ -2794,7 +3332,15 @@
      "first": null,
      "last": null
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "7095b17",
+    "date": "2023-10-27T01:40:13Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cloud-migrator",
@@ -2812,34 +3358,42 @@
     {
      "login": "yunkon-kim",
      "commits": 95,
-     "first": "2023-11-26",
-     "last": "2026-08-16"
+     "first": "2023-11-29",
+     "last": "2026-08-20"
     },
     {
      "login": "seokho-son",
      "commits": 9,
-     "first": "2023-12-17",
-     "last": "2023-12-17"
+     "first": "2023-12-18",
+     "last": "2023-12-18"
     },
     {
      "login": "hippo-an",
      "commits": 3,
-     "first": "2024-11-17",
-     "last": "2024-11-17"
+     "first": "2024-11-20",
+     "last": "2024-11-20"
     },
     {
      "login": "MZC-CSC",
      "commits": 1,
-     "first": "2025-08-24",
-     "last": "2025-08-24"
+     "first": "2025-08-27",
+     "last": "2025-08-27"
     },
     {
      "login": "ish-hcc",
      "commits": 1,
-     "first": "2025-08-17",
-     "last": "2025-08-17"
+     "first": "2025-08-23",
+     "last": "2025-08-23"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "3eb0ee2",
+    "date": "2023-11-29T09:22:16Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": ".github",
@@ -2857,10 +3411,18 @@
     {
      "login": "yunkon-kim",
      "commits": 1,
-     "first": "2024-02-04",
-     "last": "2024-02-04"
+     "first": "2024-02-05",
+     "last": "2024-02-05"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "8800ae1",
+    "date": "2024-02-05T07:10:33Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "mc-data-manager",
@@ -2878,50 +3440,50 @@
     {
      "login": "heedaeshin",
      "commits": 139,
-     "first": "2024-08-18",
-     "last": "2024-11-17"
+     "first": "2024-08-20",
+     "last": "2024-11-22"
     },
     {
      "login": "seungjae-oh",
      "commits": 121,
-     "first": "2024-08-18",
-     "last": "2025-11-23"
+     "first": "2024-08-22",
+     "last": "2025-11-26"
     },
     {
      "login": "jjang-go",
      "commits": 81,
-     "first": "2023-10-29",
-     "last": "2023-12-17"
+     "first": "2023-10-30",
+     "last": "2023-12-21"
     },
     {
      "login": "minyeongyang-max",
      "commits": 67,
-     "first": "2026-04-19",
-     "last": "2026-09-27"
+     "first": "2026-04-24",
+     "last": "2026-09-29"
     },
     {
      "login": "JH-Lee-cloudlab",
      "commits": 64,
-     "first": "2025-07-20",
-     "last": "2025-10-26"
+     "first": "2025-07-22",
+     "last": "2025-10-31"
     },
     {
      "login": "yunkon-kim",
      "commits": 42,
-     "first": "2023-09-17",
-     "last": "2024-08-18"
+     "first": "2023-09-20",
+     "last": "2024-08-21"
     },
     {
      "login": "kimchangyu-25",
      "commits": 38,
-     "first": "2025-11-23",
-     "last": "2026-06-28"
+     "first": "2025-11-26",
+     "last": "2026-07-03"
     },
     {
      "login": "injangseon",
      "commits": 37,
-     "first": "2026-06-21",
-     "last": "2026-10-04"
+     "first": "2026-06-26",
+     "last": "2026-10-08"
     },
     {
      "login": "powerkimhub",
@@ -2933,25 +3495,25 @@
      "login": "zcon-cychoi",
      "commits": 8,
      "first": "2023-10-22",
-     "last": "2023-12-03"
+     "last": "2023-12-06"
     },
     {
      "login": "rabter",
      "commits": 4,
-     "first": "2025-08-17",
-     "last": "2025-08-24"
+     "first": "2025-08-21",
+     "last": "2025-08-29"
     },
     {
      "login": "coli-bear",
      "commits": 3,
-     "first": "2026-04-12",
-     "last": "2026-04-26"
+     "first": "2026-04-17",
+     "last": "2026-04-27"
     },
     {
      "login": "namutech",
      "commits": 2,
-     "first": "2026-07-19",
-     "last": "2026-07-19"
+     "first": "2026-07-22",
+     "last": "2026-07-22"
     },
     {
      "login": "heeda88",
@@ -2965,7 +3527,15 @@
      "first": null,
      "last": null
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "f166f5f",
+    "date": "2023-09-20T01:19:10Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "api",
@@ -2983,22 +3553,30 @@
     {
      "login": "yunkon-kim",
      "commits": 45,
-     "first": "2024-06-09",
-     "last": "2026-06-28"
+     "first": "2024-06-13",
+     "last": "2026-07-01"
     },
     {
      "login": "seokho-son",
      "commits": 4,
-     "first": "2024-08-11",
-     "last": "2024-08-11"
+     "first": "2024-08-17",
+     "last": "2024-08-17"
     },
     {
      "login": "powerkimhub",
      "commits": 1,
-     "first": "2024-09-01",
-     "last": "2024-09-01"
+     "first": "2024-09-05",
+     "last": "2024-09-05"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "511af33",
+    "date": "2024-06-13T11:41:01Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "cm-model",
@@ -3016,26 +3594,26 @@
     {
      "login": "yunkon-kim",
      "commits": 40,
-     "first": "2024-09-08",
-     "last": "2026-03-29"
+     "first": "2024-09-09",
+     "last": "2026-04-03"
     },
     {
      "login": "ish-hcc",
      "commits": 29,
-     "first": "2025-04-27",
-     "last": "2025-08-24"
+     "first": "2025-05-02",
+     "last": "2025-08-26"
     },
     {
      "login": "innodreamer",
      "commits": 15,
-     "first": "2024-11-10",
-     "last": "2025-04-27"
+     "first": "2024-11-13",
+     "last": "2025-04-28"
     },
     {
      "login": "tryoo0607",
      "commits": 4,
-     "first": "2025-11-30",
-     "last": "2025-11-30"
+     "first": "2025-12-04",
+     "last": "2025-12-04"
     },
     {
      "login": "seokho-son",
@@ -3043,7 +3621,15 @@
      "first": null,
      "last": null
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "4ca4411",
+    "date": "2024-09-09T02:22:59Z",
+    "login": "yunkon-kim",
+    "name": "Yunkon Kim",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "mc-meta-365",
@@ -3061,10 +3647,18 @@
     {
      "login": "powerkimhub",
      "commits": 3,
-     "first": "2025-08-31",
+     "first": "2025-09-01",
      "last": "2025-09-28"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "0ac2e7c",
+    "date": "2025-09-01T06:40:40Z",
+    "login": "powerkimhub",
+    "name": "powerkimhub",
+    "message": "first commit",
+    "imported": false
+   }
   },
   {
    "name": "ai-adm",
@@ -3086,10 +3680,18 @@
     {
      "login": "hanizang77",
      "commits": 1,
-     "first": "2026-06-14",
-     "last": "2026-06-14"
+     "first": "2026-06-19",
+     "last": "2026-06-19"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "b9b1a5f",
+    "date": "2026-06-19T05:01:20Z",
+    "login": "hanizang77",
+    "name": "Hannie Zang",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "ai-ui",
@@ -3111,10 +3713,18 @@
     {
      "login": "hanizang77",
      "commits": 1,
-     "first": "2026-06-14",
-     "last": "2026-06-14"
+     "first": "2026-06-19",
+     "last": "2026-06-19"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "11e487d",
+    "date": "2026-06-19T05:01:23Z",
+    "login": "hanizang77",
+    "name": "Hannie Zang",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "ai-ops",
@@ -3136,22 +3746,30 @@
     {
      "login": "gunsun2000",
      "commits": 7,
-     "first": "2026-06-21",
-     "last": "2026-06-21"
+     "first": "2026-06-24",
+     "last": "2026-06-24"
     },
     {
      "login": "JeonMinCheol",
      "commits": 3,
-     "first": "2026-06-21",
-     "last": "2026-06-21"
+     "first": "2026-06-24",
+     "last": "2026-06-25"
     },
     {
      "login": "hanizang77",
      "commits": 1,
-     "first": "2026-06-14",
-     "last": "2026-06-14"
+     "first": "2026-06-19",
+     "last": "2026-06-19"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "82e03dc",
+    "date": "2026-06-19T05:01:25Z",
+    "login": "hanizang77",
+    "name": "Hannie Zang",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "ai-ha",
@@ -3173,10 +3791,18 @@
     {
      "login": "hanizang77",
      "commits": 1,
-     "first": "2026-06-14",
-     "last": "2026-06-14"
+     "first": "2026-06-19",
+     "last": "2026-06-19"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "9d65636",
+    "date": "2026-06-19T05:01:28Z",
+    "login": "hanizang77",
+    "name": "Hannie Zang",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "ai-app",
@@ -3198,10 +3824,18 @@
     {
      "login": "hanizang77",
      "commits": 1,
-     "first": "2026-06-14",
-     "last": "2026-06-14"
+     "first": "2026-06-19",
+     "last": "2026-06-19"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "33cb052",
+    "date": "2026-06-19T05:01:30Z",
+    "login": "hanizang77",
+    "name": "Hannie Zang",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "ai-o11y",
@@ -3223,10 +3857,18 @@
     {
      "login": "hanizang77",
      "commits": 1,
-     "first": "2026-06-14",
-     "last": "2026-06-14"
+     "first": "2026-06-19",
+     "last": "2026-06-19"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "36ae79b",
+    "date": "2026-06-19T05:01:32Z",
+    "login": "hanizang77",
+    "name": "Hannie Zang",
+    "message": "Initial commit",
+    "imported": false
+   }
   },
   {
    "name": "ai-mcmp",
@@ -3248,16 +3890,24 @@
     {
      "login": "hanizang77",
      "commits": 3,
-     "first": "2026-06-14",
-     "last": "2026-06-14"
+     "first": "2026-06-19",
+     "last": "2026-06-19"
     },
     {
      "login": "powerkimhub",
      "commits": 1,
-     "first": "2026-07-12",
-     "last": "2026-07-12"
+     "first": "2026-07-13",
+     "last": "2026-07-13"
     }
-   ]
+   ],
+   "first_commit": {
+    "sha": "e4a19af",
+    "date": "2026-06-19T05:01:35Z",
+    "login": "hanizang77",
+    "name": "Hannie Zang",
+    "message": "Initial commit",
+    "imported": false
+   }
   }
  ],
  "people": [
@@ -3294,8 +3944,8 @@
     "api",
     "cm-model"
    ],
-   "first": "2019-05-19",
-   "last": "2026-10-04",
+   "first": "2019-05-24",
+   "last": "2026-10-08",
    "name": "Seokho Son",
    "avatar_url": "https://avatars.githubusercontent.com/u/5966944?v=4",
    "company": "ETRI",
@@ -3330,8 +3980,8 @@
     "mc-meta-365",
     "ai-mcmp"
    ],
-   "first": "2019-05-12",
-   "last": "2026-10-04",
+   "first": "2019-05-13",
+   "last": "2026-10-08",
    "name": "ByoungSeob Kim",
    "avatar_url": "https://avatars.githubusercontent.com/u/46367962?v=4",
    "company": "ETRI",
@@ -3367,8 +4017,8 @@
     "api",
     "cm-model"
    ],
-   "first": "2020-10-04",
-   "last": "2026-10-11",
+   "first": "2020-10-06",
+   "last": "2026-10-12",
    "name": "Yunkon Kim",
    "avatar_url": "https://avatars.githubusercontent.com/u/7975459?v=4",
    "company": "ETRI",
@@ -3391,8 +4041,8 @@
     "cm-mayfly",
     "cm-model"
    ],
-   "first": "2019-10-06",
-   "last": "2026-10-04",
+   "first": "2019-10-08",
+   "last": "2026-10-07",
    "name": "Sean Oh",
    "avatar_url": "https://avatars.githubusercontent.com/u/51111668?v=4",
    "company": "ETRI",
@@ -3415,8 +4065,8 @@
     "cloud-migrator",
     "cm-model"
    ],
-   "first": "2023-09-17",
-   "last": "2026-10-11",
+   "first": "2023-09-19",
+   "last": "2026-10-12",
    "name": "ish",
    "avatar_url": "https://avatars.githubusercontent.com/u/55735188?v=4",
    "company": "Innogrid",
@@ -3446,8 +4096,8 @@
     "cb-fw-template",
     "poc-cicd-tumblebug"
    ],
-   "first": "2019-05-19",
-   "last": "2022-12-25",
+   "first": "2019-05-22",
+   "last": "2022-11-25",
    "name": "Jihoon Seo",
    "avatar_url": "https://avatars.githubusercontent.com/u/46767780?v=4",
    "company": "ETRI",
@@ -3464,8 +4114,8 @@
     "cm-butterfly",
     "cloud-migrator"
    ],
-   "first": "2021-04-25",
-   "last": "2025-12-07",
+   "first": "2021-04-27",
+   "last": "2025-12-11",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/78469943?v=4",
    "company": "",
@@ -3479,8 +4129,8 @@
     "cb-spider",
     "cm-butterfly"
    ],
-   "first": "2021-04-18",
-   "last": "2025-12-07",
+   "first": "2021-04-22",
+   "last": "2025-12-12",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/80231499?v=4",
    "company": "",
@@ -3497,8 +4147,8 @@
     "cm-mayfly",
     "cm-butterfly"
    ],
-   "first": "2020-09-13",
-   "last": "2026-08-16",
+   "first": "2020-09-14",
+   "last": "2026-08-21",
    "name": "Yoo Jae-Sung",
    "avatar_url": "https://avatars.githubusercontent.com/u/8984372?v=4",
    "company": "",
@@ -3511,8 +4161,8 @@
     "cb-webtool",
     "cb-spider"
    ],
-   "first": "2019-10-13",
-   "last": "2022-10-30",
+   "first": "2019-10-18",
+   "last": "2022-11-04",
    "name": "Dennis Jun",
    "avatar_url": "https://avatars.githubusercontent.com/u/23101209?v=4",
    "company": "",
@@ -3525,8 +4175,8 @@
     "cb-webtool",
     "cb-spider"
    ],
-   "first": "2021-09-19",
-   "last": "2023-04-16",
+   "first": "2021-09-24",
+   "last": "2023-04-17",
    "name": "Okhee Lee",
    "avatar_url": "https://avatars.githubusercontent.com/u/47209678?v=4",
    "company": "",
@@ -3542,8 +4192,8 @@
     "cm-butterfly",
     "cloud-migrator"
    ],
-   "first": "2023-12-10",
-   "last": "2024-12-15",
+   "first": "2023-12-13",
+   "last": "2024-12-16",
    "name": "Sehyeong An",
    "avatar_url": "https://avatars.githubusercontent.com/u/65079652?v=4",
    "company": "",
@@ -3557,8 +4207,8 @@
     "cb-webtool",
     "cb-spider"
    ],
-   "first": "2021-03-07",
-   "last": "2026-09-13",
+   "first": "2021-03-10",
+   "last": "2026-09-17",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/269351970?v=4",
    "company": "",
@@ -3573,7 +4223,7 @@
     "cb-spider",
     "cm-butterfly"
    ],
-   "first": "2019-07-07",
+   "first": "2019-07-12",
    "last": "2026-08-02",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/186666487?v=4",
@@ -3591,8 +4241,8 @@
     "cb-coffeehouse",
     "poc-cicd-spider"
    ],
-   "first": "2020-08-16",
-   "last": "2021-11-21",
+   "first": "2020-08-21",
+   "last": "2021-11-25",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/109802617?v=4",
    "company": "",
@@ -3614,8 +4264,8 @@
     "cm-beetle",
     "cm-grasshopper"
    ],
-   "first": "2020-08-16",
-   "last": "2025-05-11",
+   "first": "2020-08-21",
+   "last": "2025-05-14",
    "name": "Sooyoung Kim",
    "avatar_url": "https://avatars.githubusercontent.com/u/25163268?v=4",
    "company": "ETRI",
@@ -3638,8 +4288,8 @@
     "cm-honeybee",
     "cm-centipede"
    ],
-   "first": "2020-07-26",
-   "last": "2026-10-04",
+   "first": "2020-07-31",
+   "last": "2026-10-06",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/64775292?v=4",
    "company": "",
@@ -3652,8 +4302,8 @@
     "cm-data-mold",
     "mc-data-manager"
    ],
-   "first": "2023-10-29",
-   "last": "2023-12-17",
+   "first": "2023-10-30",
+   "last": "2023-12-21",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/123622344?v=4",
    "company": "",
@@ -3665,8 +4315,8 @@
    "repos": [
     "mc-data-manager"
    ],
-   "first": "2024-08-18",
-   "last": "2024-11-17",
+   "first": "2024-08-20",
+   "last": "2024-11-22",
    "name": "heedaeshin",
    "avatar_url": "https://avatars.githubusercontent.com/u/173774127?v=4",
    "company": "",
@@ -3679,7 +4329,7 @@
     "cm-butterfly"
    ],
    "first": "2024-09-15",
-   "last": "2024-12-01",
+   "last": "2024-12-04",
    "name": "daeyeon ko",
    "avatar_url": "https://avatars.githubusercontent.com/u/86215246?v=4",
    "company": "",
@@ -3700,8 +4350,8 @@
     "ai-o11y",
     "ai-mcmp"
    ],
-   "first": "2025-01-19",
-   "last": "2026-10-04",
+   "first": "2025-01-23",
+   "last": "2026-10-07",
    "name": "Hannie Zang",
    "avatar_url": "https://avatars.githubusercontent.com/u/194071819?v=4",
    "company": "Electronics and Telecommunications Research Institute",
@@ -3713,8 +4363,8 @@
    "repos": [
     "cb-spider"
    ],
-   "first": "2021-06-06",
-   "last": "2022-12-11",
+   "first": "2021-06-11",
+   "last": "2022-12-16",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/85738574?v=4",
    "company": "",
@@ -3726,8 +4376,8 @@
    "repos": [
     "mc-data-manager"
    ],
-   "first": "2024-08-18",
-   "last": "2025-11-23",
+   "first": "2024-08-22",
+   "last": "2025-11-26",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/173778032?v=4",
    "company": "",
@@ -3740,8 +4390,8 @@
     "cb-spider",
     "cm-cicada"
    ],
-   "first": "2024-05-19",
-   "last": "2026-08-02",
+   "first": "2024-05-23",
+   "last": "2026-08-07",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/67887676?v=4",
    "company": "",
@@ -3754,8 +4404,8 @@
     "cb-spider",
     "cm-butterfly"
    ],
-   "first": "2024-01-14",
-   "last": "2025-02-09",
+   "first": "2024-01-16",
+   "last": "2025-02-14",
    "name": "SungWoong",
    "avatar_url": "https://avatars.githubusercontent.com/u/99646153?v=4",
    "company": "",
@@ -3768,8 +4418,8 @@
     "cb-spider",
     "cloud-barista"
    ],
-   "first": "2020-08-16",
-   "last": "2022-11-13",
+   "first": "2020-08-20",
+   "last": "2022-11-18",
    "name": "jaehong park",
    "avatar_url": "https://avatars.githubusercontent.com/u/10336572?v=4",
    "company": "",
@@ -3781,8 +4431,8 @@
    "repos": [
     "cb-webtool"
    ],
-   "first": "2020-11-01",
-   "last": "2022-10-30",
+   "first": "2020-11-04",
+   "last": "2022-11-01",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/73812728?v=4",
    "company": "",
@@ -3795,8 +4445,8 @@
     "cb-spider",
     "cm-butterfly"
    ],
-   "first": "2023-09-17",
-   "last": "2024-08-18",
+   "first": "2023-09-18",
+   "last": "2024-08-23",
    "name": "Minhyeok LEE",
    "avatar_url": "https://avatars.githubusercontent.com/u/130422754?v=4",
    "company": "@cloudforet-io @m-cmp @cloud-barista @cloud-migrator",
@@ -3809,8 +4459,8 @@
     "cb-webtool",
     "cb-spider"
    ],
-   "first": "2021-03-07",
-   "last": "2022-12-11",
+   "first": "2021-03-10",
+   "last": "2022-12-15",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/59654184?v=4",
    "company": "",
@@ -3822,8 +4472,8 @@
    "repos": [
     "cm-butterfly"
    ],
-   "first": "2024-09-15",
-   "last": "2024-10-27",
+   "first": "2024-09-19",
+   "last": "2024-10-28",
    "name": "이승연",
    "avatar_url": "https://avatars.githubusercontent.com/u/165753731?v=4",
    "company": "",
@@ -3838,8 +4488,8 @@
     "cb-spider",
     "cb-operator"
    ],
-   "first": "2019-10-06",
-   "last": "2022-07-03",
+   "first": "2019-10-10",
+   "last": "2022-07-07",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/51115778?v=4",
    "company": "",
@@ -3853,8 +4503,8 @@
     "cb-dragonfly",
     "cb-spider"
    ],
-   "first": "2019-08-04",
-   "last": "2020-01-26",
+   "first": "2019-08-08",
+   "last": "2020-01-29",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/53715235?v=4",
    "company": "",
@@ -3866,8 +4516,8 @@
    "repos": [
     "mc-data-manager"
    ],
-   "first": "2026-04-19",
-   "last": "2026-09-27",
+   "first": "2026-04-24",
+   "last": "2026-09-29",
    "name": "minyeong.yang",
    "avatar_url": "https://avatars.githubusercontent.com/u/247496628?v=4",
    "company": "",
@@ -3879,8 +4529,8 @@
    "repos": [
     "mc-data-manager"
    ],
-   "first": "2025-07-20",
-   "last": "2025-10-26",
+   "first": "2025-07-22",
+   "last": "2025-10-31",
    "name": "jh.lee",
    "avatar_url": "https://avatars.githubusercontent.com/u/173778176?v=4",
    "company": "",
@@ -3894,8 +4544,8 @@
     "cm-grasshopper",
     "cm-honeybee"
    ],
-   "first": "2024-09-29",
-   "last": "2026-09-13",
+   "first": "2024-09-30",
+   "last": "2026-09-14",
    "name": "SuaKIm",
    "avatar_url": "https://avatars.githubusercontent.com/u/89987472?v=4",
    "company": "",
@@ -3908,8 +4558,8 @@
     "cb-tumblebug",
     "cb-mapui"
    ],
-   "first": "2026-01-04",
-   "last": "2026-06-14",
+   "first": "2026-01-05",
+   "last": "2026-06-20",
    "name": "lee hyeok",
    "avatar_url": "https://avatars.githubusercontent.com/u/180970453?v=4",
    "company": "",
@@ -3923,8 +4573,8 @@
     "cb-spider",
     "cb-operator"
    ],
-   "first": "2020-10-04",
-   "last": "2023-12-10",
+   "first": "2020-10-05",
+   "last": "2023-12-13",
    "name": "innogrid",
    "avatar_url": "https://avatars.githubusercontent.com/u/69338107?v=4",
    "company": "Innogrid",
@@ -3937,8 +4587,8 @@
     "cb-dragonfly",
     "cb-spider"
    ],
-   "first": "2020-05-17",
-   "last": "2023-12-10",
+   "first": "2020-05-18",
+   "last": "2023-12-13",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/64886639?v=4",
    "company": "",
@@ -3950,8 +4600,8 @@
    "repos": [
     "cb-ladybug"
    ],
-   "first": "2020-10-18",
-   "last": "2021-12-12",
+   "first": "2020-10-29",
+   "last": "2021-12-13",
    "name": "sunmi",
    "avatar_url": "https://avatars.githubusercontent.com/u/21170063?v=4",
    "company": "",
@@ -3964,8 +4614,8 @@
     "docs",
     "cloud-barista.github.io"
    ],
-   "first": "2019-11-24",
-   "last": "2020-02-09",
+   "first": "2019-11-28",
+   "last": "2020-02-12",
    "name": "KANG DONG JAE",
    "avatar_url": "https://avatars.githubusercontent.com/u/5770239?v=4",
    "company": "ETRI",
@@ -3977,8 +4627,8 @@
    "repos": [
     "cb-spider"
    ],
-   "first": "2025-01-19",
-   "last": "2025-02-23",
+   "first": "2025-01-21",
+   "last": "2025-02-27",
    "name": "Jinhyeok",
    "avatar_url": "https://avatars.githubusercontent.com/u/85602664?v=4",
    "company": "Koscom",
@@ -3990,8 +4640,8 @@
    "repos": [
     "mc-data-manager"
    ],
-   "first": "2025-11-23",
-   "last": "2026-06-28",
+   "first": "2025-11-26",
+   "last": "2026-07-03",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/204655892?v=4",
    "company": "",
@@ -4003,8 +4653,8 @@
    "repos": [
     "mc-data-manager"
    ],
-   "first": "2026-06-21",
-   "last": "2026-10-04",
+   "first": "2026-06-26",
+   "last": "2026-10-08",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/179773129?v=4",
    "company": "",
@@ -4018,8 +4668,8 @@
     "cb-spider",
     "cb-operator"
    ],
-   "first": "2020-03-15",
-   "last": "2022-05-22",
+   "first": "2020-03-20",
+   "last": "2022-05-24",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/62322630?v=4",
    "company": "",
@@ -4033,8 +4683,8 @@
     "cm-honeybee",
     "cm-model"
    ],
-   "first": "2025-11-30",
-   "last": "2026-08-23",
+   "first": "2025-12-01",
+   "last": "2026-08-27",
    "name": "TeakRyeol Yoo",
    "avatar_url": "https://avatars.githubusercontent.com/u/80720210?v=4",
    "company": "",
@@ -4047,8 +4697,8 @@
     "cm-grasshopper",
     "cm-honeybee"
    ],
-   "first": "2024-06-02",
-   "last": "2026-08-09",
+   "first": "2024-06-07",
+   "last": "2026-08-10",
    "name": "taking",
    "avatar_url": "https://avatars.githubusercontent.com/u/9063986?v=4",
    "company": "innogrid",
@@ -4060,8 +4710,8 @@
    "repos": [
     "cb-webtool"
    ],
-   "first": "2020-05-24",
-   "last": "2021-06-27",
+   "first": "2020-05-25",
+   "last": "2021-06-29",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/51183269?v=4",
    "company": "MegazoneCloud",
@@ -4073,8 +4723,8 @@
    "repos": [
     "cb-ladybug"
    ],
-   "first": "2021-11-21",
-   "last": "2022-12-11",
+   "first": "2021-11-22",
+   "last": "2022-12-14",
    "name": "joowon",
    "avatar_url": "https://avatars.githubusercontent.com/u/85204858?v=4",
    "company": "",
@@ -4086,8 +4736,8 @@
    "repos": [
     "cm-butterfly"
    ],
-   "first": "2025-09-07",
-   "last": "2025-12-28",
+   "first": "2025-09-09",
+   "last": "2026-01-02",
    "name": "Dahyun Yu",
    "avatar_url": "https://avatars.githubusercontent.com/u/18563857?v=4",
    "company": "@spaceone-dev",
@@ -4101,8 +4751,8 @@
     "cm-honeybee",
     "cm-cicada"
    ],
-   "first": "2023-11-12",
-   "last": "2023-12-17",
+   "first": "2023-11-16",
+   "last": "2023-12-18",
    "name": "codex",
    "avatar_url": "https://avatars.githubusercontent.com/u/50574588?v=4",
    "company": "@innogrid",
@@ -4115,8 +4765,8 @@
     "cb-ladybug",
     "cb-operator"
    ],
-   "first": "2020-10-04",
-   "last": "2022-12-11",
+   "first": "2020-10-21",
+   "last": "2022-12-14",
    "name": "Eunsang",
    "avatar_url": "https://avatars.githubusercontent.com/u/35829386?v=4",
    "company": "Aconsoft",
@@ -4128,8 +4778,8 @@
    "repos": [
     "cb-spider"
    ],
-   "first": "2023-12-31",
-   "last": "2024-06-30",
+   "first": "2024-01-02",
+   "last": "2024-07-02",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/44657810?v=4",
    "company": "",
@@ -4142,8 +4792,8 @@
     "cb-spider",
     "cm-mayfly"
    ],
-   "first": "2024-01-28",
-   "last": "2024-05-05",
+   "first": "2024-01-29",
+   "last": "2024-05-08",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/71921309?v=4",
    "company": "",
@@ -4157,7 +4807,7 @@
     "cb-coffeehouse"
    ],
    "first": "2021-08-15",
-   "last": "2021-10-10",
+   "last": "2021-10-14",
    "name": "이도훈",
    "avatar_url": "https://avatars.githubusercontent.com/u/33706689?v=4",
    "company": "",
@@ -4171,7 +4821,7 @@
     "mc-data-manager"
    ],
    "first": "2023-10-22",
-   "last": "2023-12-03",
+   "last": "2023-12-06",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/145525862?v=4",
    "company": "",
@@ -4184,8 +4834,8 @@
     "poc-cb-spider",
     "cb-spider"
    ],
-   "first": "2019-07-28",
-   "last": "2019-10-06",
+   "first": "2019-07-29",
+   "last": "2019-10-07",
    "name": "cns-innogrid",
    "avatar_url": "https://avatars.githubusercontent.com/u/53161746?v=4",
    "company": "",
@@ -4198,8 +4848,8 @@
     "cb-tumblebug",
     "cb-larva"
    ],
-   "first": "2021-09-12",
-   "last": "2021-10-10",
+   "first": "2021-09-17",
+   "last": "2021-10-11",
    "name": "Seongbin Bernie Cho",
    "avatar_url": "https://avatars.githubusercontent.com/u/32432141?v=4",
    "company": "Kakaostyle Corp.",
@@ -4214,8 +4864,8 @@
     "cb-larva",
     "cb-coffeehouse"
    ],
-   "first": "2021-08-22",
-   "last": "2021-12-26",
+   "first": "2021-08-24",
+   "last": "2021-12-27",
    "name": "Taegeon An",
    "avatar_url": "https://avatars.githubusercontent.com/u/44899448?v=4",
    "company": "",
@@ -4227,8 +4877,8 @@
    "repos": [
     "cloud-barista.github.io"
    ],
-   "first": "2019-03-31",
-   "last": "2019-05-05",
+   "first": "2019-04-05",
+   "last": "2019-05-07",
    "name": "Oliver Stapleton",
    "avatar_url": "https://avatars.githubusercontent.com/u/2379825?v=4",
    "company": "@datamavericks",
@@ -4241,8 +4891,8 @@
     "cb-log",
     "cb-store"
    ],
-   "first": "2020-09-27",
-   "last": "2020-10-11",
+   "first": "2020-09-29",
+   "last": "2020-10-14",
    "name": "Morris Chang",
    "avatar_url": "https://avatars.githubusercontent.com/u/10665263?v=4",
    "company": "MSFL",
@@ -4254,8 +4904,8 @@
    "repos": [
     "cloud-barista.github.io"
    ],
-   "first": "2020-02-09",
-   "last": "2020-02-09",
+   "first": "2020-02-12",
+   "last": "2020-02-14",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/49976489?v=4",
    "company": "",
@@ -4268,8 +4918,8 @@
     "cm-honeybee",
     "cm-cicada"
    ],
-   "first": "2023-11-26",
-   "last": "2024-05-19",
+   "first": "2023-11-28",
+   "last": "2024-05-23",
    "name": "jollaman999",
    "avatar_url": "https://avatars.githubusercontent.com/u/7971489?v=4",
    "company": "",
@@ -4283,8 +4933,8 @@
     "cb-spider",
     "cb-operator"
    ],
-   "first": "2021-08-22",
-   "last": "2021-11-28",
+   "first": "2021-08-21",
+   "last": "2021-12-03",
    "name": "Park Beomsu",
    "avatar_url": "https://avatars.githubusercontent.com/u/26251856?v=4",
    "company": "@whatap @cloud-barista",
@@ -4299,8 +4949,8 @@
     "cb-spider",
     "cb-operator"
    ],
-   "first": "2020-03-22",
-   "last": "2023-12-10",
+   "first": "2020-03-24",
+   "last": "2023-12-14",
    "name": "Jin-Whee-Park",
    "avatar_url": "https://avatars.githubusercontent.com/u/51406068?v=4",
    "company": "",
@@ -4312,8 +4962,8 @@
    "repos": [
     "ai-ops"
    ],
-   "first": "2026-06-21",
-   "last": "2026-06-21",
+   "first": "2026-06-24",
+   "last": "2026-06-24",
    "name": "GEONHAE LEE",
    "avatar_url": "https://avatars.githubusercontent.com/u/268482912?v=4",
    "company": "",
@@ -4326,8 +4976,8 @@
     "cb-tumblebug",
     "cb-coffeehouse"
    ],
-   "first": "2021-08-15",
-   "last": "2021-09-26",
+   "first": "2021-08-18",
+   "last": "2021-09-28",
    "name": "Janghun Lee(James)",
    "avatar_url": "https://avatars.githubusercontent.com/u/72970232?v=4",
    "company": "HongikIT",
@@ -4339,8 +4989,8 @@
    "repos": [
     "cb-dragonfly"
    ],
-   "first": "2022-10-23",
-   "last": "2022-11-20",
+   "first": "2022-10-25",
+   "last": "2022-11-24",
    "name": "happyso",
    "avatar_url": "https://avatars.githubusercontent.com/u/29159013?v=4",
    "company": "",
@@ -4354,7 +5004,7 @@
     "cb-spider",
     "cb-coffeehouse"
    ],
-   "first": "2021-08-08",
+   "first": "2021-08-11",
    "last": "2021-10-31",
    "name": "sglim",
    "avatar_url": "https://avatars.githubusercontent.com/u/53066410?v=4",
@@ -4368,8 +5018,8 @@
     "cb-tumblebug",
     "cb-coffeehouse"
    ],
-   "first": "2021-08-15",
-   "last": "2021-09-19",
+   "first": "2021-08-21",
+   "last": "2021-09-23",
    "name": "INHYO",
    "avatar_url": "https://avatars.githubusercontent.com/u/47745785?v=4",
    "company": "",
@@ -4399,7 +5049,7 @@
     "cb-tumblebug"
    ],
    "first": "2021-09-26",
-   "last": "2021-10-17",
+   "last": "2021-10-18",
    "name": "soyeon Park",
    "avatar_url": "https://avatars.githubusercontent.com/u/46469385?v=4",
    "company": "",
@@ -4411,8 +5061,8 @@
    "repos": [
     "mc-data-manager"
    ],
-   "first": "2025-08-17",
-   "last": "2025-08-24",
+   "first": "2025-08-21",
+   "last": "2025-08-29",
    "name": "Jangyu Hong",
    "avatar_url": "https://avatars.githubusercontent.com/u/436320?v=4",
    "company": "",
@@ -4425,8 +5075,8 @@
     "cb-log",
     "cb-spider"
    ],
-   "first": "2020-09-06",
-   "last": "2020-10-25",
+   "first": "2020-09-10",
+   "last": "2020-10-26",
    "name": "yoonjiO",
    "avatar_url": "https://avatars.githubusercontent.com/u/58655520?v=4",
    "company": "",
@@ -4452,8 +5102,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2022-10-16",
-   "last": "2022-10-23",
+   "first": "2022-10-19",
+   "last": "2022-10-26",
    "name": "Rohit Rajput",
    "avatar_url": "https://avatars.githubusercontent.com/u/83547290?v=4",
    "company": "",
@@ -4465,8 +5115,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2021-09-05",
-   "last": "2021-09-05",
+   "first": "2021-09-06",
+   "last": "2021-09-11",
    "name": "Hassan Alsamahi",
    "avatar_url": "https://avatars.githubusercontent.com/u/42076287?v=4",
    "company": "Nvidia",
@@ -4478,8 +5128,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2020-09-06",
-   "last": "2020-09-06",
+   "first": "2020-09-11",
+   "last": "2020-09-11",
    "name": "cat-taesik",
    "avatar_url": "https://avatars.githubusercontent.com/u/67404759?v=4",
    "company": "",
@@ -4492,7 +5142,7 @@
     "cb-tumblebug",
     "cb-coffeehouse"
    ],
-   "first": "2021-08-29",
+   "first": "2021-08-30",
    "last": "2021-09-26",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/46340193?v=4",
@@ -4505,8 +5155,8 @@
    "repos": [
     "cb-coffeehouse"
    ],
-   "first": "2021-08-15",
-   "last": "2021-08-15",
+   "first": "2021-08-18",
+   "last": "2021-08-18",
    "name": "eeeclipse",
    "avatar_url": "https://avatars.githubusercontent.com/u/48973781?v=4",
    "company": "",
@@ -4519,8 +5169,8 @@
     "cm-grasshopper",
     "cm-honeybee"
    ],
-   "first": "2026-09-27",
-   "last": "2026-09-27",
+   "first": "2026-10-01",
+   "last": "2026-10-02",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/120072540?v=4",
    "company": "",
@@ -4532,8 +5182,8 @@
    "repos": [
     "mc-data-manager"
    ],
-   "first": "2026-04-12",
-   "last": "2026-04-26",
+   "first": "2026-04-17",
+   "last": "2026-04-27",
    "name": "geontae89",
    "avatar_url": "https://avatars.githubusercontent.com/u/60537531?v=4",
    "company": "",
@@ -4545,8 +5195,8 @@
    "repos": [
     "ai-ops"
    ],
-   "first": "2026-06-21",
-   "last": "2026-06-21",
+   "first": "2026-06-24",
+   "last": "2026-06-25",
    "name": "jmc0504",
    "avatar_url": "https://avatars.githubusercontent.com/u/92536620?v=4",
    "company": "Kynghee univ",
@@ -4558,8 +5208,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2021-09-19",
-   "last": "2021-09-26",
+   "first": "2021-09-25",
+   "last": "2021-09-28",
    "name": "Abidin Durdu",
    "avatar_url": "https://avatars.githubusercontent.com/u/71967052?v=4",
    "company": "",
@@ -4571,8 +5221,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2021-09-26",
-   "last": "2021-09-26",
+   "first": "2021-09-27",
+   "last": "2021-09-28",
    "name": "Jayita Pramanik",
    "avatar_url": "https://avatars.githubusercontent.com/u/85472715?v=4",
    "company": "Mercari, Inc.",
@@ -4584,8 +5234,8 @@
    "repos": [
     "cb-spider"
    ],
-   "first": "2024-07-21",
-   "last": "2024-07-21",
+   "first": "2024-07-25",
+   "last": "2024-07-25",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/73513142?v=4",
    "company": "",
@@ -4597,8 +5247,8 @@
    "repos": [
     "cb-spider"
    ],
-   "first": "2021-07-18",
-   "last": "2021-07-18",
+   "first": "2021-07-20",
+   "last": "2021-07-20",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/59792842?v=4",
    "company": "",
@@ -4610,8 +5260,8 @@
    "repos": [
     "cloud-barista.github.io"
    ],
-   "first": "2020-01-26",
-   "last": "2020-01-26",
+   "first": "2020-01-28",
+   "last": "2020-01-28",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/5266479?v=4",
    "company": "Electronics and Telecommunications Research Institute(ETRI)",
@@ -4623,8 +5273,8 @@
    "repos": [
     "mc-data-manager"
    ],
-   "first": "2026-07-19",
-   "last": "2026-07-19",
+   "first": "2026-07-22",
+   "last": "2026-07-22",
    "name": "Suyoung.So",
    "avatar_url": "https://avatars.githubusercontent.com/u/66761657?v=4",
    "company": "",
@@ -4636,8 +5286,8 @@
    "repos": [
     "cb-log"
    ],
-   "first": "2020-09-06",
-   "last": "2020-09-06",
+   "first": "2020-09-11",
+   "last": "2020-09-11",
    "name": "Jin Park",
    "avatar_url": "https://avatars.githubusercontent.com/u/47945637?v=4",
    "company": "",
@@ -4649,8 +5299,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2024-09-29",
-   "last": "2024-09-29",
+   "first": "2024-10-02",
+   "last": "2024-10-02",
    "name": "Shehzad",
    "avatar_url": "https://avatars.githubusercontent.com/u/55528726?v=4",
    "company": "@adobe",
@@ -4662,8 +5312,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2021-10-17",
-   "last": "2021-10-17",
+   "first": "2021-10-24",
+   "last": "2021-10-24",
    "name": "Stuart Gilbert",
    "avatar_url": "https://avatars.githubusercontent.com/u/389169?v=4",
    "company": "",
@@ -4675,8 +5325,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2024-09-29",
-   "last": "2024-09-29",
+   "first": "2024-10-02",
+   "last": "2024-10-02",
    "name": "Tharun K",
    "avatar_url": "https://avatars.githubusercontent.com/u/53267275?v=4",
    "company": "Individual Consultant",
@@ -4688,8 +5338,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2021-10-24",
-   "last": "2021-10-24",
+   "first": "2021-10-28",
+   "last": "2021-10-28",
    "name": "Tríona",
    "avatar_url": "https://avatars.githubusercontent.com/u/2207006?v=4",
    "company": "",
@@ -4701,8 +5351,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2022-10-16",
-   "last": "2022-10-16",
+   "first": "2022-10-21",
+   "last": "2022-10-21",
    "name": "Arshad",
    "avatar_url": "https://avatars.githubusercontent.com/u/49522121?v=4",
    "company": "Zebpay",
@@ -4714,8 +5364,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2022-09-04",
-   "last": "2022-09-04",
+   "first": "2022-09-08",
+   "last": "2022-09-08",
    "name": "Sanghong Kim",
    "avatar_url": "https://avatars.githubusercontent.com/u/58922834?v=4",
    "company": "",
@@ -4727,8 +5377,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2026-08-23",
-   "last": "2026-08-23",
+   "first": "2026-08-24",
+   "last": "2026-08-24",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/225635097?v=4",
    "company": "",
@@ -4740,8 +5390,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2021-09-26",
-   "last": "2021-09-26",
+   "first": "2021-09-28",
+   "last": "2021-09-28",
    "name": "Mukul Kolpe",
    "avatar_url": "https://avatars.githubusercontent.com/u/78664749?v=4",
    "company": "",
@@ -4753,8 +5403,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2024-10-20",
-   "last": "2024-10-20",
+   "first": "2024-10-23",
+   "last": "2024-10-23",
    "name": "Mohit Kambli",
    "avatar_url": "https://avatars.githubusercontent.com/u/31406633?v=4",
    "company": "",
@@ -4766,8 +5416,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2021-10-24",
-   "last": "2021-10-24",
+   "first": "2021-10-28",
+   "last": "2021-10-28",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/47938892?v=4",
    "company": "",
@@ -4779,8 +5429,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2024-10-20",
-   "last": "2024-10-20",
+   "first": "2024-10-23",
+   "last": "2024-10-23",
    "name": "Ikko Eltociear Ashimine",
    "avatar_url": "https://avatars.githubusercontent.com/u/22633385?v=4",
    "company": "",
@@ -4792,8 +5442,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2021-09-19",
-   "last": "2021-09-19",
+   "first": "2021-09-25",
+   "last": "2021-09-25",
    "name": "Gibaek Nam",
    "avatar_url": "https://avatars.githubusercontent.com/u/17192707?v=4",
    "company": "",
@@ -4805,8 +5455,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2024-09-22",
-   "last": "2024-09-22",
+   "first": "2024-09-27",
+   "last": "2024-09-27",
    "name": "Gabriel Lima",
    "avatar_url": "https://avatars.githubusercontent.com/u/105322029?v=4",
    "company": "",
@@ -4831,8 +5481,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2021-10-10",
-   "last": "2021-10-10",
+   "first": "2021-10-12",
+   "last": "2021-10-12",
    "name": "Carlos Felix",
    "avatar_url": "https://avatars.githubusercontent.com/u/18339454?v=4",
    "company": "",
@@ -4844,8 +5494,8 @@
    "repos": [
     "cb-tumblebug"
    ],
-   "first": "2021-10-24",
-   "last": "2021-10-24",
+   "first": "2021-10-29",
+   "last": "2021-10-29",
    "name": "Benjamin Just",
    "avatar_url": "https://avatars.githubusercontent.com/u/7022144?v=4",
    "company": "",
@@ -4857,8 +5507,8 @@
    "repos": [
     "cb-dragonfly"
    ],
-   "first": "2021-05-23",
-   "last": "2021-05-23",
+   "first": "2021-05-26",
+   "last": "2021-05-26",
    "name": "jaeho park",
    "avatar_url": "https://avatars.githubusercontent.com/u/32018065?v=4",
    "company": "",
@@ -4870,8 +5520,8 @@
    "repos": [
     "cb-webtool"
    ],
-   "first": "2020-11-08",
-   "last": "2020-11-08",
+   "first": "2020-11-11",
+   "last": "2020-11-11",
    "name": "zephy-Jeong",
    "avatar_url": "https://avatars.githubusercontent.com/u/51182939?v=4",
    "company": "MegazoneCloud",
@@ -4883,8 +5533,8 @@
    "repos": [
     "cb-larva"
    ],
-   "first": "2021-09-19",
-   "last": "2021-09-19",
+   "first": "2021-09-21",
+   "last": "2021-09-21",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/76810109?v=4",
    "company": "",
@@ -4896,8 +5546,8 @@
    "repos": [
     "cb-coffeehouse"
    ],
-   "first": "2021-08-22",
-   "last": "2021-08-22",
+   "first": "2021-08-25",
+   "last": "2021-08-25",
    "name": "Hyunkyung",
    "avatar_url": "https://avatars.githubusercontent.com/u/21353715?v=4",
    "company": "",
@@ -4909,8 +5559,8 @@
    "repos": [
     "cb-coffeehouse"
    ],
-   "first": "2021-09-05",
-   "last": "2021-09-05",
+   "first": "2021-09-07",
+   "last": "2021-09-07",
    "name": "Meet Rajesh Gor",
    "avatar_url": "https://avatars.githubusercontent.com/u/40317114?v=4",
    "company": "",
@@ -4922,8 +5572,8 @@
    "repos": [
     "cm-honeybee"
    ],
-   "first": "2025-05-18",
-   "last": "2025-05-18",
+   "first": "2025-05-19",
+   "last": "2025-05-19",
    "name": "Alex Goodman",
    "avatar_url": "https://avatars.githubusercontent.com/u/590471?v=4",
    "company": "@anchore",
@@ -4935,8 +5585,8 @@
    "repos": [
     "cm-honeybee"
    ],
-   "first": "2024-11-24",
-   "last": "2024-11-24",
+   "first": "2024-11-25",
+   "last": "2024-11-25",
    "name": "Pierre Guilleminot",
    "avatar_url": "https://avatars.githubusercontent.com/u/687847?v=4",
    "company": "",
@@ -4948,8 +5598,8 @@
    "repos": [
     "cm-honeybee"
    ],
-   "first": "2024-04-14",
-   "last": "2024-04-14",
+   "first": "2024-04-20",
+   "last": "2024-04-20",
    "name": "guoguangwu",
    "avatar_url": "https://avatars.githubusercontent.com/u/8717479?v=4",
    "company": "",
@@ -4961,8 +5611,8 @@
    "repos": [
     "cm-honeybee"
    ],
-   "first": "2025-04-27",
-   "last": "2025-04-27",
+   "first": "2025-05-01",
+   "last": "2025-05-01",
    "name": "",
    "avatar_url": "https://avatars.githubusercontent.com/u/74327243?v=4",
    "company": "",

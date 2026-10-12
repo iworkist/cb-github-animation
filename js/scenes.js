@@ -1,61 +1,113 @@
 // All scenes. Each scene is { id, section, cls, accent, run(ctx) }.
+// The show is one story: a cup of coffee brewed over seven years by a community.
 (function () {
-  const { h, avatar, cupSVG, heroCupSVG, frag, ease } = window.Show;
+  const { h, avatar, images, cupSVG, heroCupSVG, beanSVG, frag, ease, clock } = window.Show;
   const fmt = (n) => Math.round(n).toLocaleString("en-US");
-  const SVGNS = "http://www.w3.org/2000/svg";
+  const { ym, ymd } = window.ShowModel;
+  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+  // keep hyphenated project names (CB-Spider, AI-MCMP …) on one line
+  const nowrapNames = (s) => esc(s).replace(/[A-Za-z]+(?:-[A-Za-z0-9]+)+/g, '<span style="white-space:nowrap">$&</span>');
+  const DAYS = ["월", "화", "수", "목", "금", "토", "일"];
 
   const SECTIONS = [
-    { id: "welcome", label: "Welcome" },
+    { id: "prologue", label: "Prologue" },
     { id: "numbers", label: "Numbers" },
-    { id: "journey", label: "Journey" },
-    { id: "menu", label: "Releases" },
+    { id: "timeline", label: "Timeline" },
+    { id: "years", label: "Years" },
+    { id: "menu", label: "Menu" },
     { id: "projects", label: "Projects" },
+    { id: "constellation", label: "Constellation" },
     { id: "people", label: "People" },
+    { id: "now", label: "Now" },
   ];
 
-  // ======================================================= intro
-  function intro(M, cfg) {
+  // Draws the hero cup's outline, pours the liquid, then lets the steam become a cloud.
+  function brewCup(ctx, cup, { delay = 0, draw = 1100, pour = 1500 } = {}) {
+    const strokes = [...cup.querySelectorAll(".body, .handle, .saucer")];
+    const cloud = cup.querySelector(".cloud");
+    const pourEl = cup.querySelector(".pour");
+    const steam = cup.querySelector(".steam");
+    for (const s of [...strokes, cloud]) { s.setAttribute("pathLength", "1"); s.style.strokeDasharray = "1"; s.style.strokeDashoffset = "1"; }
+    steam.style.opacity = 0;
+    strokes.forEach((s, i) => ctx.anim(s, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: draw, delay: delay + i * 120, easing: "ease-in-out" }));
+    ctx.wait(delay + draw * 0.6).then(() => ctx.tween(pour, (p) => { pourEl.style.transform = `translateY(${100 * (1 - p)}px)`; }, ease.inOut)).catch(() => {});
+    ctx.anim(steam, [{ opacity: 0 }, { opacity: 0.75 }], { duration: 800, delay: delay + draw + pour * 0.5 });
+    ctx.anim(cloud, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 1800, delay: delay + draw + pour * 0.6, easing: "ease-in-out" });
+    return delay + draw + pour + 1200;
+  }
+
+  // ======================================================= prologue
+  function prologue(M, cfg) {
     return {
-      id: "intro", section: "welcome", cls: "s-intro", accent: "#e9b872",
+      id: "prologue", section: "prologue", cls: "s-prologue", accent: "#e9b872",
       async run(ctx) {
         const { root } = ctx;
-        const cup = frag(heroCupSVG());
+        // phase A: a bean and the first lines of history
+        const bean = frag(beanSVG());
+        const entries = [[M.stats.orgCreated, "GitHub 조직 cloud-barista 생성"]];
+        if (M.firstCommit) entries.push([M.firstCommit.date, `첫 커밋  “${M.firstCommit.message}”  — ${M.firstCommit.name || M.firstCommit.login}`]);
+        if (M.stats.firstRelease) entries.push([M.stats.firstRelease.date, `첫 릴리스  ${M.stats.firstRelease.tag}`]);
+        const lines = entries.map(([d, t]) => ({ text: t, el: h("div", "line", h("span", "d", ymd(d)), h("span", "t")) }));
+        const term = h("div", "term", lines.map((l) => l.el));
+        const A = h("div", "ph ph-a", bean, term);
+
+        // phase B: the cup, and the title
+        const since = h("div", "since", h("b", null, `그로부터 ${M.stats.yearsActive}년`), ", 한 잔의 이야기");
+        const cup = frag(heroCupSVG({ level: 0 }));
         cup.classList.add("hero-cup");
         const words = cfg.eventTitle.split(" ");
         const title = h("div", "title",
           h("span", "w grad", words[0]), words.length > 2 ? h("br") : " ",
           words.slice(1).map((w, i) => [h("span", "w", w), i < words.length - 2 ? " " : ""]));
-        const kicker = h("div", "kicker", cfg.edition ? `${cfg.edition} · Welcome` : "Welcome");
-        const metaBits = [cfg.eventDate, cfg.venue].filter(Boolean);
+        const metaBits = [cfg.edition, cfg.eventDate, cfg.venue].filter(Boolean);
         const meta = metaBits.length ? h("div", "meta", metaBits.flatMap((m, i) => (i ? [h("span", "dot"), m] : [m]))) : null;
         const first = M.years[0].year, last = M.years[M.years.length - 1].year;
-        const years = h("div", { class: "years", html: `<b>${first}</b> — <b>${last}</b> &nbsp;·&nbsp; ${cfg.tagline}` });
+        const years = h("div", { class: "years", html: `<b>${first}</b> — <b>${last}</b> &nbsp;·&nbsp; ${esc(cfg.tagline)}` });
         const url = h("div", "url", "GITHUB.COM/CLOUD-BARISTA");
-        root.append(...[cup, kicker, title, meta, years, url].filter(Boolean));
+        const B = h("div", "ph ph-b", ...[since, cup, title, meta, years, url].filter(Boolean));
+        B.style.opacity = 0;
+        root.append(A, B);
 
-        const cloud = cup.querySelector(".cloud");
-        cloud.setAttribute("pathLength", "1");
-        cloud.style.strokeDasharray = "1";
-        ctx.anim(cup, [{ opacity: 0, transform: "translateY(40px) scale(.9)" }, { opacity: 1, transform: "none" }], { duration: 1200 });
-        ctx.anim(cloud, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 2200, delay: 600, easing: "ease-in-out" });
-        ctx.anim(kicker, [{ opacity: 0, letterSpacing: "0.8em" }, { opacity: 1, letterSpacing: "0.32em" }], { duration: 1400, delay: 500 });
-        ctx.stagger(title.querySelectorAll(".w"), { delay: 800, each: 160, duration: 1100, from: { opacity: 0, transform: "translateY(80px)", filter: "blur(12px)" }, to: { opacity: 1, transform: "none", filter: "blur(0)" } });
-        ctx.stagger([meta, years, url].filter(Boolean), { delay: 1700, each: 220, duration: 1000 });
-        ctx.anim(title, [{ transform: "scale(1)" }, { transform: "scale(1.03)" }], { duration: 11000, delay: 1800, easing: "ease-in-out" });
-        await ctx.wait(11000);
+        // A
+        ctx.anim(bean, [
+          { opacity: 0, transform: "translateY(-520px) rotate(-40deg)", offset: 0 },
+          { opacity: 1, offset: 0.15 },
+          { transform: "translateY(0) rotate(0)", offset: 0.75, easing: "cubic-bezier(.3,0,.6,1)" },
+          { transform: "translateY(-36px) scale(1.04,.96)", offset: 0.88 },
+          { transform: "translateY(0) scale(1)", offset: 1 },
+        ], { duration: 1500, easing: "linear" });
+        await ctx.wait(1500);
+        for (const l of lines) {
+          ctx.anim(l.el, [{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 400 });
+          l.el.classList.add("typing");
+          await ctx.type(l.el.querySelector(".t"), l.text, 34);
+          l.el.classList.remove("typing");
+          await ctx.wait(650);
+        }
+        await ctx.wait(900);
+        ctx.anim(A, [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-40px)", filter: "blur(6px)" }], { duration: 700, easing: "ease-in" });
+        await ctx.wait(600);
+
+        // B
+        B.style.opacity = 1;
+        ctx.anim(since, [{ opacity: 0, transform: "translateY(20px)" }, { opacity: 1, transform: "none" }], { duration: 900 });
+        const brewed = brewCup(ctx, cup, { delay: 500 });
+        ctx.stagger(title.querySelectorAll(".w"), { delay: 2400, each: 160, duration: 1100, from: { opacity: 0, transform: "translateY(80px)", filter: "blur(12px)" }, to: { opacity: 1, transform: "none", filter: "blur(0)" } });
+        ctx.stagger([meta, years, url].filter(Boolean), { delay: 3400, each: 220, duration: 1000 });
+        ctx.anim(title, [{ transform: "scale(1)" }, { transform: "scale(1.03)" }], { duration: 9000, delay: 3600, easing: "ease-in-out" });
+        await ctx.wait(Math.max(brewed, 3400) + 7600);
       },
     };
   }
 
-  // ======================================================= numbers
-  function numbers(M) {
+  // ======================================================= numbers: what's in the cup
+  function cupNumbers(M) {
     return {
-      id: "numbers", section: "numbers", cls: "s-numbers", accent: "#7cc4ff",
+      id: "cup", section: "numbers", cls: "s-cup", accent: "#e9b872",
       async run(ctx) {
         const S = M.stats;
-        const gen = M.generatedAt.slice(0, 10).replace(/-/g, ".");
         const tiles = [
-          { v: S.yearsActive, suf: "년+", k: "함께한 시간", d: `${S.orgSince} GitHub 조직 생성부터`, tint: "#e9b872" },
+          { v: S.yearsActive, suf: "년", k: "함께한 시간", d: `${S.orgSince} GitHub 조직 생성부터`, tint: "#e9b872" },
           { v: S.repos, k: "레포지토리", d: "github.com/cloud-barista", tint: "#d98a4e" },
           { v: S.people, suf: "명", k: "기여자", d: "커밋으로 함께한 사람들", tint: "#7cc4ff" },
           { v: S.commits, k: "커밋", d: "자동화 계정을 제외한 사람의 커밋", tint: "#e9b872" },
@@ -63,28 +115,46 @@
           { v: S.stars, k: "GitHub Stars", d: "모든 레포지토리 합계", tint: "#f5d96b" },
         ];
         const head = h("div", "head",
-          h("div", "kicker", "By the numbers"),
-          h("div", "h1", "숫자로 보는 Cloud-Barista"),
-          h("div", "lead muted", `GitHub 기준 · ${gen}`));
+          h("div", "kicker", "What's in the cup"),
+          h("div", "h1", "한 잔에 담긴 것"),
+          h("div", "lead muted", `GitHub 기준 · ${ymd(M.generatedAt)}`));
+        const cup = frag(heroCupSVG({ level: 0 }));
+        cup.classList.add("big-cup");
         const vEls = [];
-        const grid = h("div", "grid", tiles.map((t) => {
+        const tileEls = tiles.map((t) => {
           const v = h("span", "num", "0");
           vEls.push(v);
-          return h("div", { class: "stat", "--tint": t.tint },
+          const el = h("div", { class: "stat", "--tint": t.tint },
             h("div", "v", v, t.suf ? h("small", null, t.suf) : null),
             h("div", "k", t.k), h("div", "d", t.d));
-        }));
-        ctx.root.append(head, grid);
+          el.style.opacity = 0;
+          return el;
+        });
+        const grid = h("div", "grid", tileEls);
+        ctx.root.append(head, h("div", "cols", h("div", "cupcol", cup), grid));
         ctx.stagger(head.children, { each: 120 });
-        ctx.stagger(grid.children, { delay: 500, each: 140, duration: 900, from: { opacity: 0, transform: "translateY(40px) scale(.97)" } });
-        await ctx.wait(600);
-        tiles.forEach((t, i) => ctx.wait(i * 140).then(() => ctx.countUp(vEls[i], t.v, 2000)).catch(() => {}));
-        await ctx.wait(10500);
+        ctx.anim(cup, [{ opacity: 0, transform: "translateY(30px)" }, { opacity: 1, transform: "none" }], { duration: 900, delay: 300 });
+        const steam = cup.querySelector(".steam");
+        steam.style.opacity = 0;
+        const pourEl = cup.querySelector(".pour");
+        await ctx.wait(900);
+        let shown = 0;
+        await ctx.tween(5200, (p) => {
+          pourEl.style.transform = `translateY(${100 * (1 - p)}px)`;
+          while (shown < tiles.length && p >= (shown + 0.5) / tiles.length) {
+            const i = shown++;
+            tileEls[i].style.opacity = "";
+            ctx.anim(tileEls[i], [{ opacity: 0, transform: "translateX(40px) scale(.97)" }, { opacity: 1, transform: "none" }], { duration: 800 });
+            ctx.countUp(vEls[i], tiles[i].v, 1800).catch(() => {});
+          }
+        }, ease.inOut);
+        ctx.anim(steam, [{ opacity: 0 }, { opacity: 0.75 }], { duration: 800 });
+        await ctx.wait(6200);
       },
     };
   }
 
-  // ======================================================= activity chart
+  // ======================================================= timeline: commits & releases
   function monotonePath(pts) {
     // Fritsch–Carlson monotone cubic: smooth without overshooting below zero.
     const n = pts.length;
@@ -102,11 +172,10 @@
     return d;
   }
 
-  function activity(M) {
+  function timeline(M) {
     return {
-      id: "activity", section: "journey", cls: "s-activity", accent: "#e9b872",
+      id: "timeline", section: "timeline", cls: "s-activity", accent: "#e9b872",
       async run(ctx) {
-        // continuous month list
         const byM = new Map(M.months.map((x) => [x.m, x.n]));
         const firstM = M.months[0].m, lastM = M.months[M.months.length - 1].m;
         const months = [];
@@ -133,7 +202,7 @@
         const area = `${line}L${R},${B}L${L},${B}Z`;
 
         let gridSvg = "";
-        for (let v = 0; v <= yMax; v += step) gridSvg += `<line x1="${L}" x2="${R}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${L - 18}" y="${Y(v) + 7}" text-anchor="end" class="axis-l">${fmt(v)}</text>`;
+        for (let v = 0; v <= yMax; v += step) gridSvg += `<line x1="${L}" x2="${R}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${L - 18}" y="${Y(v) + 7}" text-anchor="end">${fmt(v)}</text>`;
         let xSvg = "";
         months.forEach((x, i) => {
           if (x.m.endsWith("-01") || i === 0) xSvg += `<line x1="${X(i)}" x2="${X(i)}" y1="${B}" y2="${B + 10}" stroke="rgba(246,237,227,.3)"/><text class="year" x="${X(i)}" y="${B + 44}" text-anchor="start">${x.m.slice(0, 4)}</text>`;
@@ -141,12 +210,11 @@
 
         const rels = M.releases.map((r, i) => {
           const x = L + (idxOfDate(r.date) / (N - 1)) * (R - L);
-          const row = i % 2;
-          const ny = row ? 350 : 296;
+          const ny = i % 2 ? 350 : 296;
           const anchor = x > R - 70 ? "end" : x < L + 70 ? "start" : "middle";
           return { r, x, html: `<g class="rel" opacity="0"><line x1="${x}" x2="${x}" y1="${ny + 30}" y2="${B}"/>
             <circle cx="${x}" cy="${ny + 30}" r="5" fill="${r.accent}"/>
-            <text class="rn" x="${x}" y="${ny}" text-anchor="${anchor}">${r.name}</text>
+            <text class="rn" x="${x}" y="${ny}" text-anchor="${anchor}">${esc(r.name)}</text>
             <text class="rv" x="${x}" y="${ny + 20}" text-anchor="${anchor}">${r.version} · ${r.ym}</text></g>` };
         });
 
@@ -169,19 +237,17 @@
           </g>
           <g class="peak" opacity="0">
             <circle cx="${X(peakI)}" cy="${Y(max)}" r="9" fill="#e9b872" stroke="#0f0b09" stroke-width="3"/>
-            <text x="${X(peakI) - 18}" y="${Y(max) - 18}" text-anchor="end">가장 뜨거웠던 달 · ${ShowModel.ym(months[peakI].m)} · ${fmt(max)} 커밋</text>
+            <text x="${X(peakI) - 18}" y="${Y(max) - 18}" text-anchor="end">가장 뜨거웠던 달 · ${ym(months[peakI].m)} · ${fmt(max)} 커밋</text>
           </g>
         </svg>`);
 
-        const whenV = h("span", "num", ShowModel.ym(firstM));
+        const whenV = h("span", "num", ym(firstM));
         const monthN = h("span", "when", "0");
         const top = h("div", "top",
-          h("div", "head", h("div", "kicker", "The journey"), h("div", "h1", "7년의 커밋, 13번의 릴리스"),
+          h("div", "head", h("div", "kicker", "The journey"), h("div", "h1", `${M.stats.yearsActive}년의 커밋, ${M.releases.length}번의 릴리스`),
             h("div", "lead muted", "월별 커밋 수 (머지 커밋·자동화 계정 제외) 와 릴리스 코드네임")),
           h("div", "total", h("div", "v", whenV), h("div", "k", "이 달의 커밋 ", monthN)));
         ctx.root.append(svg, top);
-        // headline numbers follow the data, not hard-coded
-        top.querySelector(".h1").textContent = `${M.stats.yearsActive}년의 커밋, ${M.releases.length}번의 릴리스`;
 
         ctx.stagger(top.querySelectorAll(".head > *, .total"), { each: 120 });
         ctx.anim(svg.querySelector(".grid"), [{ opacity: 0 }, { opacity: 1 }], { duration: 1000, delay: 300 });
@@ -202,7 +268,7 @@
           ph.setAttribute("x1", x); ph.setAttribute("x2", x);
           pd.setAttribute("cx", x); pd.setAttribute("cy", y);
           const cur = months[Math.min(N - 1, Math.round(fi))];
-          whenV.textContent = ShowModel.ym(cur.m);
+          whenV.textContent = ym(cur.m);
           monthN.textContent = fmt(cur.n);
           rels.forEach((r, k) => {
             if (!shown.has(k) && r.x <= x + 2) {
@@ -218,7 +284,7 @@
     };
   }
 
-  // ======================================================= year
+  // ======================================================= year chapters
   function relChip(r) {
     return h("div", "rel-chip",
       frag(cupSVG(r.liquid, r.kind)),
@@ -228,18 +294,18 @@
 
   function yearScene(Y, M, cfg, isLast) {
     return {
-      id: `year-${Y.year}`, section: "journey", cls: "s-year", accent: Y.accent,
+      id: `year-${Y.year}`, section: "years", cls: "s-year", accent: Y.accent,
       async run(ctx) {
         const strip = h("div", "strip", M.years.map((y) => h("span", { class: y.year === Y.year ? "on" : y.year < Y.year ? "past" : "" }, y.year)));
         const yr = h("div", "yr", String(Y.year).split("").map((d) => h("span", null, d)));
+        const cum = h("div", { class: "cum", html: `그 해 커밋 <b>${fmt(Y.commits)}</b> · 누적 기여자 <b>${Y.cumPeople}</b>명 · 누적 레포지토리 <b>${Y.cumRepos}</b>개` });
         const era = h("div", "era", Y.story.title);
-        // keep hyphenated project names (CB-Spider, AI-MCMP …) on one line
-        const line = h("div", { class: "line", html: Y.story.line.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]).replace(/[A-Za-z]+(?:-[A-Za-z0-9]+)+/g, '<span style="white-space:nowrap">$&</span>') });
+        const line = h("div", { class: "line", html: nowrapNames(Y.story.line) });
         const rels = h("div", "rels", Y.releases.map(relChip));
         const confChips = Y.conferences.map((c) => h("span", "conf-chip", h("b", null, `#${c.n}`), c.label));
         if (isLast) confChips.push(h("span", "conf-chip now", h("b", null, "NOW"), [cfg.edition, cfg.eventTitle].filter(Boolean).join(" ")));
         const confs = h("div", "confs", confChips);
-        const left = h("div", "left", yr, era, line, rels, confs);
+        const left = h("div", "left", yr, cum, era, line, rels, confs);
 
         const many = Y.people.length > 20;
         const maxRepos = many ? 4 : 8;
@@ -270,8 +336,8 @@
         ctx.anim(strip, [{ opacity: 0 }, { opacity: 1 }], { duration: 800 });
         ctx.anim(strip.querySelector(".on"), [{ transform: "scale(.6)" }, { transform: "scale(1)" }], { duration: 900, delay: 200, easing: "cubic-bezier(.34,1.56,.64,1)" });
         ctx.stagger(yr.children, { each: 90, duration: 1000, from: { transform: "translateY(105%)" }, to: { transform: "none" } });
-        ctx.anim(yr, [{ transform: "scale(1)" }, { transform: "scale(1.04)" }], { duration: 13000, delay: 1000, easing: "ease-in-out", fill: "forwards" });
-        ctx.stagger([era, line], { delay: 450, each: 150 });
+        ctx.anim(yr, [{ transform: "scale(1)" }, { transform: "scale(1.04)" }], { duration: 11000, delay: 1000, easing: "ease-in-out", fill: "forwards" });
+        ctx.stagger([cum, era, line], { delay: 450, each: 150 });
         ctx.stagger(rels.children, { delay: 900, each: 180, from: { opacity: 0, transform: "translateX(-30px)" } });
         ctx.stagger(confs.children, { delay: 1300, each: 100 });
         if (heads[0]) ctx.anim(heads[0], [{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: 1100 });
@@ -281,7 +347,7 @@
           ctx.anim(heads[heads.length - 1], [{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: pStart });
           ctx.stagger(personEls, { delay: pStart + 150, each: 45, duration: 650, from: { opacity: 0, transform: "scale(.4)" }, easing: "cubic-bezier(.34,1.56,.64,1)" });
         }
-        await ctx.wait(12500);
+        await ctx.wait(11000);
       },
     };
   }
@@ -309,7 +375,7 @@
         };
         const head = h("div", "head", h("div", "kicker", "The release menu"), h("div", "h1", "오늘의 메뉴, Cloud-Barista 릴리스"));
         const board = h("div", "board", col("COFFEE", coffee), col("TEA", tea));
-        const foot = h("div", "foot", "아메리카노로 시작해 히비스커스까지 — 모든 릴리스는 커피와 차의 이름을 가집니다");
+        const foot = h("div", "foot", `${M.releases[0].name}로 시작해 ${last.name}까지 — 모든 릴리스는 커피와 차의 이름을 가집니다`);
         ctx.root.append(head, board, foot);
         ctx.stagger(head.children, { each: 120 });
         ctx.anim(board, [{ opacity: 0, transform: "translateY(30px)" }, { opacity: 1, transform: "none" }], { duration: 900, delay: 300 });
@@ -318,13 +384,80 @@
         ctx.anim(foot, [{ opacity: 0 }, { opacity: 1 }], { duration: 800, delay: end });
         const latest = board.querySelector(".latest");
         if (latest) ctx.anim(latest, [{ transform: "scale(1)" }, { transform: "scale(1.035)" }, { transform: "scale(1)" }], { duration: 1600, delay: end + 300, iterations: 3, easing: "ease-in-out" });
-        await ctx.wait(Math.max(14000, end + 6000));
+        await ctx.wait(Math.max(13000, end + 5500));
+      },
+    };
+  }
+
+  // ======================================================= when was it brewed (weekday × hour)
+  function punch(M) {
+    return {
+      id: "punch", section: "timeline", cls: "s-punch", accent: "#e9b872",
+      async run(ctx) {
+        const P = M.punch;
+        const total = P.flat().reduce((a, b) => a + b, 0);
+        const max = Math.max(...P.flat());
+        const L = 250, T = 330, CW = 62, RH = 82;
+        let peak = { v: -1 };
+        P.forEach((row, d) => row.forEach((v, hr) => { if (v > peak.v) peak = { v, d, hr }; }));
+        const night = P.reduce((s, row) => s + row.slice(22).concat(row.slice(0, 6)).reduce((a, b) => a + b, 0), 0);
+        const weekend = P[5].concat(P[6]).reduce((a, b) => a + b, 0);
+        const byHour = Array.from({ length: 24 }, (_, hr) => P.reduce((s, row) => s + row[hr], 0));
+        const peakHour = byHour.indexOf(Math.max(...byHour));
+
+        let cells = "", labels = "";
+        P.forEach((row, d) => {
+          labels += `<text class="rl" x="${L - 26}" y="${T + d * RH + RH / 2 + 8}" text-anchor="end">${DAYS[d]}</text>`;
+          row.forEach((v, hr) => {
+            if (!v) return;
+            const r = 3 + 22 * Math.sqrt(v / max);
+            cells += `<circle class="c" data-h="${hr}" cx="${L + hr * CW + CW / 2}" cy="${T + d * RH + RH / 2}" r="${r.toFixed(1)}" fill="#e9b872" fill-opacity="${(0.28 + 0.72 * (v / max)).toFixed(2)}"/>`;
+          });
+        });
+        for (let hr = 0; hr < 24; hr += 3) labels += `<text class="hl" x="${L + hr * CW + CW / 2}" y="${T + 7 * RH + 34}" text-anchor="middle">${hr}시</text>`;
+        const nightBand = `<g class="band" opacity="0">
+          <rect x="${L + 22 * CW}" y="${T - 10}" width="${2 * CW}" height="${7 * RH + 20}" rx="12"/><rect x="${L}" y="${T - 10}" width="${6 * CW}" height="${7 * RH + 20}" rx="12"/>
+          <text x="${L + 3 * CW}" y="${T - 24}" text-anchor="middle">밤 10시 — 아침 6시</text></g>`;
+        const ring = `<circle class="ring" opacity="0" cx="${L + peak.hr * CW + CW / 2}" cy="${T + peak.d * RH + RH / 2}" r="${(3 + 22 * Math.sqrt(peak.v / max) + 9).toFixed(1)}"/>`;
+        const svg = frag(`<svg width="1920" height="1080" viewBox="0 0 1920 1080"><g class="labels">${labels}</g>${nightBand}<g class="cells">${cells}</g>${ring}</svg>`);
+
+        const head = h("div", "head",
+          h("div", "kicker", "When was it brewed"),
+          h("div", "h1", "커피는 언제 내려졌을까"),
+          h("div", "lead muted", `요일 · 시간대별 커밋 ${fmt(total)}개 (한국 시간 기준)`));
+        const calls = [
+          { k: "가장 바쁜 시간", v: `${DAYS[peak.d]}요일 ${peak.hr}시`, d: `${fmt(peak.v)} 커밋 · 하루 중 ${peakHour}시가 정점` },
+          { k: "밤에도 내려졌다", v: `${Math.round((night / total) * 100)}%`, d: `밤 10시 — 아침 6시 사이 ${fmt(night)} 커밋` },
+          { k: "주말에도", v: `${Math.round((weekend / total) * 100)}%`, d: `토·일요일 ${fmt(weekend)} 커밋` },
+        ].map((c) => h("div", "call", h("div", "k", c.k), h("div", "v", c.v), h("div", "d", c.d)));
+        const callBox = h("div", "calls", calls);
+        ctx.root.append(svg, head, callBox);
+
+        ctx.stagger(head.children, { each: 120 });
+        ctx.anim(svg.querySelector(".labels"), [{ opacity: 0 }, { opacity: 1 }], { duration: 800, delay: 400 });
+        const cellEls = [...svg.querySelectorAll(".c")];
+        for (const c of cellEls) { c.style.transformOrigin = `${c.getAttribute("cx")}px ${c.getAttribute("cy")}px`; c.style.transform = "scale(0)"; }
+        await ctx.wait(700);
+        await ctx.tween(3200, (p) => {
+          const upto = p * 24;
+          for (const c of cellEls) {
+            const hr = Number(c.dataset.h);
+            const k = Math.max(0, Math.min(1, (upto - hr) / 1.5));
+            c.style.transform = `scale(${(k < 1 ? 1.25 * k - 0.25 * k * k * k : 1).toFixed(3)})`;
+          }
+        }, ease.linear);
+        ctx.anim(svg.querySelector(".band"), [{ opacity: 0 }, { opacity: 1 }], { duration: 900 });
+        const ringEl = svg.querySelector(".ring");
+        ringEl.style.transformOrigin = `${L + peak.hr * CW + CW / 2}px ${T + peak.d * RH + RH / 2}px`;
+        ctx.anim(ringEl, [{ opacity: 0, transform: "scale(1.6)" }, { opacity: 1, transform: "scale(1)" }], { duration: 900, delay: 300 });
+        ctx.stagger(calls, { delay: 400, each: 300, from: { opacity: 0, transform: "translateX(30px)" } });
+        await ctx.wait(8200);
       },
     };
   }
 
   // ======================================================= project family
-  function familyScene(F, idx, total) {
+  function familyScene(F) {
     return {
       id: `family-${F.id}`, section: "projects", cls: "s-family", accent: F.color,
       async run(ctx) {
@@ -342,7 +475,7 @@
         const maxAv = rows >= 3 ? 5 : 7;
         // an ARCHIVED tag only tells something when the family mixes active and archived repos
         const tagArchived = F.repos.some((r) => r.archived) && F.repos.some((r) => !r.archived);
-        const nowYear = Number(ShowModel.ym(new Date().toISOString()).slice(0, 4));
+        const nowYear = new Date().getFullYear();
         const cardEls = F.repos.map((r) => {
           const ppl = r.people.slice(0, maxAv);
           const extra = r.people.length - ppl.length;
@@ -363,13 +496,13 @@
         ctx.stagger(head.querySelectorAll(".l > *, .r"), { each: 110 });
         const inEnd = ctx.stagger(cardEls, { delay: 450, each: 90, duration: 800, from: { opacity: 0, transform: "translateY(30px) scale(.96)" } });
         await ctx.wait(inEnd + 400);
-        const per = Math.max(550, Math.min(1100, 8000 / n));
+        const per = Math.max(500, Math.min(1000, 7000 / n));
         for (const c of cardEls) {
           c.classList.add("lit");
           await ctx.wait(per);
           c.classList.remove("lit");
         }
-        await ctx.wait(1200);
+        await ctx.wait(1000);
       },
     };
   }
@@ -387,10 +520,12 @@
           { v: R.forks, k: "Forks" },
         ];
         const fv = facts.map(() => h("span", "num", "0"));
+        const fc = R.firstCommit;
         const left = h("div", "l",
-          h("div", "kicker", `Spotlight · since ${ShowModel.ym(R.created_at)}`),
+          h("div", "kicker", `Spotlight · since ${ym(R.created_at)}`),
           h("div", "name", R.title),
           h("div", "desc", R.ko),
+          fc ? h("div", "first", h("span", "d", ymd(fc.date)), " 첫 커밋 ", h("span", "q", `“${fc.message}”`), fc.login ? h("span", "who", ` — @${fc.login}`) : null) : null,
           h("div", "facts", facts.map((f, i) => h("div", "fact", h("div", "v", fv[i]), h("div", "k", f.k)))));
         const top = R.people.slice(0, 10);
         const max = Math.max(1, ...top.map((p) => p.repoCommits));
@@ -416,7 +551,289 @@
             ctx.countUp(r.val, r.p.repoCommits, 1400),
           ])).catch(() => {});
         });
-        await ctx.wait(11500);
+        await ctx.wait(10500);
+      },
+    };
+  }
+
+  // ======================================================= constellation: the community graph growing through time
+  const circleCache = new Map();
+  function circleImage(key, img, d, ring, res) {
+    const ck = `${key}:${Math.round(d)}:${ring}`;
+    let c = circleCache.get(ck);
+    if (c) return c;
+    const s = Math.ceil(d * res);
+    c = document.createElement("canvas");
+    c.width = c.height = s;
+    const g = c.getContext("2d");
+    g.beginPath(); g.arc(s / 2, s / 2, s / 2 - 1.5 * res, 0, Math.PI * 2); g.closePath();
+    g.save(); g.clip();
+    if (img) {
+      const side = Math.min(img.naturalWidth, img.naturalHeight);
+      g.drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, s, s);
+    } else { g.fillStyle = "#3a2b22"; g.fillRect(0, 0, s, s); }
+    g.restore();
+    g.lineWidth = 2 * res; g.strokeStyle = ring; g.stroke();
+    circleCache.set(ck, c);
+    return c;
+  }
+
+  function constellation(M) {
+    return {
+      id: "constellation", section: "constellation", cls: "s-const", accent: "#e9b872",
+      async run(ctx) {
+        const W = 1920, H = 1080;
+        const res = Math.min(2, Math.max(1, Math.ceil(window.Show.stageScale() * (window.devicePixelRatio || 1))));
+        const canvas = h("canvas", { width: W * res, height: H * res, style: { width: W + "px", height: H + "px" } });
+        const g = canvas.getContext("2d");
+        g.scale(res, res);
+
+        const t0 = Date.parse(M.stats.orgCreated), t1 = Date.parse(M.generatedAt);
+        const T = (d) => Math.max(0, Math.min(1, (Date.parse(d) - t0) / (t1 - t0)));
+        const rand = (a, b) => a + Math.random() * (b - a);
+        const BOUNDS = { x0: 140, x1: 1780, y0: 330, y1: 878 }; // leaves room for hub labels above the time bar
+        const anchors = {
+          core: [960, 600], pioneers: [470, 470], community: [420, 790], poc: [700, 880],
+          migrator: [1460, 600], ecosystem: [1220, 880], ai: [1600, 420],
+        };
+        const famLabel = new Map(); // family id -> { el, x, y }
+
+        const hubs = M.repos.filter((r) => r.people.length).map((r) => {
+          const a = anchors[r.family ? r.family.id : ""] || [960, 600];
+          return { kind: "hub", r, t: T(r.created_at), fam: r.family, color: r.family ? r.family.color : "#e9b872",
+            x: a[0] + rand(-70, 70), y: a[1] + rand(-70, 70), vx: 0, vy: 0, ax: a[0], ay: a[1],
+            rad: 8 + 3 * Math.log2(r.commits + 2), on: false, born: 0, label: r.title, labeled: r.people.length >= 6 };
+        });
+        // label budget: the three busiest repos of each family, plus any repo with 6+ contributors
+        const byFam = new Map();
+        for (const hb of hubs) { const k = hb.fam ? hb.fam.id : ""; (byFam.get(k) || byFam.set(k, []).get(k)).push(hb); }
+        for (const list of byFam.values()) list.sort((a, b) => b.r.commits - a.r.commits).slice(0, 3).forEach((hb) => { hb.labeled = true; });
+        const labelOrder = hubs.filter((hb) => hb.labeled).sort((a, b) => b.r.commits - a.r.commits);
+        const stars = M.people.map((p) => ({ kind: "star", p, t: T(p.first), img: images.get(p.login),
+          x: 980, y: 620, vx: 0, vy: 0, rad: Math.min(23, 9 + 1.7 * Math.log2(p.commits + 1)), on: false, born: 0, color: "#e9b872", home: null }));
+        const starBy = new Map(stars.map((n) => [n.p.login, n]));
+        const edges = [];
+        for (const hub of hubs) for (const c of hub.r.people) {
+          const s = starBy.get(c.login);
+          if (s) edges.push({ a: hub, b: s, t: Math.max(hub.t, T(c.repoFirst || hub.r.created_at)), on: false, born: 0 });
+        }
+        edges.sort((a, b) => a.t - b.t);
+        for (const e of edges) if (!e.b.home) { e.b.home = e.a; e.b.color = e.a.color; }
+        // a person becomes visible together with their first edge, never before
+        for (const s of stars) if (s.home) s.t = Math.max(s.t, edges.find((e) => e.b === s).t);
+        const nodes = [...hubs, ...stars].sort((a, b) => a.t - b.t);
+        const active = [];
+        let ni = 0, ei = 0;
+
+        // ---- DOM: header, ticker, family labels, timeline bar, caption
+        const head = h("div", "head", h("div", "kicker", "The constellation"), h("div", "h2", "커뮤니티의 별자리"),
+          h("div", "lead muted", "레포지토리는 별이 되고, 사람들이 그 사이를 잇습니다"));
+        const yEl = h("div", "y", String(M.years[0].year));
+        const mEl = h("div", "m", "");
+        const cEl = h("div", { class: "c", html: "기여자 <b>0</b> · 레포지토리 <b>0</b>" });
+        const ticker = h("div", "ticker", yEl, mEl, cEl);
+        const caption = h("div", { class: "caption", html: `<b>${M.stats.people}</b>명이 <b>${hubs.length}</b>개의 레포지토리에서 함께 만든 하나의 별자리` });
+        caption.style.opacity = 0;
+        const bar = h("div", "bar");
+        const BL = 200, BR = 1720;
+        for (const y of M.years) {
+          const x = BL + T(`${y.year}-01-01`) * (BR - BL);
+          bar.append(h("span", { class: "tick", style: { left: x + "px" } }, y.year));
+        }
+        const relDots = M.releases.map((r) => h("span", { class: "dot", style: { left: BL + T(r.date) * (BR - BL) + "px", "--rc": r.accent } }));
+        bar.append(...relDots);
+        const playhead = h("span", { class: "ph" }, h("span", "lbl"));
+        const phLabel = playhead.firstChild;
+        bar.append(playhead);
+        const labelsBox = h("div", "famlabels");
+        ctx.root.append(canvas, labelsBox, head, ticker, bar, caption);
+        ctx.stagger(head.children, { each: 120 });
+        ctx.stagger([ticker, bar], { delay: 300, each: 150 });
+
+        // ---- simulation
+        function activate(p) {
+          while (ni < nodes.length && nodes[ni].t <= p) {
+            const n = nodes[ni++];
+            n.on = true; n.born = clock.t;
+            if (n.kind === "star") {
+              const home = n.home || hubs[0];
+              n.x = home.x + rand(-50, 50); n.y = home.y + rand(-50, 50);
+            } else if (n.fam && !famLabel.has(n.fam.id)) {
+              const lab = h("div", { class: "famlabel", style: { left: n.x + "px", top: n.y - 60 + "px", color: n.fam.color } }, n.fam.kicker);
+              labelsBox.append(lab);
+              famLabel.set(n.fam.id, { el: lab, x: n.x, y: n.y - 60, fam: n.fam });
+              ctx.anim(lab, [{ opacity: 0, transform: "translate(-50%, 10px)" }, { opacity: 0.85, transform: "translate(-50%, 0)" }], { duration: 900 });
+            }
+            active.push(n);
+          }
+          while (ei < edges.length && edges[ei].t <= p) {
+            const e = edges[ei];
+            if (!(e.a.on && e.b.on)) break; // endpoint activates on a later frame
+            e.on = true; e.born = clock.t; ei++;
+          }
+        }
+        function step(dtMs) {
+          const dt = Math.min(dtMs, 40) / 16.7;
+          const n = active.length;
+          for (let i = 0; i < n; i++) {
+            const a = active[i];
+            for (let j = i + 1; j < n; j++) {
+              const b = active[j];
+              const dx = b.x - a.x, dy = b.y - a.y;
+              const d2 = dx * dx + dy * dy + 0.01;
+              if (d2 > 90000) continue;
+              const d = Math.sqrt(d2);
+              const minD = a.rad + b.rad + 10;
+              let f = (1400 * (a.rad + b.rad)) / 30 / d2;
+              if (d < minD) f += (minD - d) * 0.12; // firm core so avatars don't overlap
+              f = Math.min(f, 9);
+              const fx = (dx / d) * f, fy = (dy / d) * f;
+              a.vx -= fx; a.vy -= fy; b.vx += fx; b.vy += fy;
+            }
+            if (a.kind === "hub") { a.vx += (a.ax - a.x) * 0.018; a.vy += (a.ay - a.y) * 0.018; }
+            else { a.vx += (960 - a.x) * 0.0003; a.vy += (620 - a.y) * 0.0003; }
+          }
+          for (let k = 0; k < ei; k++) {
+            const e = edges[k];
+            const dx = e.b.x - e.a.x, dy = e.b.y - e.a.y;
+            const d = Math.sqrt(dx * dx + dy * dy) + 0.01;
+            const rest = e.a.rad + e.b.rad + 34;
+            const f = (d - rest) * 0.02;
+            const fx = (dx / d) * f, fy = (dy / d) * f;
+            e.a.vx += fx * 0.3; e.a.vy += fy * 0.3; e.b.vx -= fx; e.b.vy -= fy;
+          }
+          for (const a of active) {
+            a.vx *= 0.8; a.vy *= 0.8;
+            a.x += a.vx * dt; a.y += a.vy * dt;
+            if (a.x < BOUNDS.x0 + a.rad) { a.x = BOUNDS.x0 + a.rad; a.vx *= -0.3; }
+            if (a.x > BOUNDS.x1 - a.rad) { a.x = BOUNDS.x1 - a.rad; a.vx *= -0.3; }
+            if (a.y < BOUNDS.y0 + a.rad) { a.y = BOUNDS.y0 + a.rad; a.vy *= -0.3; }
+            if (a.y > BOUNDS.y1 - a.rad) { a.y = BOUNDS.y1 - a.rad; a.vy *= -0.3; }
+          }
+        }
+        const pop = (age) => (age >= 0.6 ? 1 : 1.7 * (age / 0.6) - 0.7 * Math.pow(age / 0.6, 2)); // overshoot in, then settle
+        function draw() {
+          g.clearRect(0, 0, W, H);
+          const now = clock.t;
+          g.lineCap = "round";
+          for (let k = 0; k < ei; k++) {
+            const e = edges[k];
+            const age = (now - e.born) / 1000;
+            const flash = Math.max(0, 1 - age / 1.4);
+            g.strokeStyle = e.a.color;
+            g.globalAlpha = 0.13 + 0.7 * flash;
+            g.lineWidth = 1 + 2 * flash;
+            g.beginPath(); g.moveTo(e.a.x, e.a.y); g.lineTo(e.b.x, e.b.y); g.stroke();
+          }
+          g.globalAlpha = 1;
+          for (const n of active) {
+            const age = (now - n.born) / 1000;
+            const s = pop(Math.min(age, 0.6));
+            if (n.kind === "hub") {
+              const r = n.rad * s;
+              const glow = 0.5 * Math.max(0, 1 - age / 3) + 0.12;
+              const gr = g.createRadialGradient(n.x, n.y, r * 0.5, n.x, n.y, r * 3.2);
+              gr.addColorStop(0, n.color); gr.addColorStop(1, "rgba(0,0,0,0)");
+              g.globalAlpha = glow; g.fillStyle = gr;
+              g.beginPath(); g.arc(n.x, n.y, r * 3.2, 0, Math.PI * 2); g.fill();
+              g.globalAlpha = 1;
+              g.fillStyle = "#17100c"; g.beginPath(); g.arc(n.x, n.y, r, 0, Math.PI * 2); g.fill();
+              g.lineWidth = 2.5; g.strokeStyle = n.color; g.stroke();
+              g.fillStyle = n.color; g.beginPath(); g.arc(n.x, n.y, r * 0.42, 0, Math.PI * 2); g.fill();
+            } else {
+              const d = n.rad * 2 * s;
+              if (age < 1.2) {
+                g.globalAlpha = (1 - age / 1.2) * 0.9;
+                g.lineWidth = 2; g.strokeStyle = "#f6ede3";
+                g.beginPath(); g.arc(n.x, n.y, n.rad + 4 + age * 26, 0, Math.PI * 2); g.stroke();
+                g.globalAlpha = 1;
+              }
+              const img = circleImage(n.p.login, n.img, n.rad * 2, n.color, res);
+              g.drawImage(img, n.x - d / 2, n.y - d / 2, d, d);
+            }
+          }
+          // labels last, with a dark halo, so avatars never cover them. Busier repos are placed
+          // first; a label that would overlap one already placed moves above its hub, or hides.
+          g.textAlign = "center"; g.textBaseline = "top"; g.lineJoin = "round";
+          g.strokeStyle = "rgba(15,11,9,.85)"; g.lineWidth = 5; g.fillStyle = "#f6ede3";
+          const placed = [];
+          const overlaps = (r) => placed.some((q) => r[0] < q[0] + q[2] + 6 && r[0] + r[2] + 6 > q[0] && r[1] < q[1] + q[3] + 4 && r[1] + r[3] + 4 > q[1]);
+          for (const n of labelOrder) {
+            if (!n.on) continue;
+            const age = (now - n.born) / 1000;
+            const fs = n.rad > 30 ? 20 : 16;
+            g.font = `650 ${fs}px Pretendard, sans-serif`;
+            if (!n.lw) n.lw = g.measureText(n.label).width;
+            const r = n.rad * pop(Math.min(age, 0.6));
+            const rectFor = (pos) => [n.x - n.lw / 2, pos === "below" ? n.y + r + 6 : n.y - r - 6 - fs, n.lw, fs];
+            let pos = n.labelPos || "below";
+            if (overlaps(rectFor(pos))) pos = pos === "below" ? "above" : "below";
+            if (overlaps(rectFor(pos))) { n.labelPos = n.labelPos || "below"; continue; }
+            n.labelPos = pos;
+            const rect = rectFor(pos);
+            placed.push(rect);
+            g.globalAlpha = Math.min(1, age / 0.8);
+            g.strokeText(n.label, n.x, rect[1]);
+            g.fillText(n.label, n.x, rect[1]);
+          }
+          g.globalAlpha = 1;
+          // family captions float above their hubs (hubs only: people shared with other families would drag them)
+          const labs = [...famLabel.values()];
+          for (const lab of labs) {
+            let minY = Infinity, sx = 0, k = 0;
+            for (const n of active) {
+              if (n.kind !== "hub" || n.fam !== lab.fam) continue;
+              minY = Math.min(minY, n.y - n.rad); sx += n.x; k++;
+            }
+            if (!k) continue;
+            lab.x += (sx / k - lab.x) * 0.08;
+            lab.y += (minY - 54 - lab.y) * 0.08; // clears labels that sit above their hub
+            if (!lab.w) lab.w = lab.el.offsetWidth;
+          }
+          labs.sort((a, b) => a.x - b.x);
+          for (let i = 0; i < labs.length; i++) {
+            const a = labs[i];
+            a.lift = 0;
+            for (let j = 0; j < i; j++) {
+              const b = labs[j];
+              if (Math.abs(a.x - b.x) < (a.w + b.w) / 2 + 24 && Math.abs(a.y - (b.y - b.lift)) < 24) a.lift = 28;
+            }
+            a.el.style.left = a.x + "px";
+            a.el.style.top = a.y - a.lift + "px";
+          }
+        }
+        let progress = 0, lastYear = "", shownRel = 0, lastCounts = "";
+        ctx.everyFrame((dtMs) => {
+          activate(progress);
+          step(dtMs);
+          draw();
+          let s = 0, hb = 0;
+          for (const n of active) if (n.kind === "star") s++; else hb++;
+          const counts = `${s}/${hb}`;
+          if (counts !== lastCounts) { lastCounts = counts; cEl.innerHTML = `기여자 <b>${s}</b> · 레포지토리 <b>${hb}</b>`; }
+        });
+
+        await ctx.wait(800);
+        await ctx.tween(30000, (p) => {
+          progress = p;
+          const date = new Date(t0 + p * (t1 - t0));
+          const y = String(date.getUTCFullYear());
+          mEl.textContent = `${date.getUTCMonth() + 1}월`;
+          if (y !== lastYear) {
+            lastYear = y; yEl.textContent = y;
+            ctx.anim(yEl, [{ transform: "scale(1.15)", opacity: 0.6 }, { transform: "none", opacity: 1 }], { duration: 500 });
+          }
+          playhead.style.left = BL + p * (BR - BL) + "px";
+          while (shownRel < M.releases.length && T(M.releases[shownRel].date) <= p) {
+            const r = M.releases[shownRel++];
+            relDots[shownRel - 1].classList.add("on");
+            phLabel.textContent = `${r.name} ${r.version}`;
+            ctx.anim(phLabel, [{ opacity: 0, transform: "translate(-50%, 8px)" }, { opacity: 1, transform: "translate(-50%, 0)" }], { duration: 500 });
+          }
+        }, ease.linear);
+        progress = 1.0001;
+        ctx.anim(caption, [{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }], { duration: 900, delay: 400 });
+        await ctx.wait(6500);
       },
     };
   }
@@ -509,22 +926,25 @@
   // ======================================================= outro
   function outro(M, cfg) {
     return {
-      id: "outro", section: "welcome", cls: "s-outro", accent: "#e9b872",
+      id: "outro", section: "now", cls: "s-outro", accent: "#e9b872",
       async run(ctx) {
         const start = cfg.startTime ? new Date(cfg.startTime) : null;
         const hasCountdown = start && !isNaN(start) && start > new Date();
-        const cup = frag(heroCupSVG());
+        const cup = frag(heroCupSVG({ level: 0 }));
         cup.classList.add("hero-cup");
+        const l1 = h("div", "big", "한 잔이 완성되었습니다");
+        const l2 = h("div", "big grad", "이제, 함께 마실 시간입니다");
         const count = hasCountdown ? h("div", "count", "--:--") : null;
-        const big = h("div", "big", hasCountdown ? "오프닝까지" : "잠시 후 행사가 시작됩니다");
-        const title = h("div", "big grad", [cfg.edition, cfg.eventTitle].filter(Boolean).join(" "));
-        title.style.fontSize = "64px";
+        const sub = h("div", "sub", hasCountdown ? "오프닝까지" : "잠시 후 행사가 시작됩니다");
+        const title = h("div", "ttl", [cfg.edition, cfg.eventTitle].filter(Boolean).join(" "));
         const thanks = h("div", { class: "thanks", html: `<b>${M.stats.people}</b>명의 기여자, <b>${fmt(M.stats.commits)}</b>개의 커밋, <b>${M.stats.releases}</b>번의 릴리스 — 고맙습니다` });
         const faces = h("div", "faces", [...M.people].sort((a, b) => b.commits - a.commits).slice(0, 28).map((p) => avatar(p, 56)));
-        ctx.root.append(...[cup, big, count, title, thanks, faces].filter(Boolean));
-        ctx.stagger([cup, big, count, title, thanks].filter(Boolean), { each: 160, duration: 1000 });
-        ctx.stagger(faces.children, { delay: 900, each: 35, from: { opacity: 0, transform: "translateY(16px)" } });
-        await ctx.tween(10000, () => {
+        ctx.root.append(...[cup, l1, l2, sub, count, title, thanks, faces].filter(Boolean));
+        brewCup(ctx, cup, { delay: 200, draw: 900, pour: 1300 });
+        ctx.stagger([l1, l2], { delay: 1500, each: 900, duration: 1100, from: { opacity: 0, transform: "translateY(26px)", filter: "blur(8px)" }, to: { opacity: 1, transform: "none", filter: "blur(0)" } });
+        ctx.stagger([sub, count, title, thanks].filter(Boolean), { delay: 3600, each: 200, duration: 900 });
+        ctx.stagger(faces.children, { delay: 4300, each: 35, from: { opacity: 0, transform: "translateY(16px)" } });
+        await ctx.tween(14000, () => {
           if (!count) return;
           const ms = start - new Date();
           if (ms <= 0) { count.textContent = "NOW"; return; }
@@ -539,15 +959,18 @@
   // ======================================================= playlist
   function build(M, cfg) {
     const out = [];
-    const want = cfg.scenes || ["intro", "numbers", "activity", "years", "menu", "families", "spotlights", "wall", "outro"];
+    const alias = { intro: "prologue", numbers: "cup", activity: "timeline" };
+    const want = (cfg.scenes || ["prologue", "cup", "timeline", "years", "menu", "punch", "families", "spotlights", "constellation", "wall", "outro"]).map((s) => alias[s] || s);
     for (const s of want) {
-      if (s === "intro") out.push(intro(M, cfg));
-      else if (s === "numbers") out.push(numbers(M));
-      else if (s === "activity" && M.months.length > 1) out.push(activity(M));
+      if (s === "prologue") out.push(prologue(M, cfg));
+      else if (s === "cup") out.push(cupNumbers(M));
+      else if (s === "timeline" && M.months.length > 1) out.push(timeline(M));
       else if (s === "years") M.years.forEach((y, i) => out.push(yearScene(y, M, cfg, i === M.years.length - 1)));
       else if (s === "menu" && M.releases.length) out.push(menu(M));
-      else if (s === "families") M.families.forEach((f, i) => out.push(familyScene(f, i, M.families.length)));
+      else if (s === "punch" && M.punch) out.push(punch(M));
+      else if (s === "families") M.families.forEach((f) => out.push(familyScene(f)));
       else if (s === "spotlights") M.spotlights.forEach((r) => out.push(spotlight(r)));
+      else if (s === "constellation") out.push(constellation(M));
       else if (s === "wall") out.push(wall(M));
       else if (s === "outro") out.push(outro(M, cfg));
     }
@@ -555,7 +978,7 @@
     return {
       playlist: out,
       sections: SECTIONS.filter((s) => used.has(s.id)),
-      preload: ["assets/org.png", ...M.people.map((p) => p.avatar).filter(Boolean)],
+      preload: [[null, "assets/org.png"], ...M.people.filter((p) => p.avatar).map((p) => [p.login, p.avatar])],
     };
   }
 
