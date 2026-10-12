@@ -1,14 +1,13 @@
 # Deploys the show to GitHub Pages.
 # - push to main: deploy as-is
-# - daily schedule / manual run: refresh GitHub data first, commit it if it changed, then deploy
+# - scheduled / manual run: refresh GitHub data first, commit it if it changed, then deploy
 name: Refresh data & deploy
 
 on:
   push:
     branches: [main]
   schedule:
-    # twice a day: if GitHub is still computing stats (the collector then fails and the site
-    # keeps its previous data), the second run gets another chance the same day
+    # twice a day, so a run that hits a GitHub hiccup gets another chance the same day
     - cron: "0 18 * * *" # 03:00 KST
     - cron: "0 6 * * *"  # 15:00 KST
   workflow_dispatch:
@@ -23,11 +22,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  # Build and deploy are separate jobs (as in GitHub's Pages template): the artifact is fully
+  # registered before deploy looks it up, and a failed deploy can be re-run on its own.
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -54,5 +52,13 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
