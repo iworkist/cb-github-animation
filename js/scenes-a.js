@@ -1,4 +1,4 @@
-// All scenes. Each scene is { id, section, cls, accent, run(ctx) }.
+// Version A — "Coffee Journey". Each scene is { id, section, cls, accent, run(ctx) }.
 // The show is one story: a cup of coffee brewed over seven years by an open-source community.
 (function () {
   const { h, avatar, cupSVG, heroCupSVG, beanSVG, frag, ease } = window.Show;
@@ -636,5 +636,5 @@
     };
   }
 
-  window.ShowScenes = { build };
+  window.ShowScenesA = { build };
 })();

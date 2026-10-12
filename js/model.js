@@ -129,6 +129,15 @@
       if (p.years >= 5) p.tags.push(`${p.years}년째 함께`);
     }
 
+    // Tenure (version B): honored + busiest + longest-serving, up to 16, each with first/last activity.
+    const recentCutoff = new Date(Date.parse(G.generated_at) - 120 * 864e5).toISOString().slice(0, 10);
+    const tenureMap = new Map();
+    for (const hn of C.honored || []) if (people.has(hn.login)) tenureMap.set(hn.login, people.get(hn.login));
+    for (const list of [byCommits.slice(0, 10), bySpan.slice(0, 10)]) for (const p of list) if (tenureMap.size < 16) tenureMap.set(p.login, p);
+    const tenure = [...tenureMap.values()]
+      .map((p) => ({ ...p, lastSeen: p.last || p.first, active: (p.last || p.first) >= recentCutoff, years: yearsOf(p) }))
+      .sort((a, b) => a.first.localeCompare(b.first) || b.commits - a.commits);
+
     const cloudNames = C.cloudNames || {};
     const clouds = (G.clouds || []).map((id) => ({ id, name: cloudNames[id] || id.toUpperCase() }));
 
@@ -149,6 +158,7 @@
       hasPrs,
       clouds,
       crew: crewList,
+      tenure,
       firstCommit: G.first_commit || null,
       people: allPeople,
       peopleBy: people,

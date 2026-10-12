@@ -24,6 +24,7 @@
   --caramel: #d98a4e;
   --cloud: #7cc4ff;
   --accent: var(--crema);
+  --accent-default: #e9b872;
   --glow: #e9b872;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --font: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;

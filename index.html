@@ -6,6 +6,7 @@
   <title>Cloud-Barista Journey</title>
   <link rel="icon" href="assets/org.png">
   <link rel="stylesheet" href="css/show.css">
+  <link rel="stylesheet" href="css/b.css">
 </head>
 <body>
   <div id="bg"><div class="blob b1"></div><div class="blob b2"></div><canvas></canvas><div class="grain"></div></div>
@@ -18,17 +19,8 @@
   <script src="js/engine.js"></script>
   <script src="js/model.js"></script>
   <script src="js/village.js"></script>
-  <script src="js/scenes.js"></script>
-  <script>
-    (function () {
-      if (!window.CB_GITHUB) {
-        document.getElementById("loading").textContent = "data/data.js 가 없습니다 — python3 scripts/collect.py 를 먼저 실행하세요";
-        return;
-      }
-      const model = ShowModel.build(window.CB_GITHUB, window.CB_CURATED);
-      const show = ShowScenes.build(model, window.CB_CONFIG);
-      Show.run({ cfg: window.CB_CONFIG, ...show });
-    })();
-  </script>
+  <script src="js/scenes-a.js"></script>
+  <script src="js/scenes-b.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

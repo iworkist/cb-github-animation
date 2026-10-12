@@ -261,6 +261,7 @@
       const step = clock.paused ? 0 : Math.min(now - last, 100) / 16.7;
       last = now;
       g.clearRect(0, 0, w, hgt);
+      if (document.body.dataset.theme === "b") return; // the editorial theme has a plain paper background
       for (let i = 0; i < parts.length; i++) {
         const p = parts[i];
         p.y -= p.vy * step;
@@ -277,32 +278,56 @@
     requestAnimationFrame(draw);
   }
 
-  // ---------- liquid wipe between scenes ----------
-  // A tall overlay (wave, body, inverted wave) that rises through the stage: the first half
-  // covers the old scene, the second half reveals the new one.
+  // ---------- transitions between scenes ----------
+  // Theme "a": a tall liquid overlay (wave, body, inverted wave) rises through the stage.
+  // Theme "b": two flat panels sweep across from left to right.
+  // The element that covered the old scene is the one that uncovers the new one, so switching
+  // themes mid-transition (alternating playback) stays seamless.
   function makeWipe(stage) {
     const wave = (flip) => `<svg class="wave${flip ? " flip" : ""}" viewBox="0 0 1920 ${WAVE_H}" preserveAspectRatio="none" aria-hidden="true">
       <path d="M0 ${WAVE_H}V70C160 20 320 20 480 70S800 120 960 70 1280 20 1440 70 1760 120 1920 70V${WAVE_H}z"/>
       <path class="foam" d="M0 70C160 20 320 20 480 70S800 120 960 70 1280 20 1440 70 1760 120 1920 70" fill="none"/>
     </svg>`;
-    const el = frag(`<div id="wipe">${wave(false)}<div class="body"></div>${wave(true)}</div>`);
-    el.style.transform = `translateY(${STAGE_H}px)`;
-    stage.append(el);
-    const run = (from, to, ms, easing) => new Promise((res) => {
-      const a = el.animate([{ transform: `translateY(${from}px)` }, { transform: `translateY(${to}px)` }], { duration: ms / clock.speed, easing, fill: "forwards" });
-      a.onfinish = () => { el.style.transform = `translateY(${to}px)`; a.cancel(); res(); };
+    const liquid = frag(`<div id="wipe">${wave(false)}<div class="body"></div>${wave(true)}</div>`);
+    liquid.style.transform = `translateY(${STAGE_H}px)`;
+    const panels = frag(`<div id="wipe-b"><div class="p1"></div><div class="p2"></div></div>`);
+    const [p1, p2] = panels.children;
+    for (const p of [p1, p2]) p.style.transform = `translateX(${-STAGE_W - 80}px)`;
+    stage.append(liquid, panels);
+
+    const move = (el, prop, from, to, ms, easing, delay = 0) => new Promise((res) => {
+      const fmt = (v) => `${prop}(${v}px)`;
+      const a = el.animate([{ transform: fmt(from) }, { transform: fmt(to) }], { duration: ms / clock.speed, delay: delay / clock.speed, easing, fill: "both" });
+      a.onfinish = () => { el.style.transform = fmt(to); a.cancel(); res(); };
     });
+    let active = "a";
     return {
-      cover: () => run(STAGE_H, -WAVE_H, 620, "cubic-bezier(.55,.05,.8,.3)"),
-      uncover: () => run(-WAVE_H, -(STAGE_H + 2 * WAVE_H), 700, "cubic-bezier(.2,.7,.2,1)"),
+      cover(theme) {
+        active = theme === "b" ? "b" : "a";
+        if (active === "a") return move(liquid, "translateY", STAGE_H, -WAVE_H, 620, "cubic-bezier(.55,.05,.8,.3)");
+        return Promise.all([
+          move(p1, "translateX", -STAGE_W - 80, 0, 520, "cubic-bezier(.7,0,.3,1)"),
+          move(p2, "translateX", -STAGE_W - 80, 0, 520, "cubic-bezier(.7,0,.3,1)", 90),
+        ]);
+      },
+      uncover() {
+        if (active === "a") return move(liquid, "translateY", -WAVE_H, -(STAGE_H + 2 * WAVE_H), 700, "cubic-bezier(.2,.7,.2,1)");
+        return Promise.all([
+          move(p2, "translateX", 0, STAGE_W + 80, 620, "cubic-bezier(.7,0,.3,1)"),
+          move(p1, "translateX", 0, STAGE_W + 80, 620, "cubic-bezier(.7,0,.3,1)", 90),
+        ]).then(() => { for (const p of [p1, p2]) p.style.transform = `translateX(${-STAGE_W - 80}px)`; });
+      },
     };
   }
 
   // ---------- HUD ----------
-  function makeHud(cfg, sections) {
+  // sectionsByVersion: { a: [{id, label}], b: [...] } — the pills follow the version of the current scene
+  function makeHud(cfg, sectionsByVersion) {
     const hud = document.getElementById("hud");
-    const secEls = sections.map((s) => h("span", { "data-id": s.id }, s.label));
+    const secBox = h("div", "sections");
+    let secEls = [], secVersion = null;
     const clockEl = h("div", "clock");
+    const prog = h("div", "prog", h("i"));
     const cup = frag(`<svg class="hudcup" viewBox="0 0 64 64" aria-hidden="true">
       <defs><clipPath id="hudcup-k"><path d="M14 22h31v19c0 7-5 12-12 12h-7c-7 0-12-5-12-12z"/></clipPath></defs>
       <path d="M45 28h3a7 7 0 0 1 0 14h-3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
@@ -311,10 +336,11 @@
       <path d="M10 58h44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>`);
     hud.append(
       h("div", "brand", h("img", { src: "assets/org.png", alt: "" }), h("span", null, cfg.eventTitle), cfg.edition ? h("span", "sub", cfg.edition) : null),
-      h("div", "sections", secEls),
+      secBox,
       h("span", "paused", "PAUSED"),
       cup,
       clockEl,
+      prog,
     );
     if (!cfg.showHud) hud.classList.add("hidden");
     const start = cfg.startTime ? new Date(cfg.startTime) : null;
@@ -338,12 +364,22 @@
     setInterval(tick, 1000);
     return {
       el: hud,
-      setSection(id, accent) {
-        secEls.forEach((e) => e.classList.toggle("on", e.dataset.id === id));
+      setSection(item, accent) {
+        const v = item.version || "a";
+        if (v !== secVersion) {
+          secVersion = v;
+          const list = sectionsByVersion[v] || [];
+          secEls = list.map((s, i) => h("span", { "data-id": s.id, "data-n": String(i + 1).padStart(2, "0") }, s.label));
+          secBox.replaceChildren(...secEls);
+        }
+        secEls.forEach((e) => e.classList.toggle("on", e.dataset.id === item.section));
         if (accent) hud.style.setProperty("--accent", accent);
       },
-      // the little cup fills as the show progresses
-      setProgress(p) { cup.querySelector(".lq").style.transform = `translateY(${Math.round((1 - p) * 40)}px)`; },
+      // the little cup (theme a) / the thin bar (theme b) fills as the show progresses
+      setProgress(p) {
+        cup.querySelector(".lq").style.transform = `translateY(${Math.round((1 - p) * 40)}px)`;
+        prog.firstChild.style.transform = `scaleX(${p})`;
+      },
       toggle() { hud.classList.toggle("hidden"); },
       setPaused(p) { hud.classList.toggle("is-paused", p); },
     };
@@ -408,6 +444,7 @@
         if (document.fullscreenElement) document.exitFullscreen();
         else document.documentElement.requestFullscreen().catch(() => {});
       } else if (e.key === "h" || e.key === "H") hud.toggle();
+      else if (e.key === "v" || e.key === "V") location.href = location.pathname + "?choose";
     });
 
     let idleTimer;
@@ -421,6 +458,7 @@
     let first = true;
     for (;;) {
       const item = playlist[index];
+      document.body.dataset.theme = item.theme || "a"; // switched while the transition covers the stage
       const root = h("section", `scene ${item.cls || ""}`);
       if (item.accent) {
         root.style.setProperty("--accent", item.accent);
@@ -429,7 +467,7 @@
       stage.insertBefore(root, document.getElementById("hud"));
       const ctx = makeCtx(root);
       current = { ctx, index };
-      hud.setSection(item.section, item.accent || "var(--crema)");
+      hud.setSection(item, item.accent || "var(--accent-default)");
       hud.setProgress((index + 1) / playlist.length);
       // ?freeze=ms pauses the show at that moment of the scene (for screenshots / rehearsal)
       if (freezeAt != null) ctx.wait(freezeAt).then(() => { setPaused(true); hud.setPaused(false); }, () => {});
@@ -443,7 +481,7 @@
       }
       ctx.abort();
       if (failed) await new Promise((r) => setTimeout(r, 800));
-      await wipe.cover();
+      await wipe.cover(item.theme);
       root.remove();
 
       if (jumpTo != null) { index = jumpTo; jumpTo = null; }
