@@ -7,9 +7,22 @@
   const ym = (d) => d.slice(0, 7).replace("-", ".");
   const ymd = (d) => d.slice(0, 10).replace(/-/g, ".");
 
+  function monthsBetween(first, last) {
+    const out = [];
+    let [y, m] = first.split("-").map(Number);
+    for (;;) {
+      const key = `${y}-${String(m).padStart(2, "0")}`;
+      out.push(key);
+      if (key >= last) break;
+      if (++m > 12) { m = 1; y++; }
+    }
+    return out;
+  }
+
   function build(G, C) {
     const hidden = new Set(C.hiddenRepos || []);
     const people = new Map(G.people.map((p) => [p.login, { ...p, displayName: p.name || p.login }]));
+    for (const hn of C.honored || []) if (people.has(hn.login)) people.get(hn.login).koName = hn.ko;
 
     const famOf = {};
     for (const f of C.families) for (const r of f.repos) famOf[r] = f;
@@ -45,13 +58,64 @@
     const nowYear = Number(G.generated_at.slice(0, 4));
     const allPeople = [...people.values()].sort((a, b) => a.first.localeCompare(b.first) || b.commits - a.commits);
 
-    // Head baristas: honored people + the busiest + the longest-serving, at most 12, by first contribution.
+    // ---- cumulative growth, month by month, from the org's first month to now
+    const commitsM = (G.growth && G.growth.commits) || G.activity || {};
+    const prsM = (G.growth && G.growth.prs) || {};
+    const months = monthsBetween(G.org.created_at.slice(0, 7), G.generated_at.slice(0, 7));
+    const growth = [];
+    {
+      let commits = 0, prs = 0;
+      for (const m of months) {
+        commits += commitsM[m] || 0;
+        prs += prsM[m] || 0;
+        growth.push({
+          m,
+          people: allPeople.filter((p) => p.first.slice(0, 7) <= m).length,
+          repos: G.repos.filter((r) => r.created_at.slice(0, 7) <= m).length,
+          commits,
+          prs,
+          releases: releases.filter((r) => r.date.slice(0, 7) <= m).length,
+        });
+      }
+    }
+    const last = growth[growth.length - 1];
+    const hasPrs = last.prs > 0;
+
+    const years = [];
+    for (let y = orgYear; y <= nowYear; y++) {
+      const yrRel = releases.filter((r) => r.year === y);
+      const yrRepos = repos
+        .filter((r) => r.year === y)
+        .sort((a, b) => b.commits + b.stars * 20 - (a.commits + a.stars * 20));
+      const yrPeople = allPeople.filter((p) => Number(p.first.slice(0, 4)) === y).sort((a, b) => b.commits - a.commits);
+      const lastRel = yrRel[yrRel.length - 1];
+      const end = growth.filter((g) => g.m.startsWith(String(y))).pop() || last;
+      const start = growth.filter((g) => g.m < `${y}-01`).pop();
+      years.push({
+        year: y,
+        story: (C.years || {})[y] || { title: String(y), line: "" },
+        releases: yrRel,
+        conferences: (C.conferences || []).filter((c) => c.year === y),
+        repos: yrRepos,
+        people: yrPeople,
+        cumPeople: end.people,
+        cumRepos: end.repos,
+        cumCommits: end.commits,
+        commits: end.commits - (start ? start.commits : 0),
+        accent: lastRel ? lastRel.accent : "#e9b872",
+      });
+    }
+
+    const families = C.families
+      .map((f) => ({ ...f, repos: f.repos.map((n) => repoBy.get(n)).filter(Boolean) }))
+      .filter((f) => f.repos.length);
+
+    const spotlights = (C.spotlights || []).map((n) => repoBy.get(n)).filter(Boolean);
+
+    // Contributors to feature: honored people + the busiest + the longest-serving, at most 12.
     const yearsOf = (p) => Number((p.last || p.first).slice(0, 4)) - Number(p.first.slice(0, 4)) + 1;
     const crew = new Map();
-    for (const hn of C.honored || []) {
-      const p = people.get(hn.login);
-      if (p) { p.koName = hn.ko; crew.set(p.login, p); }
-    }
+    for (const hn of C.honored || []) if (people.has(hn.login)) crew.set(hn.login, people.get(hn.login));
     const byCommits = [...people.values()].sort((a, b) => b.commits - a.commits);
     const bySpan = byCommits.filter((p) => p.commits >= 50).sort((a, b) => yearsOf(b) - yearsOf(a) || b.commits - a.commits);
     for (const list of [byCommits.slice(0, 6), bySpan.slice(0, 6)]) for (const p of list) if (crew.size < 12) crew.set(p.login, p);
@@ -65,71 +129,9 @@
       if (p.years >= 5) p.tags.push(`${p.years}년째 함께`);
     }
 
-    const years = [];
-    let cumPeople = 0, cumRepos = 0;
-    for (let y = orgYear; y <= nowYear; y++) {
-      const yrRel = releases.filter((r) => r.year === y);
-      const yrRepos = repos
-        .filter((r) => r.year === y)
-        .sort((a, b) => b.commits + b.stars * 20 - (a.commits + a.stars * 20));
-      const yrPeople = allPeople.filter((p) => Number(p.first.slice(0, 4)) === y).sort((a, b) => b.commits - a.commits);
-      const lastRel = yrRel[yrRel.length - 1];
-      cumPeople += yrPeople.length;
-      cumRepos += yrRepos.length;
-      years.push({
-        year: y,
-        story: (C.years || {})[y] || { title: String(y), line: "" },
-        releases: yrRel,
-        conferences: (C.conferences || []).filter((c) => c.year === y),
-        repos: yrRepos,
-        people: yrPeople,
-        cumPeople,
-        cumRepos,
-        commits: Object.entries(G.activity || {}).reduce((s, [m, n]) => (m.startsWith(String(y)) ? s + n : s), 0),
-        accent: lastRel ? lastRel.accent : "#e9b872",
-      });
-    }
+    const cloudNames = C.cloudNames || {};
+    const clouds = (G.clouds || []).map((id) => ({ id, name: cloudNames[id] || id.toUpperCase() }));
 
-    const families = C.families
-      .map((f) => ({ ...f, repos: f.repos.map((n) => repoBy.get(n)).filter(Boolean) }))
-      .filter((f) => f.repos.length);
-
-    const spotlights = (C.spotlights || []).map((n) => repoBy.get(n)).filter(Boolean);
-
-    const months = Object.entries(G.activity || {}).map(([m, n]) => ({ m, n }));
-
-    // Where the work went: each year's commits split by project family (from per-repo yearly counts).
-    const shift = repos.some((r) => r.yearly)
-      ? years.map((Y) => {
-          const by = new Map(families.map((f) => [f.id, 0]));
-          let other = 0;
-          for (const r of repos) {
-            const n = (r.yearly || {})[String(Y.year)] || 0;
-            if (!n) continue;
-            if (r.family && by.has(r.family.id)) by.set(r.family.id, by.get(r.family.id) + n);
-            else other += n;
-          }
-          const total = [...by.values()].reduce((a, b) => a + b, 0) + other;
-          return { year: Y.year, total, other, segments: families.map((f) => ({ fam: f, n: by.get(f.id), share: total ? by.get(f.id) / total : 0 })) };
-        })
-      : null;
-
-    // A few statistics about the community itself.
-    const yearAgo = new Date(Date.parse(G.generated_at) - 365 * 864e5).toISOString().slice(0, 10);
-    const lastOf = (p) => p.last || p.first;
-    const multi = allPeople.filter((p) => p.repos.length >= 2).length;
-    const firstCohort = allPeople.filter((p) => p.first.slice(0, 4) === String(orgYear));
-    const insights = {
-      multi,
-      multiShare: multi / allPeople.length,
-      activeNow: allPeople.filter((p) => lastOf(p) >= yearAgo).length,
-      firstCohort: firstCohort.length,
-      firstCohortActive: firstCohort.filter((p) => lastOf(p) >= yearAgo).length,
-      releaseMonths: releases.length > 1 ? (Date.parse(releases[releases.length - 1].date) - Date.parse(releases[0].date)) / (releases.length - 1) / (30.44 * 864e5) : 0,
-    };
-
-    const totalCommits = G.people.reduce((s, p) => s + p.commits, 0);
-    const totalStars = G.repos.reduce((s, r) => s + r.stars, 0);
     const orgCreated = new Date(G.org.created_at);
     const generated = new Date(G.generated_at);
     const yearsActive = Math.floor((generated - orgCreated) / (365.25 * 864e5));
@@ -143,23 +145,24 @@
       years,
       families,
       spotlights,
-      months,
-      shift,
-      insights,
+      growth,
+      hasPrs,
+      clouds,
+      crew: crewList,
       firstCommit: G.first_commit || null,
       people: allPeople,
       peopleBy: people,
-      crew: crewList,
       stats: {
         yearsActive,
         orgSince: ym(G.org.created_at.slice(0, 10)),
         orgCreated: G.org.created_at.slice(0, 10),
         repos: G.repos.length,
-        activeRepos: repos.filter((r) => r.people.length).length,
         people: people.size,
-        commits: totalCommits,
+        commits: last.commits,
+        prs: last.prs,
         releases: releases.length,
-        stars: totalStars,
+        stars: G.repos.reduce((s, r) => s + r.stars, 0),
+        clouds: clouds.length,
         firstRelease: releases[0],
         lastRelease: releases[releases.length - 1],
       },

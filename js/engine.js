@@ -299,11 +299,10 @@
   }
 
   // ---------- HUD ----------
-  function makeHud(cfg, sections, info) {
+  function makeHud(cfg, sections) {
     const hud = document.getElementById("hud");
     const secEls = sections.map((s) => h("span", { "data-id": s.id }, s.label));
     const clockEl = h("div", "clock");
-    const lvEl = info ? h("div", "lv", h("b", null, `LV.${info.lv}`), ` XP ${Math.round(info.xp).toLocaleString("en-US")}`) : null;
     const cup = frag(`<svg class="hudcup" viewBox="0 0 64 64" aria-hidden="true">
       <defs><clipPath id="hudcup-k"><path d="M14 22h31v19c0 7-5 12-12 12h-7c-7 0-12-5-12-12z"/></clipPath></defs>
       <path d="M45 28h3a7 7 0 0 1 0 14h-3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
@@ -314,7 +313,6 @@
       h("div", "brand", h("img", { src: "assets/org.png", alt: "" }), h("span", null, cfg.eventTitle), cfg.edition ? h("span", "sub", cfg.edition) : null),
       h("div", "sections", secEls),
       h("span", "paused", "PAUSED"),
-      lvEl,
       cup,
       clockEl,
     );
@@ -362,7 +360,7 @@
   }
 
   // ---------- runner ----------
-  async function run({ cfg, playlist, sections, preload, hudInfo }) {
+  async function run({ cfg, playlist, sections, preload }) {
     const stage = document.getElementById("stage");
     fitStage(stage);
     window.addEventListener("resize", () => fitStage(stage));
@@ -373,12 +371,12 @@
     const once = params.has("once");
     const freezeAt = params.has("freeze") ? Number(params.get("freeze")) : null;
 
-    await Promise.all([document.fonts.load('700 40px "Pretendard"').catch(() => {}), document.fonts.load('700 20px "Galmuri11"').catch(() => {}), preloadImages(preload)]);
+    await Promise.all([document.fonts.load('700 40px "Pretendard"').catch(() => {}), preloadImages(preload)]);
     const loading = document.getElementById("loading");
     loading.style.opacity = 0;
     setTimeout(() => loading.remove(), 700);
 
-    const hud = makeHud(cfg, sections, hudInfo);
+    const hud = makeHud(cfg, sections);
     const wipe = makeWipe(stage);
     let index = 0;
     const startId = params.get("scene");

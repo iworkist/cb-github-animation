@@ -94,6 +94,13 @@ window.CB_CURATED = {
   // Deep-dive scenes with a top-contributor chart.
   spotlights: ["cb-spider", "cb-tumblebug", "cm-beetle"],
 
+  // Display names for the cloud drivers found in CB-Spider (cloud-control-manager/cloud-driver/drivers).
+  cloudNames: {
+    aws: "AWS", azure: "Microsoft Azure", gcp: "Google Cloud", alibaba: "Alibaba Cloud", tencent: "Tencent Cloud",
+    ibm: "IBM Cloud", oracle: "Oracle Cloud", openstack: "OpenStack", ncp: "NAVER Cloud", nhn: "NHN Cloud",
+    kt: "KT Cloud", ktclassic: "KT Cloud Classic",
+  },
+
   // People to feature in the "Head Baristas" scene (shown with their Korean name), alongside the
   // most active and longest-serving contributors. Order doesn't matter: cards sort by first contribution.
   honored: [

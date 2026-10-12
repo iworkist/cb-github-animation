@@ -7,9 +7,9 @@ Writes:
   assets/avatars/*      contributor avatars (so the show runs offline)
   assets/org.png        organization avatar
 
-Everything time-based (monthly/yearly activity, first/last contribution per person, first commit
-per repo) is derived from each repo's default-branch commit list, so the collector does not depend
-on GitHub's lazily computed statistics endpoints.
+Everything time-based (monthly commits, merged pull requests, first/last contribution per person,
+first commit per repo) is derived from each repo's commit and pull-request lists, so the collector
+does not depend on GitHub's lazily computed statistics endpoints.
 
 Usage:
   python3 scripts/collect.py            # uses `gh auth token` or $GITHUB_TOKEN
@@ -124,18 +124,20 @@ def collect_repo(repo):
             continue
         by_login[c["login"]] = {"login": c["login"], "commits": c["contributions"], "first": None, "last": None}
 
-    monthly = {}
+    monthly = {}      # human non-merge commits per month (what GitHub's own graphs count)
+    monthly_all = {}  # human commits per month including merges (adds up to the contributors total)
     oldest = None
     for c in paged(f"repos/{ORG}/{name}/commits"):
         date = c["commit"]["author"]["date"]  # UTC, e.g. 2019-05-13T02:51:02Z
         if oldest is None or date < oldest["commit"]["author"]["date"]:
             oldest = c
-        if len(c.get("parents") or []) > 1:
-            continue  # merge commits are not "work"; matches what GitHub's own graphs count
         login = (c.get("author") or {}).get("login")
         if login not in by_login:
             continue
         day = date[:10]
+        monthly_all[day[:7]] = monthly_all.get(day[:7], 0) + 1
+        if len(c.get("parents") or []) > 1:
+            continue
         monthly[day[:7]] = monthly.get(day[:7], 0) + 1
         p = by_login[login]
         p["first"] = min(p["first"], day) if p["first"] else day
@@ -150,13 +152,27 @@ def collect_repo(repo):
             "name": oldest["commit"]["author"]["name"],
             "message": oldest["commit"]["message"].strip().split("\n")[0][:120],
         }
+    # pull requests merged per month, by people (not bots)
+    prs = {}
+    for pr in paged(f"repos/{ORG}/{name}/pulls?state=closed"):
+        user = pr.get("user") or {}
+        if not pr.get("merged_at") or is_bot(user.get("login", ""), user.get("type")):
+            continue
+        m = pr["merged_at"][:7]
+        prs[m] = prs.get(m, 0) + 1
+
     info["contributors"] = sorted(by_login.values(), key=lambda c: -c["commits"])
     info["monthly"] = monthly
-    yearly = {}
-    for month, n in monthly.items():
-        yearly[month[:4]] = yearly.get(month[:4], 0) + n
-    info["yearly"] = dict(sorted(yearly.items()))  # human, non-merge commits per year
+    info["monthly_all"] = monthly_all
+    info["prs_monthly"] = prs
     return info
+
+
+def collect_clouds():
+    """Cloud platforms CB-Spider connects to, from its driver directories."""
+    data, _ = api(f"repos/{ORG}/cb-spider/contents/cloud-control-manager/cloud-driver/drivers")
+    names = sorted({d["name"] for d in data or [] if d.get("type") == "dir" and not d["name"].endswith("-plugin") and d["name"] != "mock"})
+    return names
 
 
 def download_avatar(login, url):
@@ -255,12 +271,20 @@ def main():
         if org_avatar:
             os.replace(os.path.join(ROOT, org_avatar), os.path.join(ROOT, "assets", "org" + os.path.splitext(org_avatar)[1]))
 
-    # Org-wide human commits per month; before org creation = imported history.
-    activity = {}
-    for r in repo_infos:
-        for month, n in r.pop("monthly", {}).items():
-            if month >= org_since[:7]:
-                activity[month] = activity.get(month, 0) + n
+    # Org-wide monthly series; months before org creation are imported history and are left out.
+    def org_series(key):
+        out = {}
+        for r in repo_infos:
+            for month, n in r.pop(key, {}).items():
+                if month >= org_since[:7]:
+                    out[month] = out.get(month, 0) + n
+        return dict(sorted(out.items()))
+
+    activity = org_series("monthly")
+    growth = {"commits": org_series("monthly_all"), "prs": org_series("prs_monthly")}
+
+    print("      clouds")
+    clouds = collect_clouds()
 
     first_commit = None
     for r in repo_infos:
@@ -270,7 +294,9 @@ def main():
 
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "activity": dict(sorted(activity.items())),
+        "activity": activity,
+        "growth": growth,
+        "clouds": clouds,
         "first_commit": first_commit,
         "org": {
             "login": ORG,
