@@ -7,7 +7,6 @@
   const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
   // keep hyphenated project names (CB-Spider, AI-MCMP …) on one line
   const nowrapNames = (s) => esc(s).replace(/[A-Za-z]+(?:-[A-Za-z0-9]+)+/g, '<span style="white-space:nowrap">$&</span>');
-  const DAYS = ["월", "화", "수", "목", "금", "토", "일"];
 
   const SECTIONS = [
     { id: "prologue", label: "Prologue" },
@@ -64,7 +63,7 @@
         const first = M.years[0].year, last = M.years[M.years.length - 1].year;
         const years = h("div", { class: "years", html: `<b>${first}</b> — <b>${last}</b> &nbsp;·&nbsp; ${esc(cfg.tagline)}` });
         const url = h("div", "url", "GITHUB.COM/CLOUD-BARISTA");
-        const B = h("div", "ph ph-b", ...[since, cup, title, meta, years, url].filter(Boolean));
+        const B = h("div", "ph ph-b", ...[since, h("div", "float", h("div", "halo"), cup), title, meta, years, url].filter(Boolean));
         B.style.opacity = 0;
         root.append(A, B);
 
@@ -92,7 +91,7 @@
         B.style.opacity = 1;
         ctx.anim(since, [{ opacity: 0, transform: "translateY(20px)" }, { opacity: 1, transform: "none" }], { duration: 900 });
         const brewed = brewCup(ctx, cup, { delay: 500 });
-        ctx.stagger(title.querySelectorAll(".w"), { delay: 2400, each: 160, duration: 1100, from: { opacity: 0, transform: "translateY(80px)", filter: "blur(12px)" }, to: { opacity: 1, transform: "none", filter: "blur(0)" } });
+        ctx.stagger(title.querySelectorAll(".w"), { delay: 2400, each: 160, duration: 1200, from: { opacity: 0, transform: "perspective(1200px) rotateX(70deg) translateY(70px)", filter: "blur(12px)" }, to: { opacity: 1, transform: "none", filter: "blur(0)" } });
         ctx.stagger([meta, years, url].filter(Boolean), { delay: 3400, each: 220, duration: 1000 });
         ctx.anim(title, [{ transform: "scale(1)" }, { transform: "scale(1.03)" }], { duration: 9000, delay: 3600, easing: "ease-in-out" });
         await ctx.wait(Math.max(brewed, 3400) + 7600);
@@ -131,7 +130,7 @@
           return el;
         });
         const grid = h("div", "grid", tileEls);
-        ctx.root.append(head, h("div", "cols", h("div", "cupcol", cup), grid));
+        ctx.root.append(head, h("div", "cols", h("div", "cupcol", h("div", "float", h("div", "halo"), cup)), grid));
         ctx.stagger(head.children, { each: 120 });
         ctx.anim(cup, [{ opacity: 0, transform: "translateY(30px)" }, { opacity: 1, transform: "none" }], { duration: 900, delay: 300 });
         const steam = cup.querySelector(".steam");
@@ -144,7 +143,7 @@
           while (shown < tiles.length && p >= (shown + 0.5) / tiles.length) {
             const i = shown++;
             tileEls[i].style.opacity = "";
-            ctx.anim(tileEls[i], [{ opacity: 0, transform: "translateX(40px) scale(.97)" }, { opacity: 1, transform: "none" }], { duration: 800 });
+            ctx.anim(tileEls[i], [{ opacity: 0, transform: "perspective(1200px) rotateY(-35deg) translateX(60px)" }, { opacity: 1, transform: "none" }], { duration: 900 });
             ctx.countUp(vEls[i], tiles[i].v, 1800).catch(() => {});
           }
         }, ease.inOut);
@@ -389,69 +388,62 @@
     };
   }
 
-  // ======================================================= when was it brewed (weekday × hour)
-  function punch(M) {
+  // ======================================================= where the work went (commit share by family, per year)
+  function shift(M) {
     return {
-      id: "punch", section: "timeline", cls: "s-punch", accent: "#e9b872",
+      id: "shift", section: "timeline", cls: "s-shift", accent: "#e9b872",
       async run(ctx) {
-        const P = M.punch;
-        const total = P.flat().reduce((a, b) => a + b, 0);
-        const max = Math.max(...P.flat());
-        const L = 250, T = 330, CW = 62, RH = 82;
-        let peak = { v: -1 };
-        P.forEach((row, d) => row.forEach((v, hr) => { if (v > peak.v) peak = { v, d, hr }; }));
-        const night = P.reduce((s, row) => s + row.slice(22).concat(row.slice(0, 6)).reduce((a, b) => a + b, 0), 0);
-        const weekend = P[5].concat(P[6]).reduce((a, b) => a + b, 0);
-        const byHour = Array.from({ length: 24 }, (_, hr) => P.reduce((s, row) => s + row[hr], 0));
-        const peakHour = byHour.indexOf(Math.max(...byHour));
-
-        let cells = "", labels = "";
-        P.forEach((row, d) => {
-          labels += `<text class="rl" x="${L - 26}" y="${T + d * RH + RH / 2 + 8}" text-anchor="end">${DAYS[d]}</text>`;
-          row.forEach((v, hr) => {
-            if (!v) return;
-            const r = 3 + 22 * Math.sqrt(v / max);
-            cells += `<circle class="c" data-h="${hr}" cx="${L + hr * CW + CW / 2}" cy="${T + d * RH + RH / 2}" r="${r.toFixed(1)}" fill="#e9b872" fill-opacity="${(0.28 + 0.72 * (v / max)).toFixed(2)}"/>`;
+        const S = M.shift, I = M.insights;
+        const L = 150, R = 1230, T = 330, B = 860;
+        const n = S.length, slot = (R - L) / n, bw = Math.min(112, slot * 0.62);
+        let rects = "", labels = "";
+        S.forEach((Y, i) => {
+          const x = L + slot * i + (slot - bw) / 2;
+          const segs = Y.segments.filter((s) => s.n > 0);
+          let y = B;
+          segs.forEach((s, k) => {
+            const hgt = (B - T) * s.share;
+            const yTop = y - hgt;
+            rects += `<rect class="seg" data-i="${i}" x="${x}" y="${yTop + (k ? 2 : 0)}" width="${bw}" height="${Math.max(0, hgt - (k ? 2 : 0))}" fill="${s.fam.color}" style="transform-origin:${x}px ${B}px"/>`;
+            if (s.share >= 0.1) labels += `<text class="pct" data-i="${i}" x="${x + bw / 2}" y="${yTop + hgt / 2 + 7}" text-anchor="middle">${Math.round(s.share * 100)}%</text>`;
+            y = yTop;
           });
+          labels += `<text class="yr" x="${x + bw / 2}" y="${B + 40}" text-anchor="middle">${Y.year}</text>`;
+          labels += `<text class="tot" data-i="${i}" x="${x + bw / 2}" y="${T - 14}" text-anchor="middle">${fmt(Y.total)}</text>`;
         });
-        for (let hr = 0; hr < 24; hr += 3) labels += `<text class="hl" x="${L + hr * CW + CW / 2}" y="${T + 7 * RH + 34}" text-anchor="middle">${hr}시</text>`;
-        const nightBand = `<g class="band" opacity="0">
-          <rect x="${L + 22 * CW}" y="${T - 10}" width="${2 * CW}" height="${7 * RH + 20}" rx="12"/><rect x="${L}" y="${T - 10}" width="${6 * CW}" height="${7 * RH + 20}" rx="12"/>
-          <text x="${L + 3 * CW}" y="${T - 24}" text-anchor="middle">밤 10시 — 아침 6시</text></g>`;
-        const ring = `<circle class="ring" opacity="0" cx="${L + peak.hr * CW + CW / 2}" cy="${T + peak.d * RH + RH / 2}" r="${(3 + 22 * Math.sqrt(peak.v / max) + 9).toFixed(1)}"/>`;
-        const svg = frag(`<svg width="1920" height="1080" viewBox="0 0 1920 1080"><g class="labels">${labels}</g>${nightBand}<g class="cells">${cells}</g>${ring}</svg>`);
-
+        const svg = frag(`<svg width="1920" height="1080" viewBox="0 0 1920 1080">
+          <line x1="${L}" x2="${R}" y1="${B}" y2="${B}" stroke="rgba(246,237,227,.25)"/>
+          <g class="bars">${rects}</g><g class="labels">${labels}</g></svg>`);
         const head = h("div", "head",
-          h("div", "kicker", "When was it brewed"),
-          h("div", "h1", "커피는 언제 내려졌을까"),
-          h("div", "lead muted", `요일 · 시간대별 커밋 ${fmt(total)}개 (한국 시간 기준)`));
+          h("div", "kicker", "Where the work went"),
+          h("div", "h1", "무게중심의 이동"),
+          h("div", "lead muted", "해마다 커밋이 어느 프로젝트 묶음에서 일어났는지 · 비율"));
+        const legend = h("div", "legend", M.families.map((f) => h("span", null, h("i", { style: { background: f.color } }), f.short || f.title)));
+        const firstYear = M.years[0].year;
         const calls = [
-          { k: "가장 바쁜 시간", v: `${DAYS[peak.d]}요일 ${peak.hr}시`, d: `${fmt(peak.v)} 커밋 · 하루 중 ${peakHour}시가 정점` },
-          { k: "밤에도 내려졌다", v: `${Math.round((night / total) * 100)}%`, d: `밤 10시 — 아침 6시 사이 ${fmt(night)} 커밋` },
-          { k: "주말에도", v: `${Math.round((weekend / total) * 100)}%`, d: `토·일요일 ${fmt(weekend)} 커밋` },
+          { k: "둘 이상의 프로젝트에", v: `${Math.round(I.multiShare * 100)}%`, d: `기여자 ${I.multi}명이 2개 이상의 레포지토리에 커밋했습니다` },
+          { k: "지금도 함께", v: `${I.activeNow}명`, d: `지난 1년 안에 커밋한 기여자 · 첫 해(${firstYear}) 합류자 ${I.firstCohort}명 중 ${I.firstCohortActive}명이 아직 함께합니다` },
+          { k: "릴리스 리듬", v: `${I.releaseMonths.toFixed(1)}개월`, d: `${M.releases.length}번의 릴리스 사이 평균 간격` },
         ].map((c) => h("div", "call", h("div", "k", c.k), h("div", "v", c.v), h("div", "d", c.d)));
         const callBox = h("div", "calls", calls);
-        ctx.root.append(svg, head, callBox);
+        ctx.root.append(svg, head, legend, callBox);
 
         ctx.stagger(head.children, { each: 120 });
-        ctx.anim(svg.querySelector(".labels"), [{ opacity: 0 }, { opacity: 1 }], { duration: 800, delay: 400 });
-        const cellEls = [...svg.querySelectorAll(".c")];
-        for (const c of cellEls) { c.style.transformOrigin = `${c.getAttribute("cx")}px ${c.getAttribute("cy")}px`; c.style.transform = "scale(0)"; }
+        ctx.anim(legend, [{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: 500 });
+        const segEls = [...svg.querySelectorAll(".seg")];
+        const lblEls = [...svg.querySelectorAll(".pct, .tot")];
+        for (const el of segEls) el.style.transform = "scaleY(0)";
+        for (const el of lblEls) el.style.opacity = 0;
         await ctx.wait(700);
-        await ctx.tween(3200, (p) => {
-          const upto = p * 24;
-          for (const c of cellEls) {
-            const hr = Number(c.dataset.h);
-            const k = Math.max(0, Math.min(1, (upto - hr) / 1.5));
-            c.style.transform = `scale(${(k < 1 ? 1.25 * k - 0.25 * k * k * k : 1).toFixed(3)})`;
-          }
-        }, ease.linear);
-        ctx.anim(svg.querySelector(".band"), [{ opacity: 0 }, { opacity: 1 }], { duration: 900 });
-        const ringEl = svg.querySelector(".ring");
-        ringEl.style.transformOrigin = `${L + peak.hr * CW + CW / 2}px ${T + peak.d * RH + RH / 2}px`;
-        ctx.anim(ringEl, [{ opacity: 0, transform: "scale(1.6)" }, { opacity: 1, transform: "scale(1)" }], { duration: 900, delay: 300 });
-        ctx.stagger(calls, { delay: 400, each: 300, from: { opacity: 0, transform: "translateX(30px)" } });
-        await ctx.wait(8200);
+        for (let i = 0; i < n; i++) {
+          const segs = segEls.filter((el) => Number(el.dataset.i) === i);
+          const lbls = lblEls.filter((el) => Number(el.dataset.i) === i);
+          ctx.tween(800, (p) => { for (const el of segs) el.style.transform = `scaleY(${p})`; }, ease.outExpo).catch(() => {});
+          ctx.wait(500).then(() => lbls.forEach((el) => ctx.anim(el, [{ opacity: 0 }, { opacity: 1 }], { duration: 500 }))).catch(() => {});
+          await ctx.wait(180);
+        }
+        ctx.stagger(calls, { delay: 600, each: 300, from: { opacity: 0, transform: "perspective(1200px) rotateY(-30deg) translateX(40px)" } });
+        await ctx.wait(10500);
       },
     };
   }
@@ -494,7 +486,7 @@
         cards.append(...cardEls);
         ctx.root.append(head, cards);
         ctx.stagger(head.querySelectorAll(".l > *, .r"), { each: 110 });
-        const inEnd = ctx.stagger(cardEls, { delay: 450, each: 90, duration: 800, from: { opacity: 0, transform: "translateY(30px) scale(.96)" } });
+        const inEnd = ctx.stagger(cardEls, { delay: 450, each: 90, duration: 900, from: { opacity: 0, transform: "perspective(1400px) rotateX(28deg) translateY(50px)" } });
         await ctx.wait(inEnd + 400);
         const per = Math.max(500, Math.min(1000, 7000 / n));
         for (const c of cardEls) {
@@ -646,7 +638,7 @@
         const phLabel = playhead.firstChild;
         bar.append(playhead);
         const labelsBox = h("div", "famlabels");
-        ctx.root.append(canvas, labelsBox, head, ticker, bar, caption);
+        ctx.root.append(h("div", "space", canvas, labelsBox), head, ticker, bar, caption);
         ctx.stagger(head.children, { each: 120 });
         ctx.stagger([ticker, bar], { delay: 300, each: 150 });
 
@@ -838,6 +830,44 @@
     };
   }
 
+  // ======================================================= head baristas
+  function crew(M) {
+    return {
+      id: "crew", section: "people", cls: "s-crew", accent: "#e9b872",
+      async run(ctx) {
+        const list = M.crew;
+        const head = h("div", "head",
+          h("div", "kicker", "Head baristas"),
+          h("div", "h1", "오래, 많이, 함께 내린 사람들"),
+          h("div", "lead muted", "가장 많이 기여했거나 가장 오래 함께한 분들, 그리고 처음부터 이 길을 연 분들"));
+        const grid = h("div", "cards");
+        grid.style.gridTemplateColumns = `repeat(${list.length > 8 ? 6 : 4}, 1fr)`;
+        const cards = list.map((p) => h("div", "card3d", h("div", "face",
+          avatar(p, 108),
+          h("div", "nm", p.koName || p.displayName),
+          p.koName && p.name ? h("div", "en", p.name) : null,
+          h("div", "lg", `@${p.login}`),
+          p.company ? h("div", "co", p.company) : null,
+          h("div", "tags", p.tags.map((t) => h("span", "tg", t))),
+          h("div", "st",
+            h("span", null, h("b", null, p.first.slice(0, 4)), "년부터"),
+            h("span", null, "커밋 ", h("b", null, fmt(p.commits))),
+            h("span", null, "레포 ", h("b", null, p.repos.length))))));
+        grid.append(...cards);
+        ctx.root.append(head, grid);
+        ctx.stagger(head.children, { each: 120 });
+        cards.forEach((c, i) => ctx.anim(c, [{ opacity: 0, transform: "rotateY(-75deg) translateZ(-220px) translateY(40px)" }, { opacity: 1, transform: "none" }], { duration: 1100, delay: 500 + i * 110, fill: "backwards" }));
+        await ctx.wait(500 + cards.length * 110 + 900);
+        for (const c of cards) {
+          c.classList.add("lit");
+          await ctx.wait(900);
+          c.classList.remove("lit");
+        }
+        await ctx.wait(1600);
+      },
+    };
+  }
+
   // ======================================================= contributor wall
   let wallCursor = 0;
   let wallOrder = null;
@@ -902,7 +932,7 @@
           x.a.classList.add("hot");
           const repos = x.p.repos.length;
           card.replaceChildren(
-            h("div", "n", x.p.displayName),
+            h("div", "n", x.p.koName ? `${x.p.koName} · ${x.p.displayName}` : x.p.displayName),
             h("div", "l", `@${x.p.login}${x.p.company ? " · " + x.p.company : ""}`),
             h("div", { class: "m", html: `<b>${x.p.first.slice(0, 4)}</b>년부터 · 레포지토리 <b>${repos}</b>개 · 커밋 <b>${fmt(x.p.commits)}</b>` }));
           const below = x.row === 0;
@@ -939,7 +969,7 @@
         const title = h("div", "ttl", [cfg.edition, cfg.eventTitle].filter(Boolean).join(" "));
         const thanks = h("div", { class: "thanks", html: `<b>${M.stats.people}</b>명의 기여자, <b>${fmt(M.stats.commits)}</b>개의 커밋, <b>${M.stats.releases}</b>번의 릴리스 — 고맙습니다` });
         const faces = h("div", "faces", [...M.people].sort((a, b) => b.commits - a.commits).slice(0, 28).map((p) => avatar(p, 56)));
-        ctx.root.append(...[cup, l1, l2, sub, count, title, thanks, faces].filter(Boolean));
+        ctx.root.append(...[h("div", "float", h("div", "halo"), cup), l1, l2, sub, count, title, thanks, faces].filter(Boolean));
         brewCup(ctx, cup, { delay: 200, draw: 900, pour: 1300 });
         ctx.stagger([l1, l2], { delay: 1500, each: 900, duration: 1100, from: { opacity: 0, transform: "translateY(26px)", filter: "blur(8px)" }, to: { opacity: 1, transform: "none", filter: "blur(0)" } });
         ctx.stagger([sub, count, title, thanks].filter(Boolean), { delay: 3600, each: 200, duration: 900 });
@@ -959,18 +989,19 @@
   // ======================================================= playlist
   function build(M, cfg) {
     const out = [];
-    const alias = { intro: "prologue", numbers: "cup", activity: "timeline" };
-    const want = (cfg.scenes || ["prologue", "cup", "timeline", "years", "menu", "punch", "families", "spotlights", "constellation", "wall", "outro"]).map((s) => alias[s] || s);
+    const alias = { intro: "prologue", numbers: "cup", activity: "timeline", punch: "shift" };
+    const want = (cfg.scenes || ["prologue", "cup", "timeline", "years", "menu", "shift", "families", "spotlights", "constellation", "crew", "wall", "outro"]).map((s) => alias[s] || s);
     for (const s of want) {
       if (s === "prologue") out.push(prologue(M, cfg));
       else if (s === "cup") out.push(cupNumbers(M));
       else if (s === "timeline" && M.months.length > 1) out.push(timeline(M));
       else if (s === "years") M.years.forEach((y, i) => out.push(yearScene(y, M, cfg, i === M.years.length - 1)));
       else if (s === "menu" && M.releases.length) out.push(menu(M));
-      else if (s === "punch" && M.punch) out.push(punch(M));
+      else if (s === "shift" && M.shift) out.push(shift(M));
       else if (s === "families") M.families.forEach((f) => out.push(familyScene(f)));
       else if (s === "spotlights") M.spotlights.forEach((r) => out.push(spotlight(r)));
       else if (s === "constellation") out.push(constellation(M));
+      else if (s === "crew" && M.crew.length) out.push(crew(M));
       else if (s === "wall") out.push(wall(M));
       else if (s === "outro") out.push(outro(M, cfg));
     }

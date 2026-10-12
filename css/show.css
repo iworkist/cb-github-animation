@@ -278,19 +278,20 @@ body.idle { cursor: none; }
 .s-activity .rel .rv { fill: var(--ink-3); font-size: 16px; font-weight: 500; }
 .s-activity .peak text { fill: var(--ink); font-size: 22px; font-weight: 650; font-family: var(--font); }
 
-/* ---------- punch card ---------- */
-.s-punch svg { position: absolute; left: 0; top: 0; }
-.s-punch .labels text { fill: var(--ink-3); font: 500 19px var(--font); }
-.s-punch .labels .rl { fill: var(--ink-2); font-size: 24px; font-weight: 650; }
-.s-punch .band rect { fill: rgba(124, 196, 255, 0.07); stroke: rgba(124, 196, 255, 0.28); stroke-dasharray: 4 7; }
-.s-punch .band text { fill: #7cc4ff; font: 650 17px var(--font); letter-spacing: 0.1em; }
-.s-punch .ring { fill: none; stroke: var(--ink); stroke-width: 3; }
-.s-punch .cells circle { will-change: transform; }
-.s-punch .calls { position: absolute; right: 104px; top: 96px; display: flex; gap: 20px; }
-.s-punch .call { padding: 18px 26px 16px; border-radius: 18px; background: var(--card); border: 1px solid var(--line-2); min-width: 240px; }
-.s-punch .call .k { font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); }
-.s-punch .call .v { font-size: 40px; font-weight: 800; letter-spacing: -0.01em; margin-top: 6px; font-variant-numeric: tabular-nums; }
-.s-punch .call .d { font-size: 17px; color: var(--ink-3); margin-top: 4px; }
+/* ---------- where the work went ---------- */
+.s-shift svg { position: absolute; left: 0; top: 0; }
+.s-shift .seg { will-change: transform; }
+.s-shift .labels text { font-family: var(--font); }
+.s-shift .labels .yr { fill: var(--ink-2); font-size: 24px; font-weight: 650; }
+.s-shift .labels .tot { fill: var(--ink-3); font-size: 18px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.s-shift .labels .pct { fill: #0f0b09; font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.s-shift .legend { position: absolute; left: 150px; top: 270px; display: flex; gap: 24px; font-size: 17px; color: var(--ink-2); white-space: nowrap; }
+.s-shift .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 8px; vertical-align: -1px; }
+.s-shift .calls { position: absolute; right: 104px; top: 316px; width: 500px; display: flex; flex-direction: column; gap: 18px; }
+.s-shift .call { padding: 22px 28px 20px; border-radius: 20px; background: var(--card); border: 1px solid var(--line-2); }
+.s-shift .call .k { font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); }
+.s-shift .call .v { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; margin-top: 6px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.s-shift .call .d { font-size: 18px; color: var(--ink-2); margin-top: 8px; line-height: 1.45; }
 
 /* ---------- year ---------- */
 .s-year .strip {
@@ -307,7 +308,16 @@ body.idle { cursor: none; }
 .s-year .cols { position: absolute; left: 104px; right: 104px; top: 150px; bottom: 120px; display: grid; grid-template-columns: 640px 1fr; gap: 72px; }
 .s-year .left { display: flex; flex-direction: column; }
 .s-year .yr { font-size: 236px; font-weight: 850; letter-spacing: -0.05em; line-height: 0.9; display: flex; overflow: hidden; padding-bottom: 12px; }
-.s-year .yr span { display: inline-block; background: linear-gradient(180deg, var(--ink) 20%, var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.s-year .yr { padding-bottom: 26px; padding-right: 20px; }
+.s-year .yr span {
+  display: inline-block; color: var(--ink);
+  /* chunky extrusion in the year's accent */
+  --ex: color-mix(in oklab, var(--accent) 55%, #1a110c);
+  text-shadow:
+    1px 1px 0 var(--ex), 2px 2px 0 var(--ex), 3px 3px 0 var(--ex), 4px 4px 0 var(--ex), 5px 5px 0 var(--ex),
+    6px 6px 0 var(--ex), 7px 7px 0 var(--ex), 8px 8px 0 var(--ex), 9px 9px 0 var(--ex), 10px 10px 0 var(--ex),
+    11px 11px 0 var(--ex), 12px 12px 0 var(--ex), 18px 22px 40px rgba(0, 0, 0, 0.55);
+}
 .s-year .cum { font-size: 19px; color: var(--ink-3); margin-top: 4px; font-variant-numeric: tabular-nums; }
 .s-year .cum b { color: var(--ink-2); font-weight: 700; }
 .s-year .era { margin-top: 18px; font-size: 52px; font-weight: 780; letter-spacing: -0.02em; line-height: 1.2; }
@@ -422,6 +432,15 @@ body.idle { cursor: none; }
 .bar-row .val { font-size: 21px; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
 
 /* ---------- constellation ---------- */
+.s-const .space {
+  position: absolute; inset: 0;
+  transform-origin: 50% 62%;
+  animation: sway 16s ease-in-out infinite alternate;
+}
+@keyframes sway {
+  from { transform: perspective(2200px) rotateX(9deg) rotateY(-2.5deg); }
+  to { transform: perspective(2200px) rotateX(9deg) rotateY(2.5deg); }
+}
 .s-const canvas { position: absolute; left: 0; top: 0; }
 .s-const .head { position: absolute; left: 104px; top: 88px; max-width: 900px; }
 .s-const .ticker { position: absolute; right: 104px; top: 76px; text-align: right; }
@@ -474,3 +493,50 @@ body.idle { cursor: none; }
 .s-outro .thanks b { color: var(--ink); }
 .s-outro .faces { display: flex; justify-content: center; margin-top: 8px; }
 .s-outro .faces .av { width: 56px; height: 56px; margin-left: -12px; box-shadow: 0 0 0 3px var(--bg); }
+
+/* ---------- 3D touches ---------- */
+.float { position: relative; isolation: isolate; animation: float 6s ease-in-out infinite; }
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-10px) rotate(1.2deg); }
+}
+.halo {
+  position: absolute; left: 50%; top: 56%; z-index: -1;
+  width: 150%; aspect-ratio: 1; border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, color-mix(in oklab, var(--crema) 38%, transparent), transparent 62%);
+  filter: blur(26px);
+  animation: pulse 5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.s-prologue .float, .s-outro .float { margin: 4px 0 6px; }
+
+/* ---------- head baristas ---------- */
+.s-crew .cards {
+  position: absolute; left: 104px; right: 104px; top: 300px; bottom: 120px;
+  display: grid; grid-template-rows: 1fr 1fr; gap: 20px;
+  perspective: 1600px;
+}
+.s-crew .card3d { transform-style: preserve-3d; min-width: 0; }
+.s-crew .face {
+  height: 100%; border-radius: 24px; padding: 20px 14px 16px;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;
+  background: linear-gradient(160deg, rgba(246, 237, 227, 0.09), rgba(246, 237, 227, 0.03));
+  border: 1px solid var(--line);
+  transition: transform 0.6s var(--ease-out), box-shadow 0.6s, border-color 0.6s;
+}
+.s-crew .card3d.lit .face {
+  transform: translateZ(70px) rotateX(-6deg) scale(1.04);
+  border-color: var(--crema);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--crema), 0 0 60px color-mix(in oklab, var(--crema) 35%, transparent);
+}
+.s-crew .face .av { box-shadow: 0 0 0 3px var(--crema), 0 12px 30px rgba(0, 0, 0, 0.5); }
+.s-crew .nm { margin-top: 10px; font-size: 28px; font-weight: 800; letter-spacing: -0.01em; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.s-crew .en { font-size: 16px; color: var(--ink-2); max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.s-crew .lg { font-size: 14px; color: var(--ink-3); font-family: var(--mono); max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.s-crew .co { font-size: 14px; color: var(--ink-3); max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.s-crew .tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
+.s-crew .tg { font-size: 12px; font-weight: 800; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 999px; background: color-mix(in oklab, var(--crema) 22%, transparent); color: var(--crema); white-space: nowrap; }
+.s-crew .st { margin-top: auto; padding-top: 8px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; font-size: 14px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.s-crew .st b { color: var(--ink-2); font-weight: 700; }

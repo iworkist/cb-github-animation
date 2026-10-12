@@ -19,11 +19,12 @@ window.CB_CONFIG = {
   //   timeline      monthly commits with release codenames
   //   years         one chapter per year: releases, new repos, new contributors
   //   menu          the release menu (coffee → tea)
-  //   punch         when the coffee was brewed: weekday × hour
+  //   shift         where the work went: commit share by project family, per year
   //   families      projects by family
   //   spotlights    top contributors of a few repos
   //   constellation the community graph growing through time
+  //   crew          head baristas: honored, most active and longest-serving contributors
   //   wall          every contributor
   //   outro         "the cup is ready" + countdown
-  scenes: ["prologue", "cup", "timeline", "years", "menu", "punch", "families", "spotlights", "constellation", "wall", "outro"],
+  scenes: ["prologue", "cup", "timeline", "years", "menu", "shift", "families", "spotlights", "constellation", "crew", "wall", "outro"],
 };

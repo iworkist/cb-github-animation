@@ -48,51 +48,64 @@ window.CB_CURATED = {
   // Project families shown as "프로젝트별" scenes, in order.
   families: [
     {
-      id: "core", kicker: "CLOUD-BARISTA CORE", title: "멀티클라우드 공통 플랫폼",
+      id: "core", short: "Core", kicker: "CLOUD-BARISTA CORE", title: "멀티클라우드 공통 플랫폼",
       line: "모든 클라우드를 하나의 인터페이스로 연결하고, 하나의 클라우드처럼 관리합니다",
       color: "#e9b872",
       repos: ["cb-spider", "cb-tumblebug", "cb-mapui", "cloud-barista", "cb-log", "cb-store", "cb-client", "cb-fw-template"],
     },
     {
-      id: "pioneers", kicker: "PIONEERS", title: "함께 길을 연 프레임워크",
+      id: "pioneers", short: "Pioneers", kicker: "PIONEERS", title: "함께 길을 연 프레임워크",
       line: "지금은 쉬고 있지만, Cloud-Barista의 가능성을 넓혀 준 프레임워크들",
-      color: "#d98a4e",
+      color: "#e8763c",
       repos: ["cb-ladybug", "cb-dragonfly", "cb-larva", "cb-webtool", "cb-operator", "cb-milkyway"],
     },
     {
-      id: "migrator", kicker: "CLOUD-MIGRATOR", title: "클라우드 마이그레이션 통합 플랫폼",
+      id: "migrator", short: "Cloud-Migrator", kicker: "CLOUD-MIGRATOR", title: "클라우드 마이그레이션 통합 플랫폼",
       line: "인프라·소프트웨어·데이터를 한 번에 스캔하고, 멀티클라우드로 옮깁니다",
       color: "#7cc4ff",
       repos: ["cloud-migrator", "cm-honeybee", "cm-beetle", "cm-grasshopper", "cm-centipede", "cm-damselfly", "cm-cicada", "cm-ant", "cm-butterfly", "cm-mayfly", "cm-model", "cm-data-mold"],
     },
     {
-      id: "ecosystem", kicker: "MULTI-CLOUD ECOSYSTEM", title: "확장과 연동",
+      id: "ecosystem", short: "Ecosystem", kicker: "MULTI-CLOUD ECOSYSTEM", title: "확장과 연동",
       line: "OpenTofu 기반 인프라 확장, 데이터 관리, 그리고 국내 클라우드 SDK",
-      color: "#8fd19e",
+      color: "#62d49b",
       repos: ["mc-terrarium", "mc-data-manager", "mc-meta-365", "ktcloud-sdk-go", "ktcloudvpc-sdk-go", "nhncloud-sdk-go"],
     },
     {
-      id: "ai", kicker: "AI-MCMP · NEW IN 2026", title: "AI 멀티클라우드 관리 플랫폼",
+      id: "ai", short: "AI-MCMP", kicker: "AI-MCMP · NEW IN 2026", title: "AI 멀티클라우드 관리 플랫폼",
       line: "GPU·NPU·ASIC 등 이기종 AI 가속기를 여러 클라우드에 걸쳐 하나로",
       color: "#ff7a9a",
       repos: ["ai-mcmp", "ai-ui", "ai-ops", "ai-app", "ai-ha", "ai-o11y", "ai-adm"],
     },
     {
-      id: "community", kicker: "COMMUNITY", title: "함께 나누는 공간",
+      id: "community", short: "Community", kicker: "COMMUNITY", title: "함께 나누는 공간",
       line: "문서, 홈페이지, API 허브, 그리고 지식을 나누는 Coffeehouse",
       color: "#f5d96b",
       repos: ["cloud-barista.github.io", "docs", "cb-coffeehouse", "api", "cb-tumblebug-api-web", "cb-ladybug-api-web", "archive"],
     },
     {
-      id: "poc", kicker: "PROOF OF CONCEPT", title: "실험과 검증",
+      id: "poc", short: "PoC", kicker: "PROOF OF CONCEPT", title: "실험과 검증",
       line: "모든 프레임워크는 작은 PoC에서 시작했습니다",
-      color: "#c9b8a8",
+      color: "#ad8cf5",
       repos: ["poc-farmoni", "poc-cb-spider", "poc-mcism", "poc-specialized_services", "poc-cb-ladybug", "poc-cicd-spider", "poc-cicd-tumblebug", "poc-cicd-ladybug", "poc-cicd-dashboard", "poc-cicd-mcks-dashboard"],
     },
   ],
 
   // Deep-dive scenes with a top-contributor chart.
   spotlights: ["cb-spider", "cb-tumblebug", "cm-beetle"],
+
+  // People to feature in the "Head Baristas" scene (shown with their Korean name), alongside the
+  // most active and longest-serving contributors. Order doesn't matter: cards sort by first contribution.
+  honored: [
+    { login: "powerkimhub", ko: "김병섭" },
+    { login: "seokho-son", ko: "손석호" },
+    { login: "innodreamer", ko: "오병택" },
+    { login: "dongjae", ko: "강동재" },
+    { login: "Youngwoo-Jung", ko: "정영우" },
+    { login: "yunkon-kim", ko: "김윤곤" },
+    { login: "iworkist", ko: "박재홍" },
+    { login: "hanizang77", ko: "장한이" },
+  ],
 
   // Never shown (forks of unrelated projects / org plumbing).
   hiddenRepos: [".github", "cb-tumblebug-dashboard", "cloud-barista.github.com"],

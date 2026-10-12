@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-12T13:22:49+00:00",
+ "generated_at": "2026-10-12T14:03:06+00:00",
  "activity": {
   "2019-04": 6,
   "2019-05": 12,
@@ -92,190 +92,6 @@
   "2026-09": 176,
   "2026-10": 109
  },
- "punch": [
-  [
-   53,
-   48,
-   22,
-   35,
-   8,
-   15,
-   3,
-   8,
-   24,
-   78,
-   156,
-   188,
-   70,
-   145,
-   237,
-   254,
-   277,
-   291,
-   228,
-   162,
-   167,
-   125,
-   141,
-   83
-  ],
-  [
-   43,
-   40,
-   37,
-   25,
-   20,
-   5,
-   2,
-   5,
-   23,
-   85,
-   177,
-   219,
-   85,
-   173,
-   247,
-   261,
-   269,
-   316,
-   197,
-   158,
-   177,
-   151,
-   166,
-   88
-  ],
-  [
-   73,
-   47,
-   37,
-   32,
-   35,
-   28,
-   14,
-   3,
-   32,
-   79,
-   148,
-   177,
-   77,
-   133,
-   208,
-   256,
-   245,
-   270,
-   216,
-   186,
-   137,
-   155,
-   142,
-   45
-  ],
-  [
-   52,
-   64,
-   50,
-   37,
-   38,
-   4,
-   4,
-   16,
-   15,
-   106,
-   177,
-   188,
-   107,
-   142,
-   261,
-   251,
-   292,
-   297,
-   242,
-   176,
-   145,
-   125,
-   132,
-   87
-  ],
-  [
-   53,
-   41,
-   31,
-   29,
-   13,
-   6,
-   9,
-   6,
-   26,
-   87,
-   145,
-   206,
-   80,
-   149,
-   232,
-   257,
-   234,
-   305,
-   209,
-   144,
-   114,
-   88,
-   95,
-   81
-  ],
-  [
-   53,
-   35,
-   12,
-   20,
-   23,
-   12,
-   21,
-   8,
-   11,
-   19,
-   18,
-   14,
-   13,
-   13,
-   11,
-   16,
-   19,
-   20,
-   37,
-   35,
-   26,
-   18,
-   16,
-   16
-  ],
-  [
-   26,
-   17,
-   12,
-   13,
-   13,
-   3,
-   9,
-   2,
-   8,
-   10,
-   9,
-   18,
-   14,
-   26,
-   24,
-   31,
-   33,
-   46,
-   14,
-   30,
-   36,
-   13,
-   25,
-   31
-  ]
- ],
  "first_commit": {
   "sha": "c54795d",
   "date": "2019-05-13T02:51:02Z",
@@ -423,6 +239,9 @@
     "name": "ByoungSeob Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 32
    }
   },
   {
@@ -506,6 +325,15 @@
     "name": "ByoungSeob Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 61,
+    "2020": 106,
+    "2021": 48,
+    "2022": 15,
+    "2023": 18,
+    "2024": 6,
+    "2025": 6
    }
   },
   {
@@ -560,6 +388,9 @@
     "name": "ByoungSeob Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 114
    }
   },
   {
@@ -601,6 +432,9 @@
     "name": "Jihoon Seo",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 33
    }
   },
   {
@@ -687,6 +521,15 @@
     "name": "ByoungSeob Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 13,
+    "2020": 25,
+    "2021": 29,
+    "2022": 7,
+    "2024": 2,
+    "2025": 3,
+    "2026": 3
    }
   },
   {
@@ -749,6 +592,14 @@
     "name": "ByoungSeob Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 36,
+    "2020": 24,
+    "2021": 25,
+    "2022": 12,
+    "2023": 1,
+    "2024": 2
    }
   },
   {
@@ -1041,6 +892,16 @@
     "name": "Jihoon Seo",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 115,
+    "2020": 239,
+    "2021": 762,
+    "2022": 311,
+    "2023": 108,
+    "2024": 559,
+    "2025": 296,
+    "2026": 616
    }
   },
   {
@@ -1142,6 +1003,14 @@
     "name": "Jihoon Seo",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 26,
+    "2020": 54,
+    "2021": 51,
+    "2022": 34,
+    "2023": 8,
+    "2025": 3
    }
   },
   {
@@ -1261,6 +1130,14 @@
     "name": "Jihoon Seo",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 33,
+    "2020": 219,
+    "2021": 598,
+    "2022": 206,
+    "2023": 5,
+    "2025": 1
    }
   },
   {
@@ -1560,6 +1437,16 @@
     "name": "ByoungSeob Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 239,
+    "2020": 373,
+    "2021": 435,
+    "2022": 785,
+    "2023": 198,
+    "2024": 951,
+    "2025": 549,
+    "2026": 253
    }
   },
   {
@@ -1589,6 +1476,9 @@
     "name": "B.T. Oh",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 7
    }
   },
   {
@@ -1654,6 +1544,16 @@
     "name": "Seokho Son",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 8,
+    "2020": 42,
+    "2021": 15,
+    "2022": 3,
+    "2023": 10,
+    "2024": 8,
+    "2025": 9,
+    "2026": 3
    }
   },
   {
@@ -1689,6 +1589,10 @@
     "name": "Seokho Son",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2019": 5,
+    "2020": 1
    }
   },
   {
@@ -1771,6 +1675,19 @@
     "name": "Oliver Stapleton",
     "message": "Init commit + some jekyll integration",
     "imported": true
+   },
+   "yearly": {
+    "2014": 1,
+    "2015": 2,
+    "2016": 4,
+    "2017": 2,
+    "2019": 8,
+    "2020": 414,
+    "2021": 54,
+    "2022": 32,
+    "2023": 14,
+    "2024": 8,
+    "2025": 11
    }
   },
   {
@@ -1861,6 +1778,13 @@
     "name": "Jihoon Seo",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2020": 12,
+    "2021": 81,
+    "2022": 44,
+    "2023": 4,
+    "2025": 1
    }
   },
   {
@@ -1944,6 +1868,13 @@
     "name": "Jihoon Seo",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2020": 69,
+    "2021": 73,
+    "2022": 15,
+    "2023": 10,
+    "2025": 1
    }
   },
   {
@@ -1984,6 +1915,10 @@
     "name": "Seokho Son",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2020": 20,
+    "2022": 3
    }
   },
   {
@@ -2033,6 +1968,16 @@
     "name": "Seokho Son",
     "message": "Initial commit",
     "imported": true
+   },
+   "yearly": {
+    "2019": 10,
+    "2020": 10,
+    "2021": 35,
+    "2022": 74,
+    "2023": 25,
+    "2024": 74,
+    "2025": 79,
+    "2026": 177
    }
   },
   {
@@ -2098,6 +2043,11 @@
     "name": "Yunkon (Alvin) Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2020": 61,
+    "2021": 109,
+    "2022": 130
    }
   },
   {
@@ -2136,6 +2086,10 @@
     "name": "Seokho Son",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2020": 12,
+    "2021": 7
    }
   },
   {
@@ -2171,6 +2125,11 @@
     "name": "Sooyoung Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2020": 5,
+    "2021": 2,
+    "2022": 1
    }
   },
   {
@@ -2274,6 +2233,14 @@
     "name": "Yunkon (Alvin) Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2020": 23,
+    "2021": 67,
+    "2022": 23,
+    "2023": 8,
+    "2024": 13,
+    "2025": 4
    }
   },
   {
@@ -2315,6 +2282,9 @@
     "name": "Jihoon Seo",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2021": 6
    }
   },
   {
@@ -2356,6 +2326,12 @@
     "name": "ByoungSeob Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2021": 29,
+    "2022": 4,
+    "2023": 1,
+    "2024": 3
    }
   },
   {
@@ -2412,6 +2388,9 @@
     "name": "Ubuntu",
     "message": "first commit",
     "imported": false
+   },
+   "yearly": {
+    "2021": 75
    }
   },
   {
@@ -2447,6 +2426,10 @@
     "name": "Ubuntu",
     "message": "first commit",
     "imported": false
+   },
+   "yearly": {
+    "2021": 9,
+    "2025": 1
    }
   },
   {
@@ -2488,6 +2471,9 @@
     "name": "jmleefree",
     "message": "Create README.md",
     "imported": false
+   },
+   "yearly": {
+    "2021": 13
    }
   },
   {
@@ -2517,6 +2503,9 @@
     "name": "jmleefree",
     "message": "Create README.md",
     "imported": false
+   },
+   "yearly": {
+    "2021": 9
    }
   },
   {
@@ -2546,6 +2535,10 @@
     "name": "Sooyoung Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2021": 54,
+    "2022": 4
    }
   },
   {
@@ -2575,6 +2568,12 @@
     "name": "Sean Oh",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2021": 14,
+    "2023": 7,
+    "2024": 14,
+    "2025": 1
    }
   },
   {
@@ -2616,6 +2615,13 @@
     "name": "Sean Oh",
     "message": "Create README.md",
     "imported": false
+   },
+   "yearly": {
+    "2022": 23,
+    "2023": 7,
+    "2024": 16,
+    "2025": 6,
+    "2026": 2
    }
   },
   {
@@ -2651,6 +2657,10 @@
     "name": "Ubuntu",
     "message": "first commit",
     "imported": false
+   },
+   "yearly": {
+    "2021": 9,
+    "2025": 1
    }
   },
   {
@@ -2686,6 +2696,13 @@
     "name": "Sean Oh",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2022": 23,
+    "2023": 8,
+    "2024": 39,
+    "2025": 44,
+    "2026": 7
    }
   },
   {
@@ -2751,6 +2768,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 61,
+    "2024": 104,
+    "2025": 143,
+    "2026": 207
    }
   },
   {
@@ -2816,6 +2839,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 32,
+    "2024": 135,
+    "2025": 127,
+    "2026": 77
    }
   },
   {
@@ -2857,6 +2886,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 18,
+    "2024": 43,
+    "2025": 42,
+    "2026": 37
    }
   },
   {
@@ -2904,6 +2939,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 4,
+    "2024": 178,
+    "2025": 23,
+    "2026": 55
    }
   },
   {
@@ -2969,6 +3010,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 6,
+    "2024": 169,
+    "2025": 83,
+    "2026": 110
    }
   },
   {
@@ -3070,6 +3117,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 91,
+    "2024": 320,
+    "2025": 121,
+    "2026": 187
    }
   },
   {
@@ -3123,6 +3176,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 13,
+    "2024": 245,
+    "2025": 55,
+    "2026": 75
    }
   },
   {
@@ -3218,6 +3277,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 8,
+    "2024": 240,
+    "2025": 111,
+    "2026": 58
    }
   },
   {
@@ -3259,6 +3324,10 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 1,
+    "2026": 27
    }
   },
   {
@@ -3300,6 +3369,9 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 87
    }
   },
   {
@@ -3340,6 +3412,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 7,
+    "2024": 114,
+    "2025": 72,
+    "2026": 32
    }
   },
   {
@@ -3393,6 +3471,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 13,
+    "2024": 29,
+    "2025": 20,
+    "2026": 24
    }
   },
   {
@@ -3422,6 +3506,9 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2024": 1
    }
   },
   {
@@ -3535,6 +3622,12 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2023": 87,
+    "2024": 90,
+    "2025": 145,
+    "2026": 90
    }
   },
   {
@@ -3576,6 +3669,11 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2024": 11,
+    "2025": 8,
+    "2026": 5
    }
   },
   {
@@ -3629,6 +3727,11 @@
     "name": "Yunkon Kim",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2024": 8,
+    "2025": 61,
+    "2026": 7
    }
   },
   {
@@ -3658,6 +3761,9 @@
     "name": "powerkimhub",
     "message": "first commit",
     "imported": false
+   },
+   "yearly": {
+    "2025": 3
    }
   },
   {
@@ -3691,6 +3797,9 @@
     "name": "Hannie Zang",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2026": 1
    }
   },
   {
@@ -3724,6 +3833,9 @@
     "name": "Hannie Zang",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2026": 1
    }
   },
   {
@@ -3769,6 +3881,9 @@
     "name": "Hannie Zang",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2026": 11
    }
   },
   {
@@ -3802,6 +3917,9 @@
     "name": "Hannie Zang",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2026": 1
    }
   },
   {
@@ -3835,6 +3953,9 @@
     "name": "Hannie Zang",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2026": 1
    }
   },
   {
@@ -3868,6 +3989,9 @@
     "name": "Hannie Zang",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2026": 1
    }
   },
   {
@@ -3907,6 +4031,9 @@
     "name": "Hannie Zang",
     "message": "Initial commit",
     "imported": false
+   },
+   "yearly": {
+    "2026": 3
    }
   }
  ],

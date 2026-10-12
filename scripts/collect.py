@@ -7,9 +7,9 @@ Writes:
   assets/avatars/*      contributor avatars (so the show runs offline)
   assets/org.png        organization avatar
 
-Everything time-based (monthly activity, first/last contribution per person, first commit per
-repo, hour-of-day distribution) is derived from each repo's default-branch commit list, so the
-collector does not depend on GitHub's lazily computed statistics endpoints.
+Everything time-based (monthly/yearly activity, first/last contribution per person, first commit
+per repo) is derived from each repo's default-branch commit list, so the collector does not depend
+on GitHub's lazily computed statistics endpoints.
 
 Usage:
   python3 scripts/collect.py            # uses `gh auth token` or $GITHUB_TOKEN
@@ -23,13 +23,12 @@ import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 ORG = "cloud-barista"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(ROOT, "data")
 AVATAR_DIR = os.path.join(ROOT, "assets", "avatars")
-KST = timezone(timedelta(hours=9))
 
 # Forks of unrelated upstream projects: their contributor lists are not Cloud-Barista people.
 EXCLUDE_CONTRIBUTORS_OF = {"cb-tumblebug-dashboard", "cloud-barista.github.com"}
@@ -126,7 +125,6 @@ def collect_repo(repo):
         by_login[c["login"]] = {"login": c["login"], "commits": c["contributions"], "first": None, "last": None}
 
     monthly = {}
-    punch = [[0] * 24 for _ in range(7)]  # [weekday Mon..Sun][hour, KST]
     oldest = None
     for c in paged(f"repos/{ORG}/{name}/commits"):
         date = c["commit"]["author"]["date"]  # UTC, e.g. 2019-05-13T02:51:02Z
@@ -142,8 +140,6 @@ def collect_repo(repo):
         p = by_login[login]
         p["first"] = min(p["first"], day) if p["first"] else day
         p["last"] = max(p["last"], day) if p["last"] else day
-        local = datetime.fromisoformat(date.replace("Z", "+00:00")).astimezone(KST)
-        punch[local.weekday()][local.hour] += 1
 
     if oldest:
         a = oldest.get("author") or {}
@@ -156,7 +152,10 @@ def collect_repo(repo):
         }
     info["contributors"] = sorted(by_login.values(), key=lambda c: -c["commits"])
     info["monthly"] = monthly
-    info["punch"] = punch
+    yearly = {}
+    for month, n in monthly.items():
+        yearly[month[:4]] = yearly.get(month[:4], 0) + n
+    info["yearly"] = dict(sorted(yearly.items()))  # human, non-merge commits per year
     return info
 
 
@@ -256,16 +255,12 @@ def main():
         if org_avatar:
             os.replace(os.path.join(ROOT, org_avatar), os.path.join(ROOT, "assets", "org" + os.path.splitext(org_avatar)[1]))
 
-    # Org-wide human commits per month and per weekday/hour; before org creation = imported history.
+    # Org-wide human commits per month; before org creation = imported history.
     activity = {}
-    punch = [[0] * 24 for _ in range(7)]
     for r in repo_infos:
         for month, n in r.pop("monthly", {}).items():
             if month >= org_since[:7]:
                 activity[month] = activity.get(month, 0) + n
-        for d, row in enumerate(r.pop("punch", [])):
-            for h, n in enumerate(row):
-                punch[d][h] += n
 
     first_commit = None
     for r in repo_infos:
@@ -276,7 +271,6 @@ def main():
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "activity": dict(sorted(activity.items())),
-        "punch": punch,
         "first_commit": first_commit,
         "org": {
             "login": ORG,

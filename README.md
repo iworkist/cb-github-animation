@@ -42,7 +42,7 @@ Cloud-Barista 컨퍼런스 본 행사 전, 행사장 스크린에 계속 반복 
 
 | 옵션 | 예시 | 설명 |
 |---|---|---|
-| `scene` | `?scene=year-2021` | 특정 장면부터 시작 (`prologue`, `cup`, `timeline`, `year-2019`…, `menu`, `punch`, `family-core`…, `spot-cb-spider`…, `constellation`, `wall`, `outro`) |
+| `scene` | `?scene=year-2021` | 특정 장면부터 시작 (`prologue`, `cup`, `timeline`, `year-2019`…, `menu`, `shift`, `family-core`…, `spot-cb-spider`…, `constellation`, `wall`, `outro`) |
 | `speed` | `?speed=1.5` | 재생 속도 |
 | `freeze` | `?scene=wall&freeze=9000` | 장면 시작 후 N ms에서 멈춤 (스크린샷·리허설용) |
 | `once` | `?once` | 한 바퀴만 재생 |
@@ -68,12 +68,13 @@ startTime: "2026-11-20T13:30:00+09:00",   // 설정하면 하단 바와 마지�
 | 3 | **7년의 커밋, 13번의 릴리스** | 월별 커밋 그래프가 시간순으로 그려지고 릴리스 코드네임이 나타남 |
 | 4 | **연도별 여정 2019 → 2026** | 해마다 릴리스, 오픈 컨퍼런스 회차, 새 레포지토리, *그 해 새로 합류한 기여자 사진*, 누적 숫자 |
 | 5 | **릴리스 메뉴판** | Americano부터 Hibiscus까지, 커피 → 차 |
-| 6 | **커피는 언제 내려졌을까** | 요일 × 시간대 커밋 분포(한국 시간). 가장 바쁜 시간, 밤 커밋 비율, 주말 커밋 비율 |
+| 6 | **무게중심의 이동** | 해마다 커밋이 어느 프로젝트 묶음(Core → Cloud-Migrator → AI-MCMP)에서 일어났는지 100% 누적 막대로. 옆에는 둘 이상의 프로젝트에 기여한 비율, 지난 1년간 활동한 기여자 수(첫 해 합류자 중 아직 함께하는 수), 평균 릴리스 간격 |
 | 7 | **프로젝트별** | Core / Pioneers / Cloud-Migrator / Ecosystem / AI-MCMP / Community / PoC — 레포마다 설명, 기여자 사진, Stars, 커밋 |
 | 8 | **Spotlight** | CB-Spider, CB-Tumblebug, CM-Beetle의 첫 커밋과 Top 10 기여자 |
-| 9 | **커뮤니티의 별자리** | 2019년부터 지금까지 시간이 흐르며 레포지토리(별)와 기여자(사진)가 하나씩 나타나 연결되는 네트워크. 프로젝트 묶음별로 군집이 만들어짐 |
-| 10 | **함께 만든 사람들** | 기여자 전원의 사진이 처음 기여한 순서대로 채워지고, 매 바퀴 다른 사람을 한 명씩 소개 |
-| 11 | **Outro** | 컵이 완성되고 "이제, 함께 마실 시간입니다" — 카운트다운 또는 "잠시 후 시작합니다" |
+| 9 | **커뮤니티의 별자리** | 2019년부터 지금까지 시간이 흐르며 레포지토리(별)와 기여자(사진)가 하나씩 나타나 연결되는 네트워크. 프로젝트 묶음별로 군집이 만들어지고, 살짝 기울어진 판 위에서 천천히 흔들림 |
+| 10 | **Head Baristas** | `data/curated.js`의 `honored`에 적힌 분들 + 최다 커밋 + 최장 활동 기여자(최대 12명)를 3D 카드로 한 명씩 조명 |
+| 11 | **함께 만든 사람들** | 기여자 전원의 사진이 처음 기여한 순서대로 채워지고, 매 바퀴 다른 사람을 한 명씩 소개 |
+| 12 | **Outro** | 컵이 완성되고 "이제, 함께 마실 시간입니다" — 카운트다운 또는 "잠시 후 시작합니다" |
 
 장면 순서와 포함 여부는 `config.js`의 `scenes`에서 바꿀 수 있습니다.
 
@@ -95,6 +96,7 @@ python3 scripts/collect.py      # gh auth 로그인 또는 GITHUB_TOKEN 필요, 
 - `releases`: 릴리스 코드네임, 한글명, 컵 색
 - `conferences`: 연도별 오픈 컨퍼런스 회차
 - `spotlights`: 상세 소개할 레포와 순서
+- `honored`: Head Baristas 장면에서 꼭 조명할 사람 (GitHub 로그인 + 한글 이름)
 - `hiddenRepos`: 표시하지 않을 레포
 
 `data/curated.js`에 없는 새 레포는 GitHub description으로 자동 표시됩니다.
@@ -103,8 +105,7 @@ python3 scripts/collect.py      # gh auth 로그인 또는 GITHUB_TOKEN 필요, 
 
 - 기여자 = GitHub 계정과 연결된 커밋 작성자. 자동화 계정(`cb-github-robot`, `cb-spider`, `fossabot`, `*[bot]`)은 제외
 - 다른 프로젝트를 fork한 레포(`cloud-barista.github.com`, `cb-tumblebug-dashboard`)와, 조직 생성(2019.02) 이전에 가져온 외부 템플릿 커밋만 있는 사람은 제외
-- 월별 커밋, 시간대 분포, 처음 기여한 날짜, 각 레포의 첫 커밋은 모두 각 레포 기본 브랜치의 커밋 목록에서 직접 계산하며 머지 커밋은 제외합니다 (GitHub 그래프와 같은 기준). 숫자 장면의 총 커밋 수는 GitHub contributors 기준(머지 커밋 포함)이라 두 값이 다릅니다
-- 시간대 분포는 커밋 시각(UTC)을 한국 시간으로 바꿔 집계합니다
+- 월별·연도별 커밋, 처음 기여한 날짜, 각 레포의 첫 커밋은 모두 각 레포 기본 브랜치의 커밋 목록에서 직접 계산하며 머지 커밋은 제외합니다 (GitHub 그래프와 같은 기준). 숫자 장면의 총 커밋 수는 GitHub contributors 기준(머지 커밋 포함)이라 두 값이 다릅니다
 - "새로 합류한 기여자"는 그 사람이 Cloud-Barista 레포 어디에든 처음 커밋한 해 기준
 
 ## 현장 체크리스트
