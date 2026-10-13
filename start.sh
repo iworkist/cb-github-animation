@@ -1,39 +1,28 @@
 #!/usr/bin/env bash
-# Launch the opening loop full-screen in Chrome (kiosk mode).
-#   ./start.sh              version chooser first (auto-starts after 30 s)
-#   ./start.sh a|b|ab       play that version right away (A, B, or both alternating)
-#   ./start.sh b --window   open in a normal window (for rehearsal)
+# Opens the opening loop full-screen in Chrome (kiosk mode) and keeps the display awake.
+# Works offline: everything is loaded from this folder via file://.
+#   ./start.sh            full loop
+#   ./start.sh heroes     start at a slide (ids are listed in config.js `scenes`)
 set -euo pipefail
-cd "$(dirname "$0")"
+DIR="$(cd "$(dirname "$0")" && pwd)"
+URL="file://$DIR/index.html"
+[ -n "${1:-}" ] && URL="$URL?scene=$1"
 
-VERSION=""
-WINDOW=0
-for arg in "$@"; do
-  case "$arg" in
-    --window) WINDOW=1 ;;
-    a|b|ab) VERSION="$arg" ;;
-    *) echo "unknown option: $arg (use a, b, ab, --window)"; exit 1 ;;
-  esac
-done
+FLAGS=(--kiosk --no-first-run --disable-session-crashed-bubble --disable-infobars
+       --disable-background-timer-throttling --disable-renderer-backgrounding
+       --user-data-dir="$DIR/.chrome-profile")
 
-PORT="${PORT:-8765}"
-URL="http://localhost:${PORT}/index.html${VERSION:+?v=$VERSION}"
-
-if ! lsof -i ":${PORT}" >/dev/null 2>&1; then
-  python3 -m http.server "$PORT" --bind 127.0.0.1 >/dev/null 2>&1 &
-  SERVER_PID=$!
-  trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
-  sleep 0.6
-fi
-
-CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-PROFILE="$(mktemp -d)"
-FLAGS=(--user-data-dir="$PROFILE" --no-first-run --disable-session-crashed-bubble --disable-infobars --autoplay-policy=no-user-gesture-required)
-[[ "$WINDOW" == 1 ]] || FLAGS+=(--kiosk)
-
-if [[ -x "$CHROME" ]]; then
-  "$CHROME" "${FLAGS[@]}" "$URL"
-else
-  echo "Chrome not found. Open ${URL} in any browser and press F for full screen."
-  wait
-fi
+case "$(uname -s)" in
+  Darwin)
+    open -na "Google Chrome" --args "${FLAGS[@]}" "$URL"
+    caffeinate -d -w $$ &   # no display sleep while this script runs
+    echo "Running. Press Cmd+Q in Chrome to quit; Ctrl+C here to stop keeping the display awake."
+    wait
+    ;;
+  Linux)
+    exec "$(command -v google-chrome || command -v chromium || command -v chromium-browser)" "${FLAGS[@]}" "$URL"
+    ;;
+  *)
+    echo "Open this in Chrome (F11 for full screen): $URL"
+    ;;
+esac

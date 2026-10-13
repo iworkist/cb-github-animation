@@ -1,20 +1,18 @@
 #!/usr/bin/env python3
-"""Collect Cloud-Barista GitHub data for the opening animation.
+"""Collect Cloud-Barista GitHub history for the opening loop.
 
-Writes:
-  data/github.json      raw collected data (for inspection)
-  data/data.js          window.CB_GITHUB = {...}  (loaded by index.html, works from file://)
-  assets/avatars/*      contributor avatars (so the show runs offline)
-  assets/org.png        organization avatar
+Writes
+  data/data.js     window.CB_DATA    : totals, timeline, punch card, repos, releases, people
+  data/avatars.js  window.CB_AVATARS : login -> data URI (460px, the largest GitHub serves)
 
-Everything time-based (monthly commits, merged pull requests, first/last contribution per person,
-first commit per repo) is derived from each repo's commit and pull-request lists, so the collector
-does not depend on GitHub's lazily computed statistics endpoints.
+Avatars are embedded as data URIs so the show runs from file:// with no network
+(and canvases that draw them stay untainted).
 
-Usage:
-  python3 scripts/collect.py            # uses `gh auth token` or $GITHUB_TOKEN
-  python3 scripts/collect.py --no-avatars
+Token: $GITHUB_TOKEN, else `gh auth token`. Standard library only.
 """
+import base64
+import collections
+import datetime as dt
 import json
 import os
 import subprocess
@@ -22,308 +20,370 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
 
 ORG = "cloud-barista"
+API = "https://api.github.com"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(ROOT, "data")
-AVATAR_DIR = os.path.join(ROOT, "assets", "avatars")
+DATA = os.path.join(ROOT, "data")
 
-# Forks of unrelated upstream projects: their contributor lists are not Cloud-Barista people.
-EXCLUDE_CONTRIBUTORS_OF = {"cb-tumblebug-dashboard", "cloud-barista.github.com"}
-# Automation accounts that commit on behalf of the project.
-EXCLUDE_LOGINS = {"cb-github-robot", "cb-spider", "fossabot"}
+# Spider drivers are directories; these are not clouds.
+NOT_CLOUDS = {"mock", "docker", "cloudit", "common"}
+CLOUD_LABELS = {
+    "aws": "AWS", "azure": "Azure", "gcp": "GCP", "alibaba": "Alibaba",
+    "tencent": "Tencent", "ibm": "IBM", "openstack": "OpenStack",
+    "ncp": "NCP", "nhn": "NHN", "kt": "KT Cloud", "ktclassic": "KT Classic",
+    "oracle": "Oracle",
+}
+# Photos are shown up to 340px (Head Baristas portrait), i.e. 600+ device pixels on a Retina or 4K
+# screen. 460 is the largest size GitHub serves, so every avatar is fetched at that size.
+AVATAR_PX = 460
+BOTS = {"dependabot", "github-actions", "actions-user", "web-flow", "renovate", "imgbotapp", "cb-github-robot",
+        "fossabot", "claude", "ghost"}  # automation, an AI assistant, deleted-account placeholder
 
 
 def token():
-    t = os.environ.get("GITHUB_TOKEN")
-    if t:
-        return t
-    try:
-        return subprocess.check_output(["gh", "auth", "token"], text=True).strip()
-    except Exception:
-        return None
+    if os.environ.get("GITHUB_TOKEN"):
+        return os.environ["GITHUB_TOKEN"]
+    return subprocess.check_output(["gh", "auth", "token"], text=True).strip()
 
 
 TOKEN = token()
 
 
-def api(path):
-    url = path if path.startswith("http") else f"https://api.github.com/{path.lstrip('/')}"
-    headers = {"Accept": "application/vnd.github+json", "User-Agent": "cb-opening-collector"}
-    if TOKEN:
-        headers["Authorization"] = f"Bearer {TOKEN}"
-    for attempt in range(8):
-        req = urllib.request.Request(url, headers=headers)
+def get(path, accept="application/vnd.github+json", raw=False):
+    url = path if path.startswith("http") else API + path
+    headers = {"User-Agent": "cb-opening-loop"}
+    if url.startswith(API):
+        headers["Authorization"] = "Bearer " + TOKEN
+        headers["Accept"] = accept
+    for attempt in range(6):
         try:
-            with urllib.request.urlopen(req, timeout=60) as r:
-                if r.status == 204:
-                    return None, {}
+            with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=60) as r:
                 body = r.read()
-                return (json.loads(body) if body else None), dict(r.headers)
+                if raw:
+                    return body, r.headers.get("Content-Type", "")
+                return r.status, (json.loads(body) if body else None), r.headers
         except urllib.error.HTTPError as e:
-            if e.code in (403, 429, 500, 502, 503) and attempt < 7:
-                time.sleep(10 * (attempt + 1))
+            if e.code in (403, 429) and attempt < 5:
+                reset = int(e.headers.get("X-RateLimit-Reset", time.time() + 30))
+                wait = max(5, min(120, reset - time.time()))
+                print(f"  rate limited, waiting {wait:.0f}s", file=sys.stderr)
+                time.sleep(wait)
                 continue
-            if e.code in (404, 409, 451):
-                return None, {}
+            if e.code in (502, 503, 504) and attempt < 5:
+                time.sleep(3 * (attempt + 1))
+                continue
+            if e.code in (404, 409, 451):  # empty repo, gone, blocked
+                return (None, "") if raw else (e.code, None, e.headers)
             raise
-        except (urllib.error.URLError, TimeoutError):
-            if attempt < 7:
-                time.sleep(5 * (attempt + 1))
+        except urllib.error.URLError:
+            if attempt < 5:
+                time.sleep(3 * (attempt + 1))
                 continue
             raise
-    return None, {}
 
 
 def paged(path):
-    out = []
     sep = "&" if "?" in path else "?"
-    url = f"https://api.github.com/{path}{sep}per_page=100"
+    url = f"{path}{sep}per_page=100"
+    out = []
     while url:
-        data, headers = api(url)
-        if not data:
+        status, body, headers = get(url)
+        if status != 200 or not body:
             break
-        out.extend(data)
+        out.extend(body)
         url = None
-        for part in headers.get("Link", headers.get("link", "")).split(","):
+        for part in (headers.get("Link") or "").split(","):
             if 'rel="next"' in part:
-                url = part[part.find("<") + 1:part.find(">")]
+                url = part[part.index("<") + 1:part.index(">")]
     return out
 
 
-def is_bot(login, typ):
-    return (typ == "Bot" or login.endswith("[bot]")
-            or login in {"actions-user", "github-actions"} or login in EXCLUDE_LOGINS)
+def is_bot(user):
+    if not user:
+        return True
+    login = user.get("login", "")
+    return user.get("type") == "Bot" or login.endswith("[bot]") or login.lower() in BOTS
 
 
-def collect_repo(repo):
-    name = repo["name"]
-    info = {
-        "name": name,
-        "description": repo.get("description") or "",
-        "created_at": repo["created_at"],
-        "pushed_at": repo["pushed_at"],
-        "stars": repo["stargazers_count"],
-        "forks": repo["forks_count"],
-        "archived": repo["archived"],
-        "fork": repo["fork"],
-        "language": repo.get("language") or "",
-        "topics": repo.get("topics") or [],
-        "html_url": repo["html_url"],
-        "contributors": [],
-        "first_commit": None,
-    }
-    if name in EXCLUDE_CONTRIBUTORS_OF:
-        return info
-
-    by_login = {}
-    for c in paged(f"repos/{ORG}/{name}/contributors"):
-        if is_bot(c["login"], c.get("type")):
-            continue
-        by_login[c["login"]] = {"login": c["login"], "commits": c["contributions"], "first": None, "last": None}
-
-    monthly = {}      # human non-merge commits per month (what GitHub's own graphs count)
-    monthly_all = {}  # human commits per month including merges (adds up to the contributors total)
-    oldest = None
-    for c in paged(f"repos/{ORG}/{name}/commits"):
-        date = c["commit"]["author"]["date"]  # UTC, e.g. 2019-05-13T02:51:02Z
-        if oldest is None or date < oldest["commit"]["author"]["date"]:
-            oldest = c
-        login = (c.get("author") or {}).get("login")
-        if login not in by_login:
-            continue
-        day = date[:10]
-        monthly_all[day[:7]] = monthly_all.get(day[:7], 0) + 1
-        if len(c.get("parents") or []) > 1:
-            continue
-        monthly[day[:7]] = monthly.get(day[:7], 0) + 1
-        p = by_login[login]
-        p["first"] = min(p["first"], day) if p["first"] else day
-        p["last"] = max(p["last"], day) if p["last"] else day
-
-    if oldest:
-        a = oldest.get("author") or {}
-        info["first_commit"] = {
-            "sha": oldest["sha"][:7],
-            "date": oldest["commit"]["author"]["date"],
-            "login": a.get("login"),
-            "name": oldest["commit"]["author"]["name"],
-            "message": oldest["commit"]["message"].strip().split("\n")[0][:120],
-        }
-    # pull requests merged per month, by people (not bots)
-    prs = {}
-    for pr in paged(f"repos/{ORG}/{name}/pulls?state=closed"):
-        user = pr.get("user") or {}
-        if not pr.get("merged_at") or is_bot(user.get("login", ""), user.get("type")):
-            continue
-        m = pr["merged_at"][:7]
-        prs[m] = prs.get(m, 0) + 1
-
-    info["contributors"] = sorted(by_login.values(), key=lambda c: -c["commits"])
-    info["monthly"] = monthly
-    info["monthly_all"] = monthly_all
-    info["prs_monthly"] = prs
-    return info
+def day(s):
+    return s[:10] if s else None
 
 
-def collect_clouds():
-    """Cloud platforms CB-Spider connects to, from its driver directories."""
-    data, _ = api(f"repos/{ORG}/cb-spider/contents/cloud-control-manager/cloud-driver/drivers")
-    names = sorted({d["name"] for d in data or [] if d.get("type") == "dir" and not d["name"].endswith("-plugin") and d["name"] != "mock"})
-    return names
+def week_day(ts):
+    return dt.datetime.fromtimestamp(ts, dt.timezone.utc).strftime("%Y-%m-%d")
 
 
-def download_avatar(login, url):
-    os.makedirs(AVATAR_DIR, exist_ok=True)
-    for ext in ("png", "jpg"):
-        p = os.path.join(AVATAR_DIR, f"{login}.{ext}")
-        if os.path.exists(p) and os.path.getsize(p) > 0:
-            return f"assets/avatars/{login}.{ext}"
-    sep = "&" if "?" in url else "?"
-    req = urllib.request.Request(f"{url}{sep}s=240", headers={"User-Agent": "cb-opening-collector"})
-    try:
-        with urllib.request.urlopen(req, timeout=60) as r:
-            ctype = r.headers.get("Content-Type", "")
-            ext = "jpg" if "jpeg" in ctype else "png"
-            p = os.path.join(AVATAR_DIR, f"{login}.{ext}")
-            with open(p, "wb") as f:
-                f.write(r.read())
-            return f"assets/avatars/{login}.{ext}"
-    except Exception as e:
-        print(f"  ! avatar {login}: {e}", file=sys.stderr)
-        return None
+def contributor_stats(repos):
+    """stats/contributors answers 202 while GitHub computes it; poll until all are ready."""
+    pending = {r["name"] for r in repos if r["size"] > 0}
+    result = {}
+    for round_ in range(12):
+        for name in sorted(pending):
+            status, body, _ = get(f"/repos/{ORG}/{name}/stats/contributors")
+            if status == 200:
+                result[name] = body or []
+            elif status == 204 or status in (404, 409):
+                result[name] = []
+        pending -= set(result)
+        if not pending:
+            break
+        print(f"  waiting for stats: {len(pending)} repos", file=sys.stderr)
+        time.sleep(5 + round_ * 3)
+    for name in pending:
+        result[name] = []
+    return result
 
 
-def load_previous():
-    path = os.path.join(DATA_DIR, "github.json")
-    if not os.path.exists(path):
-        return None
-    with open(path, encoding="utf-8") as f:
-        return json.load(f)
+def punch_cards(repos):
+    """stats/punch_card: commits per (weekday, hour) in each commit's own time zone. Also 202 while computing."""
+    pending = {r["name"] for r in repos if r["size"] > 0 and not r["fork"]}
+    result = {}
+    for round_ in range(12):
+        for name in sorted(pending):
+            status, body, _ = get(f"/repos/{ORG}/{name}/stats/punch_card")
+            if status == 200:
+                result[name] = body or []
+            elif status == 204 or status in (404, 409):
+                result[name] = []
+        pending -= set(result)
+        if not pending:
+            break
+        print(f"  waiting for punch cards: {len(pending)} repos", file=sys.stderr)
+        time.sleep(5 + round_ * 3)
+    return result
 
 
 def main():
-    with_avatars = "--no-avatars" not in sys.argv
-    print(f"[1/5] org + repos ({ORG})")
-    org, _ = api(f"orgs/{ORG}")
-    repos = paged(f"orgs/{ORG}/repos?type=public")
+    print("org", file=sys.stderr)
+    _, org, _ = get(f"/orgs/{ORG}")
+    repos = [r for r in paged(f"/orgs/{ORG}/repos?type=public") if not r["private"]]
     repos.sort(key=lambda r: r["created_at"])
-    print(f"      {len(repos)} repos")
 
-    print("[2/5] contributors + commit history per repo")
-    with ThreadPoolExecutor(max_workers=6) as ex:
-        repo_infos = list(ex.map(collect_repo, repos))
-    org_since = org["created_at"][:10]
-    for r in repo_infos:
-        # Drop people whose every commit predates the org: history imported from upstream templates/SDKs.
-        r["contributors"] = [c for c in r["contributors"] if not c["last"] or c["last"] >= org_since]
-        fc = r["first_commit"]
-        if fc:
-            fc["imported"] = fc["date"][:10] < org_since or r["fork"]
-        print(f"      {r['name']:<28} {len(r['contributors']):>3} contributors  {sum(r.get('monthly', {}).values()):>5} commits")
+    print("contributor stats", file=sys.stderr)
+    stats = contributor_stats(repos)
 
-    print("[3/5] releases")
-    releases = [
-        {"tag": r["tag_name"], "name": r.get("name") or r["tag_name"], "date": (r.get("published_at") or r["created_at"])[:10]}
-        for r in paged(f"repos/{ORG}/cloud-barista/releases")
-        if not r.get("draft")
-    ]
-    releases.sort(key=lambda r: r["date"])
+    people = {}  # login -> record
+    weekly = collections.Counter()  # week -> commits (org-wide)
 
-    print("[4/5] people")
-    people = {}
-    for r in repo_infos:
-        for c in r["contributors"]:
-            p = people.setdefault(c["login"], {"login": c["login"], "commits": 0, "repos": [], "first": None, "last": None})
-            p["commits"] += c["commits"]
-            p["repos"].append(r["name"])
-            for k, pick in (("first", min), ("last", max)):
-                if c[k]:
-                    p[k] = pick(p[k], c[k]) if p[k] else c[k]
-            if not p["first"]:
-                # only merge commits on record: fall back to the repo's creation date
-                p.setdefault("first_fallback", r["created_at"][:10])
+    def person(user):
+        login = user["login"]
+        if login not in people:
+            people[login] = {
+                "login": login, "id": user.get("id"), "avatar_url": user.get("avatar_url"),
+                "commits": 0, "prs": 0, "first": None, "last": None,
+                "repos": collections.Counter(), "years": collections.Counter(),
+            }
+        return people[login]
 
-    def fetch_user(login):
-        u, _ = api(f"users/{login}")
-        return login, u or {}
+    def touch(p, d):
+        if p["first"] is None or d < p["first"]:
+            p["first"] = d
+        if p["last"] is None or d > p["last"]:
+            p["last"] = d
 
-    with ThreadPoolExecutor(max_workers=8) as ex:
-        for login, u in ex.map(fetch_user, list(people)):
-            people[login]["name"] = (u.get("name") or "").strip()
-            people[login]["avatar_url"] = u.get("avatar_url") or f"https://github.com/{login}.png"
-            people[login]["company"] = (u.get("company") or "").strip()
+    repo_rows = []
+    for r in repos:
+        name = r["name"]
+        # Upstream history isn't ours: forks count from their creation, and history imported
+        # from templates (e.g. the Jekyll theme behind the homepage) predates the organisation.
+        since = day(r["created_at"]) if r["fork"] else day(org["created_at"])
+        commits = 0
+        authors = set()
+        monthly = collections.Counter()
+        for c in stats.get(name, []):
+            if is_bot(c.get("author")):
+                continue
+            p = None
+            for w in c["weeks"]:
+                if not w["c"]:
+                    continue
+                d = week_day(w["w"])
+                if d < since:
+                    continue
+                p = p or person(c["author"])
+                p["commits"] += w["c"]
+                p["repos"][name] += w["c"]
+                p["years"][d[:4]] += w["c"]
+                touch(p, d)
+                weekly[d] += w["c"]
+                monthly[d[:7]] += w["c"]
+                commits += w["c"]
+                authors.add(p["login"])
+        repo_rows.append({
+            "name": name, "created": day(r["created_at"]), "pushed": day(r["pushed_at"]),
+            "stars": r["stargazers_count"], "forks": r["forks_count"], "archived": r["archived"],
+            "fork": r["fork"], "lang": r["language"], "desc": r["description"] or "",
+            "commits": commits, "authors": len(authors), "prs": 0,
+            "monthly": dict(sorted(monthly.items())),
+        })
+    by_name_commits = {row["name"]: row["commits"] for row in repo_rows}
+
+    print("punch cards", file=sys.stderr)
+    # The punch card has no author or date filter (bots, imported template history), so each
+    # repo's card is scaled to the human commits counted above: the shape stays, the total matches.
+    punch = [[0.0] * 24 for _ in range(7)]  # [weekday 0=Sun][hour]
+    for name, cells in punch_cards(repos).items():
+        raw = sum(c for _, _, c in cells)
+        human = by_name_commits.get(name, 0)
+        if not raw or not human:
+            continue
+        for wd, hr, c in cells:
+            punch[wd][hr] += c * human / raw
+    punch = [[round(v) for v in row] for row in punch]
+
+    print("pull requests", file=sys.stderr)
+    prs = []
+    by_name = {row["name"]: row for row in repo_rows}
+    for r in repos:
+        for pr in paged(f"/repos/{ORG}/{r['name']}/pulls?state=all"):
+            if r["fork"] and pr["created_at"] < r["created_at"]:
+                continue
+            merged = day(pr.get("merged_at"))
+            prs.append({"repo": r["name"], "created": day(pr["created_at"]), "merged": merged})
+            if merged:
+                by_name[r["name"]]["prs"] += 1
+                if not is_bot(pr.get("user")):
+                    p = person(pr["user"])
+                    p["prs"] += 1
+                    p["repos"][r["name"]] += 0
+                    touch(p, merged)
+
+    print("releases", file=sys.stderr)
+    releases = []
+    for r in repos:
+        for rel in paged(f"/repos/{ORG}/{r['name']}/releases"):
+            if rel.get("draft"):
+                continue
+            releases.append({
+                "repo": r["name"], "tag": rel["tag_name"], "name": rel.get("name") or "",
+                "date": day(rel.get("published_at") or rel.get("created_at")),
+                "pre": bool(rel.get("prerelease")),
+            })
+    releases.sort(key=lambda x: x["date"] or "")
+
+    print("issues", file=sys.stderr)
+    _, issues, _ = get(f"/search/issues?q=org:{ORG}+is:issue&per_page=1")
+
+    print("spider drivers", file=sys.stderr)
+    _, drivers, _ = get(f"/repos/{ORG}/cb-spider/contents/cloud-control-manager/cloud-driver/drivers")
+    clouds = []
+    for d in drivers or []:
+        n = d["name"]
+        if d["type"] == "dir" and not n.endswith("-plugin") and n not in NOT_CLOUDS:
+            clouds.append({"id": n, "label": CLOUD_LABELS.get(n, n.upper())})
+
+    print(f"profiles + avatars ({len(people)})", file=sys.stderr)
+    avatars = {}
+    for login, p in people.items():
+        status, prof, _ = get(f"/users/{login}")
+        if status == 200 and prof:
+            p["name"] = prof.get("name") or ""
+            p["company"] = prof.get("company") or ""
+            p["kind"] = prof.get("type")
+            p["avatar_url"] = prof.get("avatar_url") or p["avatar_url"]
+        if p.get("avatar_url"):
+            url = p["avatar_url"] + ("&" if "?" in p["avatar_url"] else "?") + f"s={AVATAR_PX}"
+            body, ctype = get(url, raw=True)
+            if body:
+                ctype = ctype.split(";")[0] or "image/png"
+                avatars[login] = f"data:{ctype};base64," + base64.b64encode(body).decode()
+
+    # ---- timeline (monthly, from the org's birth to now) ----
+    start = day(org["created_at"])[:7]
+    now = dt.date.today().strftime("%Y-%m")
+    months = []
+    y, m = map(int, start.split("-"))
+    while f"{y:04d}-{m:02d}" <= now:
+        months.append(f"{y:04d}-{m:02d}")
+        m += 1
+        if m > 12:
+            y, m = y + 1, 1
+    mi = {k: i for i, k in enumerate(months)}
+
+    def bucket(d):
+        return mi.get(d[:7]) if d else None
+
+    tl = {k: [0] * len(months) for k in ("repos", "commits", "prs", "people", "releases")}
+    for row in repo_rows:
+        i = bucket(row["created"])
+        if i is not None:
+            tl["repos"][i] += 1
+    for d, c in weekly.items():
+        i = bucket(d)
+        if i is not None:
+            tl["commits"][i] += c
+    for pr in prs:
+        i = bucket(pr["merged"])
+        if i is not None:
+            tl["prs"][i] += 1
     for p in people.values():
-        if not p["first"] and p.get("first_fallback"):
-            p["first"] = p["first_fallback"]
-        p.pop("first_fallback", None)
-    print(f"      {len(people)} unique contributors")
+        i = bucket(p["first"])
+        if i is not None:
+            tl["people"][i] += 1
+    for rel in releases:
+        i = bucket(rel["date"])
+        if i is not None:
+            tl["releases"][i] += 1
 
-    print("[5/5] avatars")
-    if with_avatars:
-        with ThreadPoolExecutor(max_workers=12) as ex:
-            results = ex.map(lambda p: (p["login"], download_avatar(p["login"], p["avatar_url"])), list(people.values()))
-            for login, path in results:
-                people[login]["avatar"] = path
-        org_avatar = download_avatar("__org__", org["avatar_url"])
-        if org_avatar:
-            os.replace(os.path.join(ROOT, org_avatar), os.path.join(ROOT, "assets", "org" + os.path.splitext(org_avatar)[1]))
+    # ---- people, ranked by footprint ----
+    rows = []
+    for p in people.values():
+        if p.get("kind") == "Bot" or not p["first"]:
+            continue
+        top = [n for n, _ in p["repos"].most_common() if p["repos"][n] > 0][:4]
+        rows.append({
+            "login": p["login"], "name": p.get("name", ""), "company": p.get("company", ""),
+            "org": p.get("kind") == "Organization",
+            "commits": p["commits"], "prs": p["prs"], "first": p["first"], "last": p["last"],
+            "repos": top, "nrepos": len([1 for v in p["repos"].values() if v >= 0]),
+            "years": dict(sorted(p["years"].items())),
+        })
+    rows.sort(key=lambda r: (-(r["commits"] + r["prs"]), r["login"]))
 
-    # Org-wide monthly series; months before org creation are imported history and are left out.
-    def org_series(key):
-        out = {}
-        for r in repo_infos:
-            for month, n in r.pop(key, {}).items():
-                if month >= org_since[:7]:
-                    out[month] = out.get(month, 0) + n
-        return dict(sorted(out.items()))
-
-    activity = org_series("monthly")
-    growth = {"commits": org_series("monthly_all"), "prs": org_series("prs_monthly")}
-
-    print("      clouds")
-    clouds = collect_clouds()
-
-    first_commit = None
-    for r in repo_infos:
-        fc = r["first_commit"]
-        if fc and not fc["imported"] and (first_commit is None or fc["date"] < first_commit["date"]):
-            first_commit = {**fc, "repo": r["name"]}
+    coffee = [
+        {"tag": r["tag"], "name": r["name"], "date": r["date"]}
+        for r in releases if r["repo"] == "cloud-barista" and not r["pre"]
+    ]
 
     out = {
-        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "activity": activity,
-        "growth": growth,
-        "clouds": clouds,
-        "first_commit": first_commit,
-        "org": {
-            "login": ORG,
-            "name": org.get("name"),
-            "created_at": org.get("created_at"),
-            "blog": org.get("blog"),
-            "public_repos": org.get("public_repos"),
+        "generatedAt": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "org": {"login": ORG, "created": day(org["created_at"]), "publicRepos": org["public_repos"]},
+        "totals": {
+            "repos": len(repo_rows),
+            "people": len(rows),
+            "commits": sum(r["commits"] for r in repo_rows),
+            "prs": len(prs),
+            "mergedPrs": sum(1 for p in prs if p["merged"]),
+            "issues": (issues or {}).get("total_count", 0),
+            "releases": len(releases),
+            "stars": sum(r["stars"] for r in repo_rows),
+            "forks": sum(r["forks"] for r in repo_rows),
+            "clouds": len(clouds),
         },
-        "releases": releases,
-        "repos": repo_infos,
-        "people": sorted(people.values(), key=lambda p: -p["commits"]),
+        "months": months,
+        "timeline": tl,
+        "punch": punch,
+        "repos": repo_rows,
+        "coffee": coffee,
+        "releases": [r for r in releases if not r["pre"]],
+        "clouds": clouds,
+        "people": rows,
     }
-    os.makedirs(DATA_DIR, exist_ok=True)
-    # Keep the previous files (and their timestamp) when nothing but the timestamp would change,
-    # so the daily refresh only commits real changes.
-    prev = load_previous()
-    if prev and {**prev, "generated_at": None} == {**out, "generated_at": None}:
-        print("no changes since", prev.get("generated_at"))
-        return
-    with open(os.path.join(DATA_DIR, "github.json"), "w", encoding="utf-8") as f:
-        json.dump(out, f, ensure_ascii=False, indent=1)
-    with open(os.path.join(DATA_DIR, "data.js"), "w", encoding="utf-8") as f:
+    os.makedirs(DATA, exist_ok=True)
+    with open(os.path.join(DATA, "data.js"), "w", encoding="utf-8") as f:
         f.write("// Generated by scripts/collect.py — do not edit by hand.\n")
-        f.write("window.CB_GITHUB = ")
-        json.dump(out, f, ensure_ascii=False)
+        f.write("window.CB_DATA = ")
+        json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
         f.write(";\n")
-    print("done ->", os.path.join(DATA_DIR, "data.js"))
+    with open(os.path.join(DATA, "avatars.js"), "w", encoding="utf-8") as f:
+        f.write("// Generated by scripts/collect.py — GitHub avatars as data URIs.\n")
+        f.write("window.CB_AVATARS = ")
+        # sorted, so a scheduled run with unchanged photos leaves the file byte-identical
+        json.dump(avatars, f, separators=(",", ":"), sort_keys=True)
+        f.write(";\n")
+    t = out["totals"]
+    print(json.dumps(t), file=sys.stderr)
 
 
 if __name__ == "__main__":

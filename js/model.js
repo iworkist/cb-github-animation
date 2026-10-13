@@ -1,183 +1,135 @@
-// Builds the show's data model from window.CB_GITHUB (collected) + window.CB_CURATED (hand-written).
+// Joins the collected GitHub data (data/data.js), the hand-written copy (data/curated.js) and config.js
+// into one model the slides read from. Every number on screen comes from here.
 (function () {
-  function versionKey(tag) {
-    const m = /^v?(\d+)\.(\d+)/.exec(tag);
-    return m ? `v${m[1]}.${m[2]}` : tag;
-  }
-  const ym = (d) => d.slice(0, 7).replace("-", ".");
-  const ymd = (d) => d.slice(0, 10).replace(/-/g, ".");
+  const D = window.CB_DATA, C = window.CB_CURATED, cfg = window.CB_CONFIG;
+  const fmt = (n) => Math.round(n).toLocaleString('en-US');
+  const ym = (d) => d.slice(0, 4) + '.' + d.slice(5, 7);
+  const sum = (a) => a.reduce((x, y) => x + y, 0);
 
-  function monthsBetween(first, last) {
-    const out = [];
-    let [y, m] = first.split("-").map(Number);
-    for (;;) {
-      const key = `${y}-${String(m).padStart(2, "0")}`;
-      out.push(key);
-      if (key >= last) break;
-      if (++m > 12) { m = 1; y++; }
-    }
-    return out;
+  function relKey(name) {
+    const n = (name || '').toLowerCase().replace(/é/g, 'e').replace(/[^a-z]/g, '');
+    return Object.keys(C.releases).find((k) => n.includes(k)) || null;
   }
 
-  function build(G, C) {
+  function build() {
+    const gen = D.generatedAt.slice(0, 10);
     const hidden = new Set(C.hiddenRepos || []);
-    const people = new Map(G.people.map((p) => [p.login, { ...p, displayName: p.name || p.login }]));
-    for (const hn of C.honored || []) if (people.has(hn.login)) people.get(hn.login).koName = hn.ko;
+    const title = (name) => (C.titles && C.titles[name]) || name;
 
-    const famOf = {};
-    for (const f of C.families) for (const r of f.repos) famOf[r] = f;
+    // ---- time span: organisation birthday -> data date ----
+    const [y0, m0, d0] = D.org.created.split('-').map(Number);
+    const [y1, m1, d1] = gen.split('-').map(Number);
+    let months = (y1 - y0) * 12 + (m1 - m0) - (d1 < d0 ? 1 : 0);
+    const span = { years: Math.floor(months / 12), months: months % 12 };
+    span.label = `${span.years}년${span.months ? ' ' + span.months + '개월' : ''}`;
 
-    const repos = G.repos
-      .filter((r) => !hidden.has(r.name))
-      .map((r) => {
-        const cur = C.repos[r.name] || {};
-        const contributors = r.contributors
-          .map((c) => ({ ...people.get(c.login), repoCommits: c.commits, repoFirst: c.first, repoLast: c.last }))
-          .filter((p) => p.login);
-        const fc = r.first_commit && !r.first_commit.imported ? r.first_commit : null;
-        return {
-          ...r,
-          title: cur.title || r.name,
-          ko: cur.ko || r.description || "",
-          family: famOf[r.name] || null,
-          year: Number(r.created_at.slice(0, 4)),
-          commits: r.contributors.reduce((s, c) => s + c.commits, 0),
-          people: contributors,
-          firstCommit: fc,
-        };
-      });
-    const repoBy = new Map(repos.map((r) => [r.name, r]));
-
-    const releases = G.releases.map((r) => {
-      const v = versionKey(r.tag);
-      const cur = C.releases[v] || { name: r.name, ko: "", kind: "coffee", liquid: "#6b3f2a", accent: "#e9b872" };
-      return { ...cur, version: v, tag: r.tag, date: r.date, ym: ym(r.date), year: Number(r.date.slice(0, 4)) };
+    // ---- releases: the cloud-barista repo's coffee & tea ----
+    const releases = D.coffee.map((r) => {
+      const k = relKey(r.name) || relKey(r.tag);
+      const c = C.releases[k] || { name: r.name, ko: '', kind: 'coffee', drink: '#6b3a19', accent: '#e0a86c' };
+      const v = ((r.tag || '') + ' ' + (r.name || '')).match(/v?(\d+\.\d+(?:\.\d+)?)/);
+      return { ...c, key: k, version: v ? 'v' + v[1] : r.tag, date: r.date, ym: ym(r.date), year: +r.date.slice(0, 4) };
     });
+    const latest = releases[releases.length - 1];
 
-    const orgYear = Number(G.org.created_at.slice(0, 4));
-    const nowYear = Number(G.generated_at.slice(0, 4));
-    const allPeople = [...people.values()].sort((a, b) => a.first.localeCompare(b.first) || b.commits - a.commits);
-
-    // ---- cumulative growth, month by month, from the org's first month to now
-    const commitsM = (G.growth && G.growth.commits) || G.activity || {};
-    const prsM = (G.growth && G.growth.prs) || {};
-    const months = monthsBetween(G.org.created_at.slice(0, 7), G.generated_at.slice(0, 7));
-    const growth = [];
-    {
-      let commits = 0, prs = 0;
-      for (const m of months) {
-        commits += commitsM[m] || 0;
-        prs += prsM[m] || 0;
-        growth.push({
-          m,
-          people: allPeople.filter((p) => p.first.slice(0, 7) <= m).length,
-          repos: G.repos.filter((r) => r.created_at.slice(0, 7) <= m).length,
-          commits,
-          prs,
-          releases: releases.filter((r) => r.date.slice(0, 7) <= m).length,
-        });
-      }
+    // ---- monthly timeline ----
+    const T = D.timeline;
+    const timeline = D.months.map((m, i) => ({ m, commits: T.commits[i], prs: T.prs[i], people: T.people[i], repos: T.repos[i] }));
+    let acc = { commits: 0, prs: 0, people: 0, repos: 0 };
+    for (const t of timeline) {
+      acc = { commits: acc.commits + t.commits, prs: acc.prs + t.prs, people: acc.people + t.people, repos: acc.repos + t.repos };
+      t.cum = acc;
     }
-    const last = growth[growth.length - 1];
-    const hasPrs = last.prs > 0;
+    const peak = timeline.reduce((a, b) => (b.commits > a.commits ? b : a));
 
+    // ---- repos ----
+    const repos = D.repos.filter((r) => !hidden.has(r.name)).map((r) => ({ ...r, title: title(r.name), year: +r.created.slice(0, 4) }));
+    const repoBy = Object.fromEntries(repos.map((r) => [r.name, r]));
+
+    // ---- people, in order of their first contribution ----
+    const heroCfg = Object.fromEntries((cfg.heroes || []).map((x) => [x.login, x]));
+    const people = [...D.people].sort((a, b) => (a.first < b.first ? -1 : a.first > b.first ? 1 : a.login.localeCompare(b.login))).map((p, i) => {
+      const hc = heroCfg[p.login];
+      const era = releases.find((r) => r.date >= p.first) || null;
+      return {
+        ...p, order: i + 1,
+        displayName: (hc && hc.name) || p.name || p.login,
+        koName: hc && hc.name ? hc.name : '',
+        era,
+        eraLabel: era ? `${era.name}부터 함께` : '다음 잔을 함께 준비 중',
+      };
+    });
+    const personBy = Object.fromEntries(people.map((p) => [p.login, p]));
+
+    // ---- years ----
     const years = [];
-    for (let y = orgYear; y <= nowYear; y++) {
-      const yrRel = releases.filter((r) => r.year === y);
-      const yrRepos = repos
-        .filter((r) => r.year === y)
-        .sort((a, b) => b.commits + b.stars * 20 - (a.commits + a.stars * 20));
-      const yrPeople = allPeople.filter((p) => Number(p.first.slice(0, 4)) === y).sort((a, b) => b.commits - a.commits);
-      const lastRel = yrRel[yrRel.length - 1];
-      const end = growth.filter((g) => g.m.startsWith(String(y))).pop() || last;
-      const start = growth.filter((g) => g.m < `${y}-01`).pop();
+    for (let y = y0; y <= y1; y++) {
+      const ms = timeline.filter((t) => +t.m.slice(0, 4) === y);
       years.push({
         year: y,
-        story: (C.years || {})[y] || { title: String(y), line: "" },
-        releases: yrRel,
-        conferences: (C.conferences || []).filter((c) => c.year === y),
-        repos: yrRepos,
-        people: yrPeople,
-        cumPeople: end.people,
-        cumRepos: end.repos,
-        cumCommits: end.commits,
-        commits: end.commits - (start ? start.commits : 0),
-        accent: lastRel ? lastRel.accent : "#e9b872",
+        title: (C.years[y] || {}).title || `${y}`,
+        line: (C.years[y] || {}).line || '',
+        releases: releases.filter((r) => r.year === y),
+        conferences: (C.conferences || []).filter((c) => +c.date.slice(0, 4) === y),
+        repos: repos.filter((r) => r.year === y),
+        people: people.filter((p) => +p.first.slice(0, 4) === y),
+        commits: sum(ms.map((t) => t.commits)),
+        prs: sum(ms.map((t) => t.prs)),
+        cum: ms.length ? ms[ms.length - 1].cum : acc,
+        partial: y === y1,
       });
     }
-
-    const families = C.families
-      .map((f) => ({ ...f, repos: f.repos.map((n) => repoBy.get(n)).filter(Boolean) }))
-      .filter((f) => f.repos.length);
-
-    const spotlights = (C.spotlights || []).map((n) => repoBy.get(n)).filter(Boolean);
-
-    // Contributors to feature: honored people + the busiest + the longest-serving, at most 12.
-    const yearsOf = (p) => Number((p.last || p.first).slice(0, 4)) - Number(p.first.slice(0, 4)) + 1;
-    const crew = new Map();
-    for (const hn of C.honored || []) if (people.has(hn.login)) crew.set(hn.login, people.get(hn.login));
-    const byCommits = [...people.values()].sort((a, b) => b.commits - a.commits);
-    const bySpan = byCommits.filter((p) => p.commits >= 50).sort((a, b) => yearsOf(b) - yearsOf(a) || b.commits - a.commits);
-    for (const list of [byCommits.slice(0, 6), bySpan.slice(0, 6)]) for (const p of list) if (crew.size < 12) crew.set(p.login, p);
-    const commitRank = new Map(byCommits.map((p, i) => [p.login, i + 1]));
-    const crewList = [...crew.values()].sort((a, b) => a.first.localeCompare(b.first));
-    for (const p of crewList) {
-      p.years = yearsOf(p);
-      p.tags = [];
-      if (commitRank.get(p.login) <= 3) p.tags.push(`커밋 ${commitRank.get(p.login)}위`);
-      if (p.first.slice(0, 4) === String(orgYear)) p.tags.push("첫 해부터");
-      if (p.years >= 5) p.tags.push(`${p.years}년째 함께`);
+    const mostPeople = years.reduce((a, b) => (b.people.length > a.people.length ? b : a));
+    const mostCommits = years.reduce((a, b) => (b.commits > a.commits ? b : a));
+    for (const Y of years) {
+      Y.badges = [];
+      if (Y === mostCommits) Y.badges.push('가장 많은 커밋');
+      if (Y === mostPeople) Y.badges.push('가장 많은 새 얼굴');
     }
 
-    // Tenure (version B): honored + busiest + longest-serving, up to 16, each with first/last activity.
-    const recentCutoff = new Date(Date.parse(G.generated_at) - 120 * 864e5).toISOString().slice(0, 10);
-    const tenureMap = new Map();
-    for (const hn of C.honored || []) if (people.has(hn.login)) tenureMap.set(hn.login, people.get(hn.login));
-    for (const list of [byCommits.slice(0, 10), bySpan.slice(0, 10)]) for (const p of list) if (tenureMap.size < 16) tenureMap.set(p.login, p);
-    const tenure = [...tenureMap.values()]
-      .map((p) => ({ ...p, lastSeen: p.last || p.first, active: (p.last || p.first) >= recentCutoff, years: yearsOf(p) }))
-      .sort((a, b) => a.first.localeCompare(b.first) || b.commits - a.commits);
+    // ---- milestones on the glance timeline ----
+    // a milestone is a repo's creation date, or the first repo of a family (prefix)
+    const milestones = (C.milestones || []).map((m) => {
+      const r = m.repo ? repoBy[m.repo] : repos.filter((x) => x.name.startsWith(m.prefix)).sort((x, y) => (x.created < y.created ? -1 : 1))[0];
+      return r && { ...m, date: r.created };
+    }).filter(Boolean);
 
-    const cloudNames = C.cloudNames || {};
-    const clouds = (G.clouds || []).map((id) => ({ id, name: cloudNames[id] || id.toUpperCase() }));
+    // ---- bug dex ----
+    const bugs = repos.filter((r) => C.bugs[r.name] && PX.INSECT[r.name])
+      .sort((a, b) => (a.created < b.created ? -1 : a.created > b.created ? 1 : a.name.localeCompare(b.name)))
+      .map((r) => ({ ...r, ...C.bugs[r.name], sprite: PX.INSECT[r.name] }));
 
-    const orgCreated = new Date(G.org.created_at);
-    const generated = new Date(G.generated_at);
-    const yearsActive = Math.floor((generated - orgCreated) / (365.25 * 864e5));
+    // ---- clouds (CB-Spider drivers) ----
+    const clouds = D.clouds.map((c) => ({ id: c.id, name: (C.clouds[c.id] || {}).name || c.label, color: (C.clouds[c.id] || {}).color || '#e2bf94' }));
 
+    // ---- punch card: when commits happen ----
+    const grid = D.punch || null;
+    let punch = null;
+    if (grid) {
+      const hours = [...Array(24)].map((_, h) => sum(grid.map((r) => r[h])));
+      const total = sum(hours);
+      const peakHour = hours.indexOf(Math.max(...hours));
+      const night = sum(hours.slice(0, 6));
+      const weekend = sum(grid[0]) + sum(grid[6]);
+      const lunchDip = hours[12] < hours[11] * 0.75 && hours[12] < hours[13];
+      punch = { grid, hours, total, peakHour, night, weekend, lunchDip, max: Math.max(...grid.flat()) };
+    }
+
+    // ---- head baristas ----
+    const heroes = (cfg.heroes || []).map((x) => personBy[x.login] && {
+      ...personBy[x.login], displayName: x.name || personBy[x.login].name || x.login, role: x.role || '',
+      topRepos: personBy[x.login].repos.filter((n) => !hidden.has(n)).slice(0, 3).map((n) => ({ name: n, title: title(n) })),
+    }).filter(Boolean);
+
+    const totals = D.totals;
     return {
-      org: G.org,
-      generatedAt: G.generated_at,
-      repos,
-      repoBy,
-      releases,
-      years,
-      families,
-      spotlights,
-      growth,
-      hasPrs,
-      clouds,
-      crew: crewList,
-      tenure,
-      firstCommit: G.first_commit || null,
-      people: allPeople,
-      peopleBy: people,
-      stats: {
-        yearsActive,
-        orgSince: ym(G.org.created_at.slice(0, 10)),
-        orgCreated: G.org.created_at.slice(0, 10),
-        repos: G.repos.length,
-        people: people.size,
-        commits: last.commits,
-        prs: last.prs,
-        releases: releases.length,
-        stars: G.repos.reduce((s, r) => s + r.stars, 0),
-        clouds: clouds.length,
-        firstRelease: releases[0],
-        lastRelease: releases[releases.length - 1],
-      },
+      gen, genYM: ym(gen), org: D.org, span, totals, releases, latest, timeline, peak, repos, repoBy,
+      people, personBy, years, milestones, bugs, clouds, punch, heroes, conferences: C.conferences || [],
+      blend: C.blend, qr: C.qr, fmt, ym,
+      // ticker: everyone, by first contribution
+      names: people.map((p) => ({ name: p.displayName !== p.login ? p.displayName : '', login: p.login })),
     };
   }
 
-  window.ShowModel = { build, ym, ymd };
+  window.ShowModel = { build };
 })();
