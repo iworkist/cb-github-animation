@@ -7,9 +7,8 @@ on:
   push:
     branches: [main]
   schedule:
-    # twice a day, so a run that hits a GitHub hiccup gets another chance the same day
-    - cron: "0 18 * * *" # 03:00 KST
-    - cron: "0 6 * * *"  # 15:00 KST
+    # once a day, off the hour: GitHub delays or drops scheduled runs when the top of the hour is busy
+    - cron: "17 18 * * *" # 03:17 KST
   workflow_dispatch:
 
 permissions:

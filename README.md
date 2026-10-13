@@ -47,4 +47,4 @@ python3 scripts/collect.py   # GITHUB_TOKEN 또는 gh auth token 사용, 4~5분
 ```
 
 `data/data.js`(통계, 연표, 기여자)와 `data/avatars.js`(기여자 사진)를 다시 만듭니다.
-GitHub Actions(`.github/workflows/pages.yml`)가 하루 두 번 갱신한 뒤 GitHub Pages에 배포합니다.
+GitHub Actions(`.github/workflows/pages.yml`)가 하루 한 번(03:17 KST) 갱신한 뒤 GitHub Pages에 배포합니다.
