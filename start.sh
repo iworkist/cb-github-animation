@@ -10,6 +10,7 @@ URL="file://$DIR/index.html"
 
 FLAGS=(--kiosk --no-first-run --disable-session-crashed-bubble --disable-infobars
        --disable-background-timer-throttling --disable-renderer-backgrounding
+       --autoplay-policy=no-user-gesture-required
        --user-data-dir="$DIR/.chrome-profile")
 
 case "$(uname -s)" in
