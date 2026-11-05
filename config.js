@@ -38,4 +38,7 @@ window.CB_CONFIG = {
 
   // The "THANK YOU" ticker of every contributor's name along the bottom of every slide.
   ticker: true,
+
+  // Background MIDI music volume, 0 to 1 (0 = off). The song is assets/bgm.mid; the `M` key mutes it.
+  music: 0.35,
 };

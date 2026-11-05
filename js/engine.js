@@ -298,6 +298,7 @@
     await Promise.all(['700 40px Pretendard', '400 20px Galmuri11'].map((f) => document.fonts.load(f).catch(() => {})));
     const loading = document.getElementById('loading');
     loading.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: 'forwards' }).finished.then(() => loading.remove());
+    window.ShowMusic.start();
 
     // ?scene=<id> starts there; ?only=<id> repeats just that slide (or that group of slides, e.g. only=years)
     const matches = (p, id) => p.id === id || p.group === id;
@@ -310,6 +311,7 @@
     function setPaused(p) {
       if (p === clock.paused) return;
       clock.paused = p;
+      window.ShowMusic.setPaused(p);
       document.body.classList.toggle('is-paused', p);
       for (const a of document.getAnimations()) {
         if (p && a.playState === 'running') { a.pause(); a._showPaused = true; }
@@ -330,6 +332,7 @@
         if (document.fullscreenElement) document.exitFullscreen();
         else document.documentElement.requestFullscreen().catch(() => {});
       } else if (e.key === 'h' || e.key === 'H') document.body.classList.toggle('no-hud');
+      else if (e.key === 'm' || e.key === 'M') window.ShowMusic.toggleMute();
     });
     let idle;
     window.addEventListener('mousemove', () => {

@@ -28,6 +28,7 @@ Cloud-Barista 오픈 컨퍼런스가 시작되기 전, 행사장 화면에 계�
 | `Space` | 일시정지 / 재개 |
 | `F` | 전체화면 |
 | `H` | 위 메뉴 막대와 아래 이름 띠 숨기기 |
+| `M` | 배경 음악 음소거 / 해제 |
 
 리허설용 주소 옵션: `?scene=heroes`(그 슬라이드부터), `?only=years`(그 슬라이드 또는 묶음만 반복), `?speed=2`, `?freeze=6`(슬라이드 시작 6초 뒤 정지, 스크린샷용), `?once`(한 바퀴만).
 슬라이드 id: `boot` `title` `numbers` `glance` `years`(`year-2019`…) `blend` `bugs` `menu` `devlife` `heroes` `wall` `join` `outro`
@@ -37,6 +38,7 @@ Cloud-Barista 오픈 컨퍼런스가 시작되기 전, 행사장 화면에 계�
 - `event`: 행사명, 날짜, 시간, 장소, `startTime`(넣으면 오른쪽 아래와 마지막 화면에 "오프닝까지 MM:SS")
 - `heroes`: 핵심 기여자 순서와 한글 이름, 선택적으로 역할 한 줄. 추가된 9명은 아직 한글 이름이 비어 있습니다(비어 있으면 GitHub 프로필 이름 사용)
 - `scenes`: 슬라이드 순서와 포함 여부, `ticker`: 아래 이름 띠 켜고 끄기
+- `music`: 배경 MIDI 음악 음량(0~1, 0이면 끔). 곡은 `assets/bgm.mid`이고 브라우저는 `data/bgm.js`(base64)를 읽습니다. 곡을 바꾸면 `(printf 'window.CB_BGM="'; base64 < assets/bgm.mid | tr -d '\n'; printf '";\n') > data/bgm.js`로 다시 만드세요. 채널 10은 드럼(36/38/42), 나머지는 프로그램 번호로 음색을 고릅니다(80 사각파 리드, 81 펄스 아르페지오, 32~39 베이스).
 
 화면 문구(연도별 이야기, 릴리스 이름, 버그 도감 설명, 클라우드 이름, 컨퍼런스 회차, QR 주소)는 `data/curated.js`에서 고칩니다.
 
